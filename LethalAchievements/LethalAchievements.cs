@@ -9,10 +9,10 @@ namespace LethalAchievements;
 public class LethalAchievements : BaseUnityPlugin
 {
     private bool _isPatched;
-    private Harmony Harmony { get; set; }
-    private new static ManualLogSource Logger { get; set; }
-    public static LethalAchievements Instance { get; private set; }
-    public ConfigEntry<bool> PlaceHolder { get; private set; }
+    private Harmony? Harmony { get; set; }
+    internal new static ManualLogSource? Logger { get; private set; }
+    public static LethalAchievements? Instance { get; private set; }
+    public ConfigEntry<bool>? PlaceHolder { get; private set; }
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class LethalAchievements : BaseUnityPlugin
         // Patch using Harmony
         PatchAll();
 
-        // Report plugin is loaded
+        // Plugin startup logic
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
@@ -36,32 +36,33 @@ public class LethalAchievements : BaseUnityPlugin
     {
         if (_isPatched)
         {
-            Logger.LogWarning("Already patched!");
+            Logger?.LogWarning("Already patched!");
             return;
         }
 
-        Logger.LogDebug("Patching...");
+        Logger?.LogDebug("Patching...");
 
-        Harmony = new Harmony(PluginInfo.PLUGIN_GUID);
+        Harmony ??= new Harmony(PluginInfo.PLUGIN_GUID);
+
         Harmony.PatchAll();
         _isPatched = true;
 
-        Logger.LogDebug("Patched!");
+        Logger?.LogDebug("Patched!");
     }
 
     public void UnpatchAll()
     {
         if (!_isPatched)
         {
-            Logger.LogWarning("Already unpatched!");
+            Logger?.LogWarning("Already unpatched!");
             return;
         }
 
-        Logger.LogDebug("Unpatching...");
+        Logger?.LogDebug("Unpatching...");
 
-        Harmony.UnpatchSelf();
+        Harmony!.UnpatchSelf();
         _isPatched = false;
 
-        Logger.LogDebug("Unpatched!");
+        Logger?.LogDebug("Unpatched!");
     }
 }
