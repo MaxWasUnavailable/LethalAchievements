@@ -28,6 +28,7 @@ public static class AchievementManager
 
         achievement.Initialize();
         Achievements.Add(achievement);
+        achievement.AchievedEvent += () => OnAchieved(achievement);
 
         return true;
     }
@@ -95,5 +96,11 @@ public static class AchievementManager
             }
 
         LethalAchievements.Logger?.LogInfo($"Found {success} achievements, {failed} failed to load!");
+    }
+
+    private static void OnAchieved(IAchievement achievement)
+    {
+        achievement.IsAchieved = true;
+        LethalAchievements.Logger?.LogDebug($"Achievement \"{achievement.Name}\" achieved!");
     }
 }
