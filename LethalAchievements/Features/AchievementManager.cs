@@ -98,23 +98,42 @@ public static class AchievementManager
         LethalAchievements.Logger?.LogInfo($"Found {success} achievements, {failed} failed to load!");
     }
 
+    /// <summary>
+    ///     Called when an achievement is achieved. Used to handle achievement events.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
     private static void OnAchieved(IAchievement achievement)
     {
         achievement.IsAchieved = true;
-        
+
         AchievementPopup(achievement);
-        
+        AchievementChatMessage(achievement);
+
         achievement.Uninitialize();
-        
+
         LethalAchievements.Logger?.LogDebug($"Achievement \"{achievement.Name}\" achieved!");
     }
 
+    /// <summary>
+    ///     Displays a popup when an achievement is achieved.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
     private static void AchievementPopup(IAchievement achievement)
     {
         // TODO: This is a placeholder system, replace with something better (e.g. rectangular popup in bottom-centre)
         HUDManager.Instance.UIAudio.PlayOneShot(HUDManager.Instance.levelIncreaseSFX);
         HUDManager.Instance.playerLevelBoxAnimator.SetTrigger("Shake");
-        HUDManager.Instance.DisplayStatusEffect($"Achievement Unlocked!\n\n{achievement.Name}\n\n{achievement.Description}");
+        HUDManager.Instance.DisplayStatusEffect(
+            $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n\n<color=#FFFFFF>{achievement.Name}</color>");
+    }
+
+    /// <summary>
+    ///     Sends a chat message when an achievement is achieved. Only visible to the player who achieved the achievement.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
+    private static void AchievementChatMessage(IAchievement achievement)
+    {
+        HUDManager.Instance.AddChatMessage($"<b><color=#FFD700>Achievement Unlocked!</color></b>\n<i><color=#FFFFFF>{achievement.Name}</color></i>");
     }
 
 }
