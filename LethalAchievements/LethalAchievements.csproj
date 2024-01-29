@@ -30,6 +30,7 @@
     <ItemGroup>
         <Reference Include="Assembly-CSharp" HintPath="$(LC_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="true"/>
         <Reference Include="Assembly-CSharp-firstpass" HintPath="$(LC_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="true"/>
+        <Reference Include="Unity.Netcode.Runtime" HintPath="$(LC_REFERENCES)\Unity.Netcode.Runtime.dll" Private="False" Publicize="true"/>
         <Reference Include="Unity.InputSystem" HintPath="$(LC_REFERENCES)\Unity.InputSystem.dll" Private="False" Publicize="true"/>
         <Reference Include="Unity.TextMeshPro" HintPath="$(LC_REFERENCES)\Unity.TextMeshPro.dll" Private="False" Publicize="true"/>
         <Reference Include="UnityEngine" HintPath="$(LC_REFERENCES)\UnityEngine.dll" Private="False" Publicize="true"/>

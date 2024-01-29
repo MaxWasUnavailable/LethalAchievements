@@ -101,6 +101,20 @@ public static class AchievementManager
     private static void OnAchieved(IAchievement achievement)
     {
         achievement.IsAchieved = true;
+        
+        AchievementPopup(achievement);
+        
+        achievement.Uninitialize();
+        
         LethalAchievements.Logger?.LogDebug($"Achievement \"{achievement.Name}\" achieved!");
     }
+
+    private static void AchievementPopup(IAchievement achievement)
+    {
+        // TODO: This is a placeholder system, replace with something better (e.g. rectangular popup in bottom-centre)
+        HUDManager.Instance.UIAudio.PlayOneShot(HUDManager.Instance.levelIncreaseSFX);
+        HUDManager.Instance.playerLevelBoxAnimator.SetTrigger("Shake");
+        HUDManager.Instance.DisplayStatusEffect($"Achievement Unlocked!\n\n{achievement.Name}\n\n{achievement.Description}");
+    }
+
 }
