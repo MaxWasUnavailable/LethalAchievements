@@ -49,5 +49,5 @@ public interface IAchievement
     /// <summary>
     ///     Event to be invoked when the achievement is achieved.
     /// </summary>
-    event Action? AchievedEvent;
+    public abstract event Action? AchievedEvent;
 }
