@@ -2,54 +2,60 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using LethalAchievements.Helpers;
 using LethalAchievements.Interfaces;
 
 namespace LethalAchievements.Features;
 
 public static class AchievementManager
 {
-    // List of all achievements
-    private static List<IAchievement> Achievements { get; } = new();
+    /// <summary>
+    ///     Dictionary of all achievements. Key being the GUID of the achievement.
+    /// </summary>
+    private static Dictionary<string, IAchievement> Achievements { get; } = new();
 
     /// <summary>
-    ///     Adds an achievement to the list of achievements.
+    ///     Adds an achievement to the achievement dictionary.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to add. </param>
     /// <returns> <see langword="true" /> if the achievement was added successfully, <see langword="false" /> otherwise. </returns>
     public static bool AddAchievement(IAchievement achievement)
     {
-        if (Achievements.Contains(achievement))
+        var achievementGuid = AchievementHelper.GetAchievementGuid(achievement);
+        
+        if (Achievements.ContainsKey(achievementGuid))
         {
-            LethalAchievements.Logger?.LogWarning($"Achievement with name \"{achievement.Name}\" already exists!");
+            LethalAchievements.Logger?.LogWarning($"Achievement with guid \"{achievementGuid}\" already exists!");
             return false;
         }
 
-        LethalAchievements.Logger?.LogDebug($"Adding achievement \"{achievement.Name}\"...");
+        LethalAchievements.Logger?.LogDebug($"Adding achievement \"{achievementGuid}\"...");
 
         achievement.Initialize();
-        Achievements.Add(achievement);
+        Achievements.Add(achievementGuid, achievement);
         achievement.AchievedEvent += () => OnAchieved(achievement);
 
         return true;
     }
 
     /// <summary>
-    ///     Removes an achievement from the list of achievements
+    ///     Removes an achievement from the achievement dictionary.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to remove. </param>
     /// <returns> <see langword="true" /> if the achievement was removed successfully, <see langword="false" /> otherwise. </returns>
     public static bool RemoveAchievement(IAchievement achievement)
     {
-        if (!Achievements.Contains(achievement))
+        var achievementGuid = AchievementHelper.GetAchievementGuid(achievement);
+        if (!Achievements.ContainsKey(achievementGuid))
         {
-            LethalAchievements.Logger?.LogWarning($"Achievement with name \"{achievement.Name}\" does not exist!");
+            LethalAchievements.Logger?.LogWarning($"Achievement with guid \"{achievementGuid}\" does not exist!");
             return false;
         }
 
-        LethalAchievements.Logger?.LogDebug($"Removing achievement \"{achievement.Name}\"...");
+        LethalAchievements.Logger?.LogDebug($"Removing achievement \"{achievementGuid}\"...");
 
         achievement.Uninitialize();
-        Achievements.Remove(achievement);
+        Achievements.Remove(achievementGuid);
 
         return true;
     }
@@ -104,8 +110,6 @@ public static class AchievementManager
     /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
     private static void OnAchieved(IAchievement achievement)
     {
-        achievement.IsAchieved = true;
-
         AchievementPopup(achievement);
         AchievementChatMessage(achievement);
 
@@ -136,4 +140,6 @@ public static class AchievementManager
         HUDManager.Instance.AddChatMessage($"<b><color=#FFD700>Achievement Unlocked!</color></b>\n<i><color=#FFFFFF>{achievement.Name}</color></i>");
     }
 
+    // TODO: UI for achievements
+    // TODO: Achievement save/load
 }
