@@ -5,6 +5,9 @@ using LethalAchievements.Interfaces;
 
 namespace LethalAchievements.Helpers;
 
+/// <summary>
+///     Helper class for achievements.
+/// </summary>
 public static class AchievementHelper
 {
     /// <summary>

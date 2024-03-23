@@ -6,43 +6,46 @@ using LethalAchievements.Features;
 
 namespace LethalAchievements;
 
-[BepInDependency("LethalEventsLib")]
+/// <summary>
+///     Main plugin class for LethalAchievements.
+/// </summary>
+[BepInDependency(LethalEventsLib.PluginInfo.PLUGIN_GUID)]
+[BepInDependency(LethalModDataLib.PluginInfo.PLUGIN_GUID)]
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class LethalAchievements : BaseUnityPlugin
 {
     private bool _isPatched;
     private Harmony? Harmony { get; set; }
     internal new static ManualLogSource? Logger { get; private set; }
-    public static LethalAchievements? Instance { get; private set; }
 
-    // Config entries
-    public ConfigEntry<bool>? PlaceHolder { get; private set; }
+    /// <summary>
+    ///     Singleton instance of the plugin.
+    /// </summary>
+    public static LethalAchievements? Instance { get; private set; }
 
     private void Awake()
     {
         // Set instance
         Instance = this;
-        
-        // Set do not destroy on load
-        DontDestroyOnLoad(this);
 
         // Init logger
         Logger = base.Logger;
 
-        // Init config entries
-        PlaceHolder = Config.Bind("General", "PlaceHolder", true, "PlaceHolder");
-
         // Patch using Harmony
         PatchAll();
-
-        // Plugin startup logic
-        Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         
         // Load achievements
         // TODO: This needs to be done after other plugins have loaded --> Event in LethalEventsLib when main menu is loaded?
+        // EDIT: Thought process is that it might not find all assemblies if it's done too early - needs testing
         AchievementManager.FindAllAchievements();
+
+        // Plugin startup logic
+        Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
+    /// <summary>
+    ///     Patch all methods with Harmony.
+    /// </summary>
     public void PatchAll()
     {
         if (_isPatched)
@@ -61,6 +64,9 @@ public class LethalAchievements : BaseUnityPlugin
         Logger?.LogDebug("Patched!");
     }
 
+    /// <summary>
+    ///     Unpatch all methods with Harmony.
+    /// </summary>
     public void UnpatchAll()
     {
         if (!_isPatched)

@@ -7,6 +7,9 @@ using LethalAchievements.Interfaces;
 
 namespace LethalAchievements.Features;
 
+/// <summary>
+///     Manager for achievements.
+/// </summary>
 public static class AchievementManager
 {
     /// <summary>
