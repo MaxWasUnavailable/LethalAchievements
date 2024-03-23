@@ -1,5 +1,6 @@
 using System;
 using LethalAchievements.Interfaces;
+using LethalModDataLib.Enums;
 using UnityEngine;
 
 namespace LethalAchievements.Base;
@@ -16,6 +17,9 @@ public abstract class BaseAchievement : IAchievement
     
     // IsHidden will generally not be changed by modders, set to false for convenience
     public bool IsHidden { get; set; } = false;
+    
+    // SaveLocation will generally not be changed by modders, set to CurrentSave for convenience
+    public SaveLocation SaveLocation { get; set; } = SaveLocation.CurrentSave;
     
     public event Action? AchievedEvent;
     
