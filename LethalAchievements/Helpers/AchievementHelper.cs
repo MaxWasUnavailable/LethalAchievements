@@ -2,7 +2,7 @@ using LethalAchievements.Interfaces;
 
 namespace LethalAchievements.Helpers;
 
-public static class AchievementHelpers
+public static class AchievementHelper
 {
     /// <summary>
     ///     Gets the GUID of the specified <see cref="IAchievement" />.
