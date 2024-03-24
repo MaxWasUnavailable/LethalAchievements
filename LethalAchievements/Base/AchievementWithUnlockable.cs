@@ -1,22 +1,22 @@
-using UnityEngine;
+using System;
 
 namespace LethalAchievements.Base;
 
+/// <summary>
+///     Base class for achievements that unlock an unlockable.
+/// </summary>
 public abstract class AchievementWithUnlockable : BaseAchievement
 {
-    // Kept abstract for modders to implement
-    public abstract override string Name { get; set; }
-    public abstract override string? ShortDescription { get; set; }
-    public abstract override string? LongDescription { get; set; }
-    public abstract override Sprite? Icon { get; set; }
-    public abstract override void Initialize();
-    public abstract override void Uninitialize();
-
+    /// <summary>
+    ///     Unlocks an unlockable.
+    /// </summary>
+    /// TODO: Implement this
     protected virtual void AddUnlockable()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
+    /// <inheritdoc />
     protected override void Complete()
     {
         base.Complete();
