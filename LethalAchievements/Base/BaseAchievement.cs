@@ -16,10 +16,10 @@ public abstract class BaseAchievement : IAchievement
     public abstract string Name { get; set; }
 
     /// <inheritdoc />
-    public abstract string? ShortDescription { get; set; }
+    public abstract string? DisplayText { get; set; }
 
     /// <inheritdoc />
-    public abstract string? LongDescription { get; set; }
+    public abstract string? Description { get; set; }
 
     /// <inheritdoc />
     public abstract Sprite? Icon { get; set; }

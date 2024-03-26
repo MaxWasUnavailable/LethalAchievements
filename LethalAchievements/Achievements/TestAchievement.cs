@@ -14,10 +14,10 @@ public class TestAchievement : BaseAchievement
     public override string Name { get; set; } = "Test Achievement";
     
     /// <inheritdoc />
-    public override string? ShortDescription { get; set; } = "This is a test achievement.";
+    public override string? DisplayText { get; set; } = "Completed the test achievement!";
     
     /// <inheritdoc />
-    public override string? LongDescription { get; set; } =
+    public override string? Description { get; set; } =
         "This is a test achievement. It will be achieved when the player jumps.";
 
     /// <inheritdoc />

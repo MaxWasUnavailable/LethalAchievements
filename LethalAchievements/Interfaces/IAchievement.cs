@@ -16,16 +16,16 @@ public interface IAchievement
     public abstract string Name { get; internal set; }
     
     /// <summary>
-    ///     The short description of the achievement.
+    ///     The display text of the achievement.
     /// </summary>
     /// <remarks> Needs to be below 100 characters. Used for popup. </remarks> // TODO: Review character limit
-    public abstract string? ShortDescription { get; internal set; }
+    public abstract string? DisplayText { get; internal set; }
     
     /// <summary>
-    ///     The long description of the achievement.
+    ///     The description of the achievement.
     /// </summary>
     /// <remarks> Used in the achievement menu. </remarks>
-    public abstract string? LongDescription { get; internal set; }
+    public abstract string? Description { get; internal set; }
     
     /// <summary>
     ///     Whether the achievement is hidden in the achievement menu.
@@ -56,7 +56,7 @@ public interface IAchievement
     public abstract void Uninitialize();
     
     /// <summary>
-    ///     Event to be invoked when the achievement is achieved.
+    ///     Event to be invoked when the achievement is achieved. Informs the AchievementManager that the achievement was completed.
     /// </summary>
     public abstract event Action? AchievedEvent;
 }
