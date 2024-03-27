@@ -1,7 +1,7 @@
 ﻿using BepInEx;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
+using LethalAchievements.Achievements;
 using LethalAchievements.Features;
 
 namespace LethalAchievements;
@@ -33,11 +33,8 @@ public class LethalAchievements : BaseUnityPlugin
 
         // Patch using Harmony
         PatchAll();
-        
-        // Load achievements
-        // TODO: This needs to be done after other plugins have loaded --> Event in LethalEventsLib when main menu is loaded?
-        // EDIT: Thought process is that it might not find all assemblies if it's done too early - needs testing
-        AchievementManager.FindAllAchievements();
+
+        AchievementManager.RegisterAchievement(new JumpAchievement());
 
         // Plugin startup logic
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
