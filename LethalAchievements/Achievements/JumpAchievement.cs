@@ -6,15 +6,15 @@ using UnityEngine;
 namespace LethalAchievements.Achievements;
 
 /// <summary>
-///     A test achievement.
+///     A test achievement that will be achieved when the player jumps.
 /// </summary>
 public class JumpAchievement : BaseAchievement
 {
     /// <inheritdoc />
-    public override string Name { get; set; } = "Test Achievement";
+    public override string Name { get; set; } = "Baby's First Jump";
     
     /// <inheritdoc />
-    public override string? DisplayText { get; set; } = "Completed the test achievement!";
+    public override string? DisplayText { get; set; } = "Wow, you actually jumped!";
     
     /// <inheritdoc />
     public override string? Description { get; set; } =
