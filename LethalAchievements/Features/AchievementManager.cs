@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using LethalAchievements.Helpers;
 using LethalAchievements.Interfaces;
 
@@ -18,14 +17,52 @@ public static class AchievementManager
     private static Dictionary<string, IAchievement> Achievements { get; } = new();
 
     /// <summary>
+    ///     Registers an achievement with the achievement manager.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> to register. </param>
+    /// <returns> <see langword="true" /> if the achievement was registered successfully, <see langword="false" /> otherwise. </returns>
+    public static bool RegisterAchievement(IAchievement achievement)
+    {
+        LethalAchievements.Logger?.LogDebug(
+            $"Registering achievement \"{achievement.Name}\" from \"{achievement.GetType().Assembly.FullName}\"...");
+        return AddAchievement(achievement);
+    }
+
+    /// <summary>
+    ///     Get an achievement by its type.
+    /// </summary>
+    /// <typeparam name="T"> The type of the achievement to get. </typeparam>
+    /// <returns> The achievement of type <typeparamref name="T" />. </returns>
+    public static T? GetAchievement<T>() where T : IAchievement, new()
+    {
+        var achievement = Achievements.Values.FirstOrDefault(achievement => achievement.GetType() == typeof(T));
+        return achievement != null ? (T)achievement : default;
+    }
+
+    /// <summary>
+    ///     Get an achievement by its type and name.
+    /// </summary>
+    /// <param name="name"> The name of the achievement to get. </param>
+    /// <typeparam name="T"> The type of the achievement to get. </typeparam>
+    /// <returns> The achievement of type <typeparamref name="T" /> with the name <paramref name="name" />. </returns>
+    /// <remarks> Might be redundant, but made available in case it might be useful. </remarks>
+    public static T? GetAchievement<T>(string name) where T : IAchievement, new()
+    {
+        var achievement = Achievements.Values.FirstOrDefault(achievement =>
+            achievement.GetType() == typeof(T) &&
+            string.Equals(achievement.Name, name, StringComparison.CurrentCultureIgnoreCase));
+        return achievement != null ? (T)achievement : default;
+    }
+
+    /// <summary>
     ///     Adds an achievement to the achievement dictionary.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to add. </param>
     /// <returns> <see langword="true" /> if the achievement was added successfully, <see langword="false" /> otherwise. </returns>
-    public static bool AddAchievement(IAchievement achievement)
+    internal static bool AddAchievement(IAchievement achievement)
     {
         var achievementGuid = AchievementHelper.GetAchievementGuid(achievement);
-        
+
         if (Achievements.ContainsKey(achievementGuid))
         {
             LethalAchievements.Logger?.LogWarning($"Achievement with guid \"{achievementGuid}\" already exists!");
@@ -46,7 +83,7 @@ public static class AchievementManager
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to remove. </param>
     /// <returns> <see langword="true" /> if the achievement was removed successfully, <see langword="false" /> otherwise. </returns>
-    public static bool RemoveAchievement(IAchievement achievement)
+    internal static bool RemoveAchievement(IAchievement achievement)
     {
         var achievementGuid = AchievementHelper.GetAchievementGuid(achievement);
         if (!Achievements.ContainsKey(achievementGuid))
@@ -61,50 +98,6 @@ public static class AchievementManager
         Achievements.Remove(achievementGuid);
 
         return true;
-    }
-
-    /// <summary>
-    ///     Finds all achievements in the current domain and adds them to the list of achievements.
-    /// </summary>
-    internal static void FindAllAchievements()
-    {
-        LethalAchievements.Logger?.LogDebug("Finding all achievements...");
-
-        var types = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(assembly => assembly.GetTypes())
-            .Where(type => typeof(IAchievement).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract);
-
-        var success = 0;
-        var failed = 0;
-
-        foreach (var type in types)
-            try
-            {
-                if (AddAchievement((IAchievement)Activator.CreateInstance(type)!))
-                    success++;
-                else
-                    failed++;
-            }
-            catch (MissingMethodException e)
-            {
-                LethalAchievements.Logger?.LogError(
-                    $"Failed to load achievement \"{type.Name}\" due to missing constructor! {e}");
-                failed++;
-            }
-            catch (TargetException e)
-            {
-                LethalAchievements.Logger?.LogError(
-                    $"Failed to load achievement \"{type.Name}\" due to target exception! {e}");
-                failed++;
-            }
-            catch (InvalidCastException e)
-            {
-                LethalAchievements.Logger?.LogError(
-                    $"Failed to load achievement \"{type.Name}\" due to invalid cast! {e}");
-                failed++;
-            }
-
-        LethalAchievements.Logger?.LogInfo($"Found {success} achievements, {failed} failed to load!");
     }
 
     /// <summary>
@@ -140,7 +133,9 @@ public static class AchievementManager
     /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
     private static void AchievementChatMessage(IAchievement achievement)
     {
-        HUDManager.Instance.AddChatMessage($"<b><color=#FFD700>Achievement Unlocked!</color></b>\n<i><color=#FFFFFF>{achievement.Name}</color></i>");
+        var message =
+            $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n<i><color=#FFFFFF>{achievement.Name}</color></i>";
+        HUDManager.Instance.AddTextToChatOnServer(message);
     }
 
     // TODO: UI for achievements
