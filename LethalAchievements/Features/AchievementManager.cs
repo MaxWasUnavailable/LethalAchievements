@@ -106,36 +106,13 @@ public static class AchievementManager
     /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
     private static void OnAchieved(IAchievement achievement)
     {
-        AchievementPopup(achievement);
-        AchievementChatMessage(achievement);
+        SoundHelper.PlayLevelUpSound();
+        AchievementHelper.AchievementChatMessage(achievement);
+        AchievementHelper.DisplayAchievementAsStatus(achievement);
 
         achievement.Uninitialize();
 
         LethalAchievements.Logger?.LogDebug($"Achievement \"{achievement.Name}\" achieved!");
-    }
-
-    /// <summary>
-    ///     Displays a popup when an achievement is achieved.
-    /// </summary>
-    /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
-    private static void AchievementPopup(IAchievement achievement)
-    {
-        // TODO: This is a placeholder system, replace with something better (e.g. rectangular popup in bottom-centre)
-        HUDManager.Instance.UIAudio.PlayOneShot(HUDManager.Instance.levelIncreaseSFX);
-        HUDManager.Instance.playerLevelBoxAnimator.SetTrigger("Shake");
-        HUDManager.Instance.DisplayStatusEffect(
-            $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n\n<color=#FFFFFF>{achievement.Name}</color>");
-    }
-
-    /// <summary>
-    ///     Sends a chat message when an achievement is achieved. Only visible to the player who achieved the achievement.
-    /// </summary>
-    /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
-    private static void AchievementChatMessage(IAchievement achievement)
-    {
-        var message =
-            $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n<i><color=#FFFFFF>{achievement.Name}</color></i>";
-        HUDManager.Instance.AddTextToChatOnServer(message);
     }
 
     // TODO: UI for achievements

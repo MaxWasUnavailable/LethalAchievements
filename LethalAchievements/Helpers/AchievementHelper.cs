@@ -30,4 +30,24 @@ public static class AchievementHelper
         return Chainloader.PluginInfos
             .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == pluginAssembly).Value.Metadata.GUID;
     }
+
+    /// <summary>
+    ///     Sends a chat message notifying player an achievement was achieved.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
+    public static void AchievementChatMessage(IAchievement achievement)
+    {
+        UIHelper.SendServerChatMessage(
+            $"<b><color=#FFD700>{PlayerHelper.GetCurrentPlayerName()} unlocked achievement:</color></b><i><color=#FFFFFF>{achievement.Name}</color></i>");
+    }
+
+    /// <summary>
+    ///     Use a status message to display an achievement.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> to display. </param>
+    public static void DisplayAchievementAsStatus(IAchievement achievement)
+    {
+        UIHelper.DisplayStatusMessage(
+            $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n\n<color=#FFFFFF>{achievement.Name}</color>");
+    }
 }
