@@ -8,7 +8,7 @@ namespace LethalAchievements.Achievements;
 /// <summary>
 ///     A test achievement.
 /// </summary>
-public class TestAchievement : BaseAchievement
+public class JumpAchievement : BaseAchievement
 {
     /// <inheritdoc />
     public override string Name { get; set; } = "Test Achievement";
