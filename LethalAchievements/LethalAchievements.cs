@@ -33,11 +33,22 @@ public class LethalAchievements : BaseUnityPlugin
 
         // Patch using Harmony
         PatchAll();
-
+        
+        // Register example achievements
+        // TODO: remove for release
         AchievementManager.RegisterAchievement(new JumpAchievement());
+        
+        // Hook into post game init event -- We reuse the one from LethalModDataLib since we're using that library anyway
+        LethalModDataLib.Events.MiscEvents.PostInitializeGameEvent += OnGameLoaded;
 
         // Plugin startup logic
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+    }
+    
+    private static void OnGameLoaded()  // TODO
+    {
+        // Initialize achievements
+        AchievementManager.InitializeAchievements();
     }
 
     /// <summary>
