@@ -15,17 +15,29 @@ public static class AchievementManager
     ///     Dictionary of all achievements. Key being the GUID of the achievement.
     /// </summary>
     private static Dictionary<string, IAchievement> Achievements { get; } = new();
+    private static List<IAchievement> AchievementsToAdd { get; } = [];
 
     /// <summary>
     ///     Registers an achievement with the achievement manager.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to register. </param>
-    /// <returns> <see langword="true" /> if the achievement was registered successfully, <see langword="false" /> otherwise. </returns>
-    public static bool RegisterAchievement(IAchievement achievement)
+    public static void RegisterAchievement(IAchievement achievement)
     {
         LethalAchievements.Logger?.LogDebug(
             $"Registering achievement \"{achievement.Name}\" from \"{achievement.GetType().Assembly.FullName}\"...");
-        return AddAchievement(achievement);
+        AchievementsToAdd.Add(achievement);
+    }
+    
+    /// <summary>
+    ///     Initializes all achievements.
+    ///     Done after the ChainLoader has loaded all plugins, since otherwise GUID of plugins is not available.
+    /// </summary>
+    internal static void InitializeAchievements()
+    {
+        foreach (var achievement in AchievementsToAdd)
+        {
+            AddAchievement(achievement);
+        }
     }
 
     /// <summary>
@@ -109,6 +121,7 @@ public static class AchievementManager
         SoundHelper.PlayLevelUpSound();
         AchievementHelper.AchievementChatMessage(achievement);
         AchievementHelper.DisplayAchievementAsStatus(achievement);
+        AchievementHelper.DisplayAchievementAsTip(achievement);
 
         achievement.Uninitialize();
 
