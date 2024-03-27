@@ -50,4 +50,17 @@ public static class AchievementHelper
         UIHelper.DisplayStatusMessage(
             $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n\n<color=#FFFFFF>{achievement.Name}</color>");
     }
+
+    /// <summary>
+    ///     Use a tip to display an achievement.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> to display. </param>
+    public static void DisplayAchievementAsTip(IAchievement achievement)
+    {
+        UIHelper.DisplayTip(
+            "<b><color=#FFD700>Achievement Unlocked!</color></b>",
+            $"<color=#FFFFFF>{achievement.Name}</color>",
+            true
+        );
+    }
 }
