@@ -75,7 +75,7 @@ public static class AchievementManager
     }
 
     /// <summary>
-    ///     Called when an achievement is achieved. Used to handle achievement events.
+    ///     Called when an achievement is achieved. Used to handle achievement completion events.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
     private static void OnAchieved(IAchievement achievement)
@@ -90,5 +90,13 @@ public static class AchievementManager
         achievement.Uninitialize();
 
         LethalAchievements.Logger?.LogDebug($"Achievement \"{achievement.Name}\" achieved!");
+    }
+
+    /// <summary>
+    ///     Called when the game is loaded. Used to initialize achievements.
+    /// </summary>
+    private static void OnLoadGame(bool isChallenge, string saveFileName)
+    {
+        InitializeAchievements();
     }
 }
