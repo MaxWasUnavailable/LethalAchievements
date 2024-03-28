@@ -20,7 +20,6 @@ public class Jump10Achievement : BaseAchievement
         set
         {
             _jumpCount = value;
-            LethalAchievements.Logger?.LogInfo($"Jump count is now {_jumpCount}");
             if (_jumpCount >= 10)
             {
                 Complete();
