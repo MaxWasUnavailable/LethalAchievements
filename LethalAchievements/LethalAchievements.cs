@@ -14,8 +14,6 @@ namespace LethalAchievements;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class LethalAchievements : BaseUnityPlugin
 {
-    private bool _isPatched;
-    private Harmony? Harmony { get; set; }
     internal new static ManualLogSource? Logger { get; private set; }
 
     /// <summary>
@@ -30,9 +28,6 @@ public class LethalAchievements : BaseUnityPlugin
 
         // Init logger
         Logger = base.Logger;
-
-        // Patch using Harmony
-        PatchAll();
         
         // Register example achievements
         // TODO: remove for release
@@ -40,56 +35,16 @@ public class LethalAchievements : BaseUnityPlugin
         AchievementManager.RegisterAchievement(new Jump10Achievement());
         AchievementManager.RegisterAchievement(new GeneralJumpAchievement());
         
-        // Hook into post game init event -- We reuse the one from LethalModDataLib since we're using that library anyway
+        // Hook into post game init event
         LethalModDataLib.Events.MiscEvents.PostInitializeGameEvent += OnGameLoaded;
 
-        // Plugin startup logic
+        // Report plugin loaded
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
     
     private static void OnGameLoaded()
     {
-        // Add registered achievements
-        AchievementManager.AddRegisteredAchievements();
-    }
-
-    /// <summary>
-    ///     Patch all methods with Harmony.
-    /// </summary>
-    public void PatchAll()
-    {
-        if (_isPatched)
-        {
-            Logger?.LogWarning("Already patched!");
-            return;
-        }
-
-        Logger?.LogDebug("Patching...");
-
-        Harmony ??= new Harmony(PluginInfo.PLUGIN_GUID);
-
-        Harmony.PatchAll();
-        _isPatched = true;
-
-        Logger?.LogDebug("Patched!");
-    }
-
-    /// <summary>
-    ///     Unpatch all methods with Harmony.
-    /// </summary>
-    public void UnpatchAll()
-    {
-        if (!_isPatched)
-        {
-            Logger?.LogWarning("Already unpatched!");
-            return;
-        }
-
-        Logger?.LogDebug("Unpatching...");
-
-        Harmony!.UnpatchSelf();
-        _isPatched = false;
-
-        Logger?.LogDebug("Unpatched!");
+        // Initialize achievements system
+        AchievementManager.Initialize();
     }
 }
