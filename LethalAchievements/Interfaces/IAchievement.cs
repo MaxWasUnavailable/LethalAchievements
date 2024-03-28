@@ -44,13 +44,13 @@ public interface IAchievement
     public abstract Sprite? Icon { get; internal set; }
 
     /// <summary>
-    ///     Initializes the achievement. Called by <see cref="AchievementManager.AddAchievement"/>.
+    ///     Initializes the achievement. Called by <see cref="AchievementRegistry.AddAchievement"/>.
     ///     Should hook up any event listeners, etc...
     /// </summary>
     public abstract void Initialize();
     
     /// <summary>
-    ///     Uninitializes the achievement. Called by <see cref="AchievementManager.RemoveAchievement"/> and upon achievement completion.
+    ///     Uninitializes the achievement. Called by <see cref="AchievementRegistry.RemoveAchievement"/> and upon achievement completion at <see cref="AchievementManager.OnAchieved"/>.
     ///     Should unhook any event listeners, clean up, etc...
     /// </summary>
     public abstract void Uninitialize();
