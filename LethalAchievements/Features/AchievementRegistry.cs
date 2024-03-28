@@ -93,9 +93,15 @@ public class AchievementRegistry
         }
 
         LethalAchievements.Logger?.LogDebug($"Removing achievement \"{achievementGuid}\"...");
-
+        
+        // We uninitialize the achievement
         achievement.Uninitialize();
+        
+        // We remove the achievement from the dictionary
         Achievements.Remove(achievementGuid);
+        
+        // We deregister any mod data attributes for the achievement
+        ModDataHandler.DeRegisterInstance(achievement);
 
         return true;
     }
