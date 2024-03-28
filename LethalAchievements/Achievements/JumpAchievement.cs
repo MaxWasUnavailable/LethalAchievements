@@ -26,13 +26,13 @@ public class JumpAchievement : BaseAchievement
     /// <inheritdoc />
     public override void Initialize()
     {
-        PlayerEvents.PreJump_performedEvent += OnPlayerJump;
+        PlayerEvents.PrePlayerJumpEvent += OnPlayerJump;
     }
 
     /// <inheritdoc />
     public override void Uninitialize()
     {
-        PlayerEvents.PreJump_performedEvent -= OnPlayerJump;
+        PlayerEvents.PrePlayerJumpEvent -= OnPlayerJump;
     }
     
     private void OnPlayerJump(ref bool cancel, ref PlayerControllerB player)

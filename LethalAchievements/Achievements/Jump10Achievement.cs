@@ -14,7 +14,7 @@ public class Jump10Achievement : BaseAchievement
 {
     private int _jumpCount = 0;
     
-    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.Immediately | LoadWhen.OnLoad, SaveLocation = SaveLocation.CurrentSave)]
+    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.OnRegister | LoadWhen.OnLoad, SaveLocation = SaveLocation.CurrentSave)]
     private int JumpCount {
         get => _jumpCount;
         set
@@ -44,13 +44,13 @@ public class Jump10Achievement : BaseAchievement
     /// <inheritdoc />
     public override void Initialize()
     {
-        PlayerEvents.PreJump_performedEvent += OnPlayerJump;
+        PlayerEvents.PrePlayerJumpEvent += OnPlayerJump;
     }
 
     /// <inheritdoc />
     public override void Uninitialize()
     {
-        PlayerEvents.PreJump_performedEvent -= OnPlayerJump;
+        PlayerEvents.PrePlayerJumpEvent -= OnPlayerJump;
     }
     
     private void OnPlayerJump(ref bool cancel, ref PlayerControllerB player)
