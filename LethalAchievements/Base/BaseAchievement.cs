@@ -37,6 +37,10 @@ public abstract class BaseAchievement : IAchievement
     // SaveLocation will generally not be changed by modders, set to CurrentSave for convenience
     /// <inheritdoc />
     public SaveLocation SaveLocation { get; set; } = SaveLocation.CurrentSave;
+    
+    // IsAchieved should be false by default
+    /// <inheritdoc />
+    public bool IsAchieved { get; set; } = false;
 
     /// <inheritdoc />
     public event Action? AchievedEvent;

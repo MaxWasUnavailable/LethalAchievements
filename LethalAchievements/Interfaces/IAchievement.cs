@@ -1,5 +1,6 @@
 using System;
 using LethalAchievements.Features;
+using LethalModDataLib.Attributes;
 using LethalModDataLib.Enums;
 using UnityEngine;
 
@@ -31,6 +32,11 @@ public interface IAchievement
     ///     Whether the achievement is hidden in the achievement menu.
     /// </summary>
     public abstract bool IsHidden { get; internal set; }
+    
+    /// <summary>
+    ///     Whether the achievement is achieved.
+    /// </summary>
+    public abstract bool IsAchieved { get; internal set; }
     
     /// <summary>
     ///     Save location of the achievement. Used to determine if the achievement is global or per save.
