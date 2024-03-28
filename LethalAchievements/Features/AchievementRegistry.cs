@@ -62,9 +62,6 @@ public class AchievementRegistry
 
         // We register any mod data attributes for the achievement
         ModDataHandler.RegisterInstance(achievement);
-        
-        // We load the IsAchieved state of the achievement from the save file
-        achievement.LoadAchievedState();
 
         // We add the achievement to the dictionary
         Achievements.Add(achievementGuid, achievement);
