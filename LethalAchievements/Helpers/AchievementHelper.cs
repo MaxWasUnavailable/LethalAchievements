@@ -2,6 +2,7 @@ using System.Linq;
 using System.Reflection;
 using BepInEx.Bootstrap;
 using LethalAchievements.Interfaces;
+using LethalModDataLib.Features;
 
 namespace LethalAchievements.Helpers;
 
@@ -29,6 +30,25 @@ public static class AchievementHelper
     {
         return Chainloader.PluginInfos
             .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == pluginAssembly).Value.Metadata.GUID;
+    }
+
+    /// <summary>
+    ///     Load the IsAchieved state of a given achievement.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> to load the IsAchieved state for. </param>
+    internal static void LoadAchievedState(this IAchievement achievement)
+    {
+        achievement.IsAchieved =
+            SaveLoadHandler.LoadData<bool>(achievement.GetAchievementGuid(), achievement.SaveLocation);
+    }
+
+    /// <summary>
+    ///     Save the IsAchieved state of a given achievement.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> to save the IsAchieved state for. </param>
+    internal static void SaveAchievedState(this IAchievement achievement)
+    {
+        SaveLoadHandler.SaveData(achievement.IsAchieved, achievement.GetAchievementGuid(), achievement.SaveLocation);
     }
 
     /// <summary>
