@@ -28,11 +28,49 @@ public static class AchievementManager
     ///     Adds all registered achievements to the achievement registry.
     ///     Done after the ChainLoader has loaded all plugins, since otherwise GUID of plugins is not available.
     /// </summary>
-    internal static void AddRegisteredAchievements()
+    private static void AddRegisteredAchievements()
     {
         foreach (var achievement in AchievementsToAdd.Where(achievement => AchievementRegistry.AddAchievement(achievement)))
         {
             achievement.AchievedEvent += () => OnAchieved(achievement);
+        }
+        AchievementsToAdd.Clear();
+    }
+
+    /// <summary>
+    ///     Initializes the achievement manager.
+    /// </summary>
+    internal static void Initialize()
+    {
+        AddRegisteredAchievements();
+        LethalModDataLib.Events.SaveLoadEvents.PostLoadGameEvent += OnLoadGame;
+    }
+    
+    /// <summary>
+    ///     Initializes all achievements that aren't already achieved.
+    /// </summary>
+    private static void InitializeAchievements()
+    {
+        foreach (var achievement in AchievementRegistry.GetAchievements())
+        {
+            // We always load the IsAchieved state of the achievement since this might vary between saves
+            achievement.LoadAchievedState();        
+            // If the achievement is not achieved, we initialize it
+            if (!achievement.IsAchieved)
+            {
+                achievement.Initialize();
+            }
+        }
+    }
+    
+    /// <summary>
+    ///     Uninitializes all achievements.
+    /// </summary>
+    internal static void UninitializeAchievements()
+    {
+        foreach (var achievement in AchievementRegistry.GetAchievements())
+        {
+            achievement.Uninitialize();
         }
     }
 
