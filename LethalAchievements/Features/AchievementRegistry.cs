@@ -99,4 +99,13 @@ public class AchievementRegistry
 
         return true;
     }
+    
+    /// <summary>
+    ///     Get all achievements.
+    /// </summary>
+    /// <returns> A list of all achievements. </returns>
+    internal List<IAchievement> GetAchievements()
+    {
+        return Achievements.Values.ToList();
+    }
 }
