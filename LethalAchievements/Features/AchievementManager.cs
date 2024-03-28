@@ -47,6 +47,8 @@ public static class AchievementManager
         AchievementHelper.DisplayAchievementAsStatus(achievement);
         AchievementHelper.DisplayAchievementAsTip(achievement);
 
+        achievement.IsAchieved = true;
+        achievement.SaveAchievedState();
         achievement.Uninitialize();
 
         LethalAchievements.Logger?.LogDebug($"Achievement \"{achievement.Name}\" achieved!");

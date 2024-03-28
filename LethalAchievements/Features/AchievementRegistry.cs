@@ -59,13 +59,21 @@ public class AchievementRegistry
         }
 
         LethalAchievements.Logger?.LogDebug($"Adding achievement \"{achievementGuid}\"...");
-        
+
         // We register any mod data attributes for the achievement
         ModDataHandler.RegisterInstance(achievement);
+        
+        // We load the IsAchieved state of the achievement from the save file
+        achievement.LoadAchievedState();
 
-        // Then we initialize the achievement and hook into its OnAchieved event
-        achievement.Initialize();
+        // We add the achievement to the dictionary
         Achievements.Add(achievementGuid, achievement);
+        
+        // If the achievement is not achieved, we initialize it
+        if (!achievement.IsAchieved)
+        {
+            achievement.Initialize();
+        }
 
         return true;
     }
@@ -91,5 +99,4 @@ public class AchievementRegistry
 
         return true;
     }
-    
 }
