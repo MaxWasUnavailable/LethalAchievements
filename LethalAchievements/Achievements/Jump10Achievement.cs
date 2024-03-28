@@ -12,20 +12,8 @@ namespace LethalAchievements.Achievements;
 /// </summary>
 public class Jump10Achievement : BaseAchievement
 {
-    private int _jumpCount = 0;
-    
-    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.OnRegister | LoadWhen.OnLoad, SaveLocation = SaveLocation.CurrentSave)]
-    private int JumpCount {
-        get => _jumpCount;
-        set
-        {
-            _jumpCount = value;
-            if (_jumpCount >= 10)
-            {
-                Complete();
-            }
-        }
-    }
+    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.OnLoad, SaveLocation = SaveLocation.CurrentSave)]
+    private int JumpCount { get; set; }
     
     /// <inheritdoc />
     public override string Name { get; set; } = "Jump for Joy";
@@ -55,5 +43,9 @@ public class Jump10Achievement : BaseAchievement
     private void OnPlayerJump(ref bool cancel, ref PlayerControllerB player)
     {
         JumpCount++;
+        if (JumpCount >= 10)
+        {
+            Complete();
+        }
     }
 }
