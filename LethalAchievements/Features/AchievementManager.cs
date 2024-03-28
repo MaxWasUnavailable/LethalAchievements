@@ -25,10 +25,10 @@ public static class AchievementManager
     }
     
     /// <summary>
-    ///     Initializes all achievements.
+    ///     Adds all registered achievements to the achievement registry.
     ///     Done after the ChainLoader has loaded all plugins, since otherwise GUID of plugins is not available.
     /// </summary>
-    internal static void InitializeAchievements()
+    internal static void AddRegisteredAchievements()
     {
         foreach (var achievement in AchievementsToAdd.Where(achievement => AchievementRegistry.AddAchievement(achievement)))
         {

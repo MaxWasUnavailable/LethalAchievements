@@ -38,6 +38,7 @@ public class LethalAchievements : BaseUnityPlugin
         // TODO: remove for release
         AchievementManager.RegisterAchievement(new JumpAchievement());
         AchievementManager.RegisterAchievement(new Jump10Achievement());
+        AchievementManager.RegisterAchievement(new GeneralJumpAchievement());
         
         // Hook into post game init event -- We reuse the one from LethalModDataLib since we're using that library anyway
         LethalModDataLib.Events.MiscEvents.PostInitializeGameEvent += OnGameLoaded;
@@ -46,10 +47,10 @@ public class LethalAchievements : BaseUnityPlugin
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
     
-    private static void OnGameLoaded()  // TODO
+    private static void OnGameLoaded()
     {
-        // Initialize achievements
-        AchievementManager.InitializeAchievements();
+        // Add registered achievements
+        AchievementManager.AddRegisteredAchievements();
     }
 
     /// <summary>
