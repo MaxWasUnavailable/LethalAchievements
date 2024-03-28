@@ -1,6 +1,5 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using HarmonyLib;
 using LethalAchievements.Achievements;
 using LethalAchievements.Features;
 
