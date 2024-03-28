@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LethalAchievements.Helpers;
 using LethalAchievements.Interfaces;
+using LethalModDataLib.Features;
 
 namespace LethalAchievements.Features;
 
@@ -82,7 +83,11 @@ public static class AchievementManager
         }
 
         LethalAchievements.Logger?.LogDebug($"Adding achievement \"{achievementGuid}\"...");
+        
+        // We register any mod data attributes for the achievement
+        ModDataHandler.RegisterInstance(achievement);
 
+        // Then we initialize the achievement and hook into its OnAchieved event
         achievement.Initialize();
         Achievements.Add(achievementGuid, achievement);
         achievement.AchievedEvent += () => OnAchieved(achievement);
