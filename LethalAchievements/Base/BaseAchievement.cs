@@ -32,24 +32,24 @@ public abstract class BaseAchievement : IAchievement
 
     // IsHidden will generally not be changed by modders, set to false for convenience
     /// <inheritdoc />
-    public bool IsHidden { get; set; } = false;
+    public virtual bool IsHidden { get; set; } = false;
 
     // SaveLocation will generally not be changed by modders, set to CurrentSave for convenience
     /// <inheritdoc />
-    public SaveLocation SaveLocation { get; set; } = SaveLocation.CurrentSave;
+    public virtual SaveLocation SaveLocation { get; set; } = SaveLocation.CurrentSave;
     
     // IsAchieved should be false by default
     /// <inheritdoc />
-    public bool IsAchieved { get; set; } = false;
+    public virtual bool IsAchieved { get; set; } = false;
 
     /// <inheritdoc />
-    public event Action? AchievedEvent;
+    public virtual event Action? AchievedEvent;
 
     // Added virtual for modders to override
     /// <summary>
     ///     Completes the achievement.
     /// </summary>
-    protected virtual void Complete() // TODO: Rename to Achieve?
+    protected virtual void Complete()
     {
         AchievedEvent?.Invoke();
     }
