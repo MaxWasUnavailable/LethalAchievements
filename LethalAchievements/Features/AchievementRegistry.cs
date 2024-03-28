@@ -50,7 +50,7 @@ public class AchievementRegistry
     /// <returns> <see langword="true" /> if the achievement was added successfully, <see langword="false" /> otherwise. </returns>
     internal bool AddAchievement(IAchievement achievement)
     {
-        var achievementGuid = AchievementHelper.GetAchievementGuid(achievement);
+        var achievementGuid = achievement.GetAchievementGuid();
 
         if (Achievements.ContainsKey(achievementGuid))
         {
@@ -77,7 +77,7 @@ public class AchievementRegistry
     /// <returns> <see langword="true" /> if the achievement was removed successfully, <see langword="false" /> otherwise. </returns>
     internal bool RemoveAchievement(IAchievement achievement)
     {
-        var achievementGuid = AchievementHelper.GetAchievementGuid(achievement);
+        var achievementGuid = achievement.GetAchievementGuid();
         if (!Achievements.ContainsKey(achievementGuid))
         {
             LethalAchievements.Logger?.LogWarning($"Achievement with guid \"{achievementGuid}\" does not exist!");

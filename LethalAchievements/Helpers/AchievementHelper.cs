@@ -15,7 +15,7 @@ public static class AchievementHelper
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to get the GUID of. </param>
     /// <returns> The GUID of the specified <see cref="IAchievement" />. </returns>
-    public static string GetAchievementGuid(IAchievement achievement)
+    public static string GetAchievementGuid(this IAchievement achievement)
     {
         return $"{GetPluginGuid(achievement.GetType().Assembly)}.{achievement.Name}";
     }
