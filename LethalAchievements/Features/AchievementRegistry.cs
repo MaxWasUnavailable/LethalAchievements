@@ -65,12 +65,6 @@ public class AchievementRegistry
 
         // We add the achievement to the dictionary
         Achievements.Add(achievementGuid, achievement);
-        
-        // If the achievement is not achieved, we initialize it
-        if (!achievement.IsAchieved)
-        {
-            achievement.Initialize();
-        }
 
         return true;
     }
