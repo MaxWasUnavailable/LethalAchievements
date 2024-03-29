@@ -1,6 +1,11 @@
 # Lethal Achievements API
 
-A framework for creating and managing achievements in Lethal Company.
+*A framework for creating and managing achievements in Lethal Company.*
+
+[![Build](https://img.shields.io/github/actions/workflow/status/MaxWasUnavailable/LethalAchievements/build.yml?style=for-the-badge&logo=github&branch=master)](https://github.com/MaxWasUnavailable/LethalAchievements/actions/workflows/build.yml)
+[![Latest Version](https://img.shields.io/thunderstore/v/MaxWasUnavailable/LethalAchievements?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/MaxWasUnavailable/LethalAchievements)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/MaxWasUnavailable/LethalAchievements?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/MaxWasUnavailable/LethalAchievements)
+[![NuGet Version](https://img.shields.io/nuget/v/MaxWasUnavailable.LethalAchievements?style=for-the-badge&logo=nuget)](https://www.nuget.org/packages/MaxWasUnavailable.LethalAchievements)
 
 ## What is this?
 
