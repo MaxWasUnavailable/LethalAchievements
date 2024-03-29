@@ -1,6 +1,8 @@
-# Lethal Achievements API
+# Lethal Achievements
 
 *A framework for creating and managing achievements in Lethal Company.*
+
+**Note: this is purely a framework, and does not include any achievements by itself.**
 
 [![Build](https://img.shields.io/github/actions/workflow/status/MaxWasUnavailable/LethalAchievements/build.yml?style=for-the-badge&logo=github&branch=master)](https://github.com/MaxWasUnavailable/LethalAchievements/actions/workflows/build.yml)
 [![Latest Version](https://img.shields.io/thunderstore/v/MaxWasUnavailable/LethalAchievements?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/MaxWasUnavailable/LethalAchievements)
