@@ -58,6 +58,7 @@ public static class AchievementManager
             // If the achievement is not achieved, we initialize it
             if (!achievement.IsAchieved)
             {
+                LethalAchievements.Logger?.LogDebug($"Initializing achievement \"{achievement.Name}\"...");
                 achievement.Initialize();
             }
         }
@@ -97,6 +98,7 @@ public static class AchievementManager
     /// </summary>
     private static void OnLoadGame(bool isChallenge, string saveFileName)
     {
+        // TODO: May need to wait a couple of seconds so UI & the like are initialized
         InitializeAchievements();
     }
 }
