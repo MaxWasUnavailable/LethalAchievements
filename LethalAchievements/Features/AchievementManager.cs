@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using LethalAchievements.Enums;
 using LethalAchievements.Helpers;
 using LethalAchievements.Interfaces;
 
@@ -81,11 +83,25 @@ public static class AchievementManager
     /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
     private static void OnAchieved(IAchievement achievement)
     {
-        SoundHelper.PlayLevelUpSound();
-        AchievementHelper.AchievementChatMessage(achievement);
-        AchievementHelper.DisplayAchievementAsStatus(achievement);
-        AchievementHelper.DisplayAchievementAsTip(achievement, true);
-        AchievementHelper.DisplayAchievementAsGlobalNotification(achievement);
+        if (LethalAchievements.AchievementSoundEnabled!.Value)
+            SoundHelper.PlayLevelUpSound();
+
+        switch (LethalAchievements.AchievementPopupStyle!.Value)
+        {
+            case AchievementPopupStyle.StatusMessage:
+                achievement.DisplayAsStatus();
+                break;
+            case AchievementPopupStyle.Tip:
+                achievement.DisplayAsTip(true);
+                break;
+            case AchievementPopupStyle.GlobalNotification:
+                achievement.DisplayAsGlobalNotification();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        achievement.SendChatMessage();
 
         achievement.IsAchieved = true;
         achievement.SaveAchievedState();
