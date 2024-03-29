@@ -1,7 +1,6 @@
 using System;
 using LethalAchievements.Interfaces;
 using LethalModDataLib.Enums;
-using UnityEngine;
 
 namespace LethalAchievements.Base;
 

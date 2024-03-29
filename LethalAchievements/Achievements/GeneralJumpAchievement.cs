@@ -2,7 +2,6 @@ using GameNetcodeStuff;
 using LethalAchievements.Base;
 using LethalEventsLib.Events;
 using LethalModDataLib.Enums;
-using UnityEngine;
 
 namespace LethalAchievements.Achievements;
 

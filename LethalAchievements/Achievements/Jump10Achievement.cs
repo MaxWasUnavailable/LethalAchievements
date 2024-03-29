@@ -3,7 +3,6 @@ using LethalAchievements.Base;
 using LethalEventsLib.Events;
 using LethalModDataLib.Attributes;
 using LethalModDataLib.Enums;
-using UnityEngine;
 
 namespace LethalAchievements.Achievements;
 

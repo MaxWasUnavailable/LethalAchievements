@@ -1,7 +1,6 @@
 using GameNetcodeStuff;
 using LethalAchievements.Base;
 using LethalEventsLib.Events;
-using UnityEngine;
 
 namespace LethalAchievements.Achievements;
 
