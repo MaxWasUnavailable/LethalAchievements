@@ -69,7 +69,7 @@ public static class AchievementManager
     /// <summary>
     ///     Uninitializes all achievements.
     /// </summary>
-    internal static void UninitializeAchievements()
+    private static void UninitializeAchievements()
     {
         foreach (var achievement in AchievementRegistry.GetAchievements())
         {
