@@ -62,7 +62,7 @@
     <!-- Extra Package References -->
     <ItemGroup>
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
-        <PackageReference Include="MaxWasUnavailable.LethalModDataLib" Version="1.1.0" Private="false"/>
+        <PackageReference Include="MaxWasUnavailable.LethalModDataLib" Version="1.2.0" Private="false"/>
     </ItemGroup>
     
     <!-- CLI Package Reference for Game Libs -->
