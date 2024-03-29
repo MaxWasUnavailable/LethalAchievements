@@ -75,12 +75,23 @@ public static class AchievementHelper
     ///     Use a tip to display an achievement.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to display. </param>
-    public static void DisplayAchievementAsTip(IAchievement achievement)
+    /// <param name="warningStyle"> Whether to use a warning style. </param>
+    public static void DisplayAchievementAsTip(IAchievement achievement, bool warningStyle = false)
     {
         UIHelper.DisplayTip(
             "<b><color=#FFD700>Achievement Unlocked!</color></b>",
             $"<color=#FFFFFF>{achievement.Name}</color>",
-            true
+            warningStyle
         );
+    }
+
+    /// <summary>
+    ///     Use a global notification to display an achievement.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> to display. </param>
+    public static void DisplayAchievementAsGlobalNotification(IAchievement achievement)
+    {
+        UIHelper.DisplayGlobalNotification(
+            $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n<color=#FFFFFF>{achievement.Name}</color>");
     }
 }
