@@ -80,7 +80,7 @@ public static class AchievementHelper
     {
         UIHelper.DisplayTip(
             "<b><color=#FFD700>Achievement Unlocked!</color></b>",
-            $"<color=#FFFFFF>{achievement.Name}</color>",
+            $"<color=#FFFFFF>{achievement.Name}</color>\n<color=#DDDDDD><i>{achievement.DisplayText}</i></color>",
             warningStyle
         );
     }
