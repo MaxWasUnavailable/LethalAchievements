@@ -1,7 +1,10 @@
 ﻿using BepInEx;
+using BepInEx.Configuration;
 using BepInEx.Logging;
 using LethalAchievements.Achievements;
+using LethalAchievements.Enums;
 using LethalAchievements.Features;
+using LethalModDataLib.Events;
 
 namespace LethalAchievements;
 
@@ -15,6 +18,9 @@ public class LethalAchievements : BaseUnityPlugin
 {
     internal new static ManualLogSource? Logger { get; private set; }
 
+    internal static ConfigEntry<bool>? AchievementSoundEnabled { get; private set; }
+    internal static ConfigEntry<AchievementPopupStyle>? AchievementPopupStyle { get; private set; }
+
     /// <summary>
     ///     Singleton instance of the plugin.
     /// </summary>
@@ -27,20 +33,26 @@ public class LethalAchievements : BaseUnityPlugin
 
         // Init logger
         Logger = base.Logger;
-        
+
+        // Init config entries
+        AchievementSoundEnabled = Config.Bind("General", "AchievementSoundEnabled", true,
+            "Enable achievement sound effect when an achievement is completed.");
+        AchievementPopupStyle = Config.Bind("General", "AchievementPopupStyle",
+            Enums.AchievementPopupStyle.GlobalNotification, "The style of the achievement popup.");
+
         // Register example achievements
         // TODO: remove for release
         AchievementManager.RegisterAchievement(new JumpAchievement());
         AchievementManager.RegisterAchievement(new Jump10Achievement());
         AchievementManager.RegisterAchievement(new GeneralJumpAchievement());
-        
+
         // Hook into post game init event
-        LethalModDataLib.Events.MiscEvents.PostInitializeGameEvent += OnGameLoaded;
+        MiscEvents.PostInitializeGameEvent += OnGameLoaded;
 
         // Report plugin loaded
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
-    
+
     private static void OnGameLoaded()
     {
         // Initialize achievements system
