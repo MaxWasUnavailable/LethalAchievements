@@ -19,17 +19,19 @@ public interface IAchievement
     /// <summary>
     ///     The display text of the achievement.
     /// </summary>
-    /// <remarks> Needs to be below 100 characters. Used for popup. </remarks> // TODO: Review character limit
+    /// <remarks> Needs to be below ~100 characters. Used for tip popup type. </remarks>
     public abstract string? DisplayText { get; internal set; }
     
     /// <summary>
     ///     The description of the achievement.
+    ///     TODO: NOT CURRENTLY IMPLEMENTED
     /// </summary>
     /// <remarks> Used in the achievement menu. </remarks>
     public abstract string? Description { get; internal set; }
     
     /// <summary>
     ///     Whether the achievement is hidden in the achievement menu.
+    ///     TODO: NOT CURRENTLY IMPLEMENTED
     /// </summary>
     public abstract bool IsHidden { get; internal set; }
     
@@ -46,6 +48,7 @@ public interface IAchievement
     
     /// <summary>
     ///     Icon for the achievement.
+    ///     TODO: NOT CURRENTLY IMPLEMENTED
     /// </summary>
     public abstract Sprite? Icon { get; internal set; }
 
