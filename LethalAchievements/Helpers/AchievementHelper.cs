@@ -55,7 +55,7 @@ public static class AchievementHelper
     ///     Sends a chat message notifying player an achievement was achieved.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> that was achieved. </param>
-    public static void AchievementChatMessage(IAchievement achievement)
+    public static void SendChatMessage(this IAchievement achievement)
     {
         UIHelper.SendServerChatMessage(
             $"<b><color=#FFD700>{PlayerHelper.GetCurrentPlayerName()} unlocked achievement:</color></b><i><color=#FFFFFF>{achievement.Name}</color></i>");
@@ -65,7 +65,7 @@ public static class AchievementHelper
     ///     Use a status message to display an achievement.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to display. </param>
-    public static void DisplayAchievementAsStatus(IAchievement achievement)
+    public static void DisplayAsStatus(this IAchievement achievement)
     {
         UIHelper.DisplayStatusMessage(
             $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n\n<color=#FFFFFF>{achievement.Name}</color>");
@@ -76,7 +76,7 @@ public static class AchievementHelper
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to display. </param>
     /// <param name="warningStyle"> Whether to use a warning style. </param>
-    public static void DisplayAchievementAsTip(IAchievement achievement, bool warningStyle = false)
+    public static void DisplayAsTip(this IAchievement achievement, bool warningStyle = false)
     {
         UIHelper.DisplayTip(
             "<b><color=#FFD700>Achievement Unlocked!</color></b>",
@@ -89,7 +89,7 @@ public static class AchievementHelper
     ///     Use a global notification to display an achievement.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to display. </param>
-    public static void DisplayAchievementAsGlobalNotification(IAchievement achievement)
+    public static void DisplayAsGlobalNotification(this IAchievement achievement)
     {
         UIHelper.DisplayGlobalNotification(
             $"<b><color=#FFD700>Achievement Unlocked!</color></b>\n<color=#FFFFFF>{achievement.Name}</color>");
