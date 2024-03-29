@@ -19,20 +19,10 @@ public abstract class BaseAchievement : IAchievement
     public abstract string? DisplayText { get; set; }
 
     /// <inheritdoc />
-    public abstract string? Description { get; set; }
-
-    /// <inheritdoc />
-    public abstract Sprite? Icon { get; set; }
-
-    /// <inheritdoc />
     public abstract void Initialize();
 
     /// <inheritdoc />
     public abstract void Uninitialize();
-
-    // IsHidden will generally not be changed by modders, set to false for convenience
-    /// <inheritdoc />
-    public virtual bool IsHidden { get; set; } = false;
 
     // SaveLocation will generally not be changed by modders, set to CurrentSave for convenience
     /// <inheritdoc />

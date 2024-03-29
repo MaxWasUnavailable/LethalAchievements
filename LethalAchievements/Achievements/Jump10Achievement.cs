@@ -12,7 +12,7 @@ namespace LethalAchievements.Achievements;
 /// </summary>
 public class Jump10Achievement : BaseAchievement
 {
-    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.OnLoad, SaveLocation = SaveLocation.CurrentSave)]
+    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.OnLoad, SaveLocation = SaveLocation.CurrentSave, ResetWhen = ResetWhen.OnGameOver)]
     private int JumpCount { get; set; }
     
     /// <inheritdoc />
@@ -20,13 +20,6 @@ public class Jump10Achievement : BaseAchievement
     
     /// <inheritdoc />
     public override string? DisplayText { get; set; } = "You've jumped 10 times!";
-    
-    /// <inheritdoc />
-    public override string? Description { get; set; } =
-        "This is a test achievement. It will be achieved when the player jumps 10 times.";
-
-    /// <inheritdoc />
-    public override Sprite? Icon { get; set; } = null;
     
     /// <inheritdoc />
     public override void Initialize()

@@ -16,13 +16,6 @@ public class GeneralJumpAchievement : BaseAchievement
     
     /// <inheritdoc />
     public override string? DisplayText { get; set; } = "Wow, you actually jumped!";
-    
-    /// <inheritdoc />
-    public override string? Description { get; set; } =
-        "This is a test achievement. It will be achieved when the player jumps.";
-
-    /// <inheritdoc />
-    public override Sprite? Icon { get; set; } = null;
 
     /// <inheritdoc />
     public override SaveLocation SaveLocation { get; set; } = SaveLocation.GeneralSave;

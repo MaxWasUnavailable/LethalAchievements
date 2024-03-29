@@ -22,19 +22,6 @@ public interface IAchievement
     public abstract string? DisplayText { get; internal set; }
     
     /// <summary>
-    ///     The description of the achievement.
-    ///     TODO: NOT CURRENTLY IMPLEMENTED
-    /// </summary>
-    /// <remarks> Used in the achievement menu. </remarks>
-    public abstract string? Description { get; internal set; }
-    
-    /// <summary>
-    ///     Whether the achievement is hidden in the achievement menu.
-    ///     TODO: NOT CURRENTLY IMPLEMENTED
-    /// </summary>
-    public abstract bool IsHidden { get; internal set; }
-    
-    /// <summary>
     ///     Whether the achievement is achieved.
     /// </summary>
     public abstract bool IsAchieved { get; internal set; }
@@ -44,12 +31,6 @@ public interface IAchievement
     /// </summary>
     /// <remarks> <see cref="SaveLocation.CurrentSave"/> is for per-save achievements, while <see cref="SaveLocation.GeneralSave"/> is for global achievements. </remarks>
     public abstract SaveLocation SaveLocation { get; internal set; }
-    
-    /// <summary>
-    ///     Icon for the achievement.
-    ///     TODO: NOT CURRENTLY IMPLEMENTED
-    /// </summary>
-    public abstract Sprite? Icon { get; internal set; }
 
     /// <summary>
     ///     Initializes the achievement. Called by <see cref="AchievementRegistry.AddAchievement"/>.
