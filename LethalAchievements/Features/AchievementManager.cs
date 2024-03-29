@@ -84,7 +84,8 @@ public static class AchievementManager
         SoundHelper.PlayLevelUpSound();
         AchievementHelper.AchievementChatMessage(achievement);
         AchievementHelper.DisplayAchievementAsStatus(achievement);
-        AchievementHelper.DisplayAchievementAsTip(achievement);
+        AchievementHelper.DisplayAchievementAsTip(achievement, true);
+        AchievementHelper.DisplayAchievementAsGlobalNotification(achievement);
 
         achievement.IsAchieved = true;
         achievement.SaveAchievedState();
