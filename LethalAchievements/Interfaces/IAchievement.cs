@@ -1,6 +1,5 @@
 using System;
 using LethalAchievements.Features;
-using LethalModDataLib.Attributes;
 using LethalModDataLib.Enums;
 using UnityEngine;
 
