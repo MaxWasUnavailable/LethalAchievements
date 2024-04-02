@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [Unreleased] -- TODO
+
+### Added
+- Method to get PluginInfo of an achievement
+- Method to get dictionary of PluginInfo of all achievements
+- Cache PluginInfo of achievements to avoid repeated lookups
+
+### Fixed
+
+### Changed
+- Throw if plugins aren't loaded yet when trying to get methods that require them
+
+### Removed
+
 ## [1.0.0] - 29/03/2024
 
 ### Added
