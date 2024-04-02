@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Bootstrap;
@@ -18,6 +19,9 @@ public static class AchievementHelper
     /// <returns> The GUID of the specified <see cref="IAchievement" />. </returns>
     public static string GetAchievementGuid(this IAchievement achievement)
     {
+        if (!LethalAchievements.ArePluginsLoaded)
+            throw new InvalidOperationException("BePinEx has not finished loading plugins yet.");
+        
         return $"{GetPluginGuid(achievement.GetType().Assembly)}.{achievement.Name}";
     }
 
@@ -39,6 +43,9 @@ public static class AchievementHelper
     /// <returns> The <see cref="PluginInfo" /> of the specified <see cref="IAchievement" />. </returns>
     public static BepInEx.PluginInfo GetPluginInfo(this IAchievement achievement)
     {
+        if (!LethalAchievements.ArePluginsLoaded)
+            throw new InvalidOperationException("BePinEx has not finished loading plugins yet.");
+        
         return Chainloader.PluginInfos
             .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == achievement.GetType().Assembly).Value;
     }

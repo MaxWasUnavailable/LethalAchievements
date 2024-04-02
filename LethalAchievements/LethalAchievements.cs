@@ -15,7 +15,9 @@ namespace LethalAchievements;
 public class LethalAchievements : BaseUnityPlugin
 {
     internal new static ManualLogSource? Logger { get; private set; }
-
+    
+    internal static bool ArePluginsLoaded { get; private set; }
+    
     internal static ConfigEntry<bool>? AchievementSoundEnabled { get; private set; }
     internal static ConfigEntry<AchievementPopupStyle>? AchievementPopupStyle { get; private set; }
 
@@ -49,5 +51,6 @@ public class LethalAchievements : BaseUnityPlugin
     {
         // Initialize achievements system
         AchievementManager.Initialize();
+        ArePluginsLoaded = true;
     }
 }
