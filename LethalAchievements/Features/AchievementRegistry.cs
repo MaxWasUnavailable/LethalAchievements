@@ -42,6 +42,23 @@ public class AchievementRegistry
             string.Equals(achievement.Name, name, StringComparison.CurrentCultureIgnoreCase));
         return achievement != null ? (T)achievement : default;
     }
+    
+    /// <summary>
+    ///     Get a dictionary of achievements with as key their PluginInfo.
+    /// </summary>
+    /// <returns> A dictionary of achievements with as key their PluginInfo. </returns>
+    public Dictionary<BepInEx.PluginInfo, IAchievement> GetAchievementsByPlugin()
+    {
+        var achievementsByPlugin = new Dictionary<BepInEx.PluginInfo, IAchievement>();
+        
+        foreach (var achievement in Achievements.Values)
+        {
+            var pluginInfo = achievement.GetPluginInfo();
+            achievementsByPlugin.Add(pluginInfo, achievement);
+        }
+
+        return achievementsByPlugin;
+    }
 
     /// <summary>
     ///     Adds an achievement to the achievement dictionary.
