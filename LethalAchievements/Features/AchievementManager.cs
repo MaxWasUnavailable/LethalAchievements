@@ -4,6 +4,7 @@ using System.Linq;
 using LethalAchievements.Enums;
 using LethalAchievements.Helpers;
 using LethalAchievements.Interfaces;
+using LethalModDataLib.Events;
 
 namespace LethalAchievements.Features;
 
@@ -12,7 +13,7 @@ namespace LethalAchievements.Features;
 /// </summary>
 public static class AchievementManager
 {
-    private static AchievementRegistry AchievementRegistry { get; } = new();
+    internal static AchievementRegistry AchievementRegistry { get; } = new();
     private static List<IAchievement> AchievementsToAdd { get; } = [];
 
     /// <summary>
@@ -25,17 +26,16 @@ public static class AchievementManager
             $"Registering achievement \"{achievement.Name}\" from \"{achievement.GetType().Assembly.FullName}\"...");
         AchievementsToAdd.Add(achievement);
     }
-    
+
     /// <summary>
     ///     Adds all registered achievements to the achievement registry.
     ///     Done after the ChainLoader has loaded all plugins, since otherwise GUID of plugins is not available.
     /// </summary>
     private static void AddRegisteredAchievements()
     {
-        foreach (var achievement in AchievementsToAdd.Where(achievement => AchievementRegistry.AddAchievement(achievement)))
-        {
+        foreach (var achievement in AchievementsToAdd.Where(achievement =>
+                     AchievementRegistry.AddAchievement(achievement)))
             achievement.AchievedEvent += () => OnAchieved(achievement);
-        }
         AchievementsToAdd.Clear();
     }
 
@@ -45,9 +45,9 @@ public static class AchievementManager
     internal static void Initialize()
     {
         AddRegisteredAchievements();
-        LethalModDataLib.Events.SaveLoadEvents.PostLoadGameEvent += OnLoadGame;
+        SaveLoadEvents.PostLoadGameEvent += OnLoadGame;
     }
-    
+
     /// <summary>
     ///     Initializes all achievements that aren't already achieved.
     /// </summary>
@@ -56,7 +56,7 @@ public static class AchievementManager
         foreach (var achievement in AchievementRegistry.GetAchievements())
         {
             // We always load the IsAchieved state of the achievement since this might vary between saves
-            achievement.LoadAchievedState();        
+            achievement.LoadAchievedState();
             // If the achievement is not achieved, we initialize it
             if (!achievement.IsAchieved)
             {
@@ -65,16 +65,13 @@ public static class AchievementManager
             }
         }
     }
-    
+
     /// <summary>
     ///     Uninitializes all achievements.
     /// </summary>
     private static void UninitializeAchievements()
     {
-        foreach (var achievement in AchievementRegistry.GetAchievements())
-        {
-            achievement.Uninitialize();
-        }
+        foreach (var achievement in AchievementRegistry.GetAchievements()) achievement.Uninitialize();
     }
 
     /// <summary>
