@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Bootstrap;
@@ -12,6 +13,8 @@ namespace LethalAchievements.Helpers;
 /// </summary>
 public static class AchievementHelper
 {
+    private static Dictionary<IAchievement, BepInEx.PluginInfo> AchievementsPluginCache { get; } = new();
+    
     /// <summary>
     ///     Gets the GUID of the specified <see cref="IAchievement" />.
     /// </summary>
@@ -46,8 +49,13 @@ public static class AchievementHelper
         if (!LethalAchievements.ArePluginsLoaded)
             throw new InvalidOperationException("BePinEx has not finished loading plugins yet.");
         
-        return Chainloader.PluginInfos
-            .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == achievement.GetType().Assembly).Value;
+        if (AchievementsPluginCache.TryGetValue(achievement, out var info))
+            return info;
+
+        AchievementsPluginCache.Add(achievement, Chainloader.PluginInfos
+            .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == achievement.GetType().Assembly).Value);
+        
+        return AchievementsPluginCache[achievement];
     }
 
     /// <summary>
