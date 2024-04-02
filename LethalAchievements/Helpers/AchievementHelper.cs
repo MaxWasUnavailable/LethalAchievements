@@ -31,6 +31,17 @@ public static class AchievementHelper
         return Chainloader.PluginInfos
             .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == pluginAssembly).Value.Metadata.GUID;
     }
+    
+    /// <summary>
+    ///     Gets the <see cref="PluginInfo" /> of the specified <see cref="IAchievement" />.
+    /// </summary>
+    /// <param name="achievement"> The <see cref="IAchievement" /> to get the <see cref="PluginInfo" /> of. </param>
+    /// <returns> The <see cref="PluginInfo" /> of the specified <see cref="IAchievement" />. </returns>
+    public static BepInEx.PluginInfo GetPluginInfo(this IAchievement achievement)
+    {
+        return Chainloader.PluginInfos
+            .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == achievement.GetType().Assembly).Value;
+    }
 
     /// <summary>
     ///     Load the IsAchieved state of a given achievement.
