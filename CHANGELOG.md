@@ -20,7 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Method to get PluginInfo of an achievement
 - Method to get dictionary of PluginInfo of all achievements
+- Method to get dictionary of achievements lists by PluginInfo
 - Cache PluginInfo of achievements to avoid repeated lookups
+- Added Icon & IsHidden properties to IAchievement
 
 ### Fixed
 

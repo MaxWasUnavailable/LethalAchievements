@@ -44,12 +44,32 @@ public class AchievementRegistry
     }
     
     /// <summary>
-    ///     Get a dictionary of achievements and their PluginInfo
+    ///     Get a dictionary of PluginInfo by achievements.
     /// </summary>
-    /// <returns> A dictionary of achievements and their PluginInfo. </returns>
-    public Dictionary<IAchievement, BepInEx.PluginInfo> GetAchievementsPlugins()
+    /// <returns> A dictionary of PluginInfo by achievements. </returns>
+    public Dictionary<IAchievement, BepInEx.PluginInfo> GetPluginsByAchievements()
     {
         return Achievements.Values.ToDictionary(achievement => achievement, achievement => achievement.GetPluginInfo());
+    }
+    
+    /// <summary>
+    ///     Get a dictionary of lists of achievements by their PluginInfo
+    /// </summary>
+    /// <returns> A dictionary of lists of achievements by their PluginInfo. </returns>
+    public Dictionary<BepInEx.PluginInfo, List<IAchievement>> GetAchievementsByPlugins()
+    {
+        var achievementsByPlugins = new Dictionary<BepInEx.PluginInfo, List<IAchievement>>();
+        
+        foreach (var achievement in Achievements.Values)
+        {
+            var pluginInfo = achievement.GetPluginInfo();
+            if (!achievementsByPlugins.ContainsKey(pluginInfo))
+                achievementsByPlugins.Add(pluginInfo, []);
+            
+            achievementsByPlugins[pluginInfo].Add(achievement);
+        }
+
+        return achievementsByPlugins;
     }
 
     /// <summary>
