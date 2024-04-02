@@ -1,6 +1,7 @@
 using System;
 using LethalAchievements.Interfaces;
 using LethalModDataLib.Enums;
+using UnityEngine;
 
 namespace LethalAchievements.Base;
 
@@ -18,10 +19,17 @@ public abstract class BaseAchievement : IAchievement
     public abstract string? DisplayText { get; set; }
 
     /// <inheritdoc />
+    public abstract Sprite? Icon { get; set; }
+
+    /// <inheritdoc />
     public abstract void Initialize();
 
     /// <inheritdoc />
     public abstract void Uninitialize();
+    
+    // IsHidden will generally be false by default
+    /// <inheritdoc />
+    public virtual bool IsHidden { get; set; } = false;
 
     // SaveLocation will generally not be changed by modders, set to CurrentSave for convenience
     /// <inheritdoc />
@@ -29,7 +37,7 @@ public abstract class BaseAchievement : IAchievement
     
     // IsAchieved should be false by default
     /// <inheritdoc />
-    public virtual bool IsAchieved { get; set; } = false;
+    public bool IsAchieved { get; set; } = false;
 
     /// <inheritdoc />
     public virtual event Action? AchievedEvent;

@@ -1,6 +1,7 @@
 using System;
 using LethalAchievements.Features;
 using LethalModDataLib.Enums;
+using UnityEngine;
 
 namespace LethalAchievements.Interfaces;
 
@@ -26,10 +27,21 @@ public interface IAchievement
     public abstract bool IsAchieved { get; internal set; }
     
     /// <summary>
+    ///     Whether the achievement is hidden in the achievement menu.
+    /// </summary>
+    public abstract bool IsHidden { get; internal set; }
+    
+    /// <summary>
     ///     Save location of the achievement. Used to determine if the achievement is global or per save.
     /// </summary>
     /// <remarks> <see cref="SaveLocation.CurrentSave"/> is for per-save achievements, while <see cref="SaveLocation.GeneralSave"/> is for global achievements. </remarks>
     public abstract SaveLocation SaveLocation { get; internal set; }
+    
+    /// <summary>
+    ///     The icon of the achievement.
+    /// </summary>
+    /// <remarks> Icons should be some multiple of 1x1 pixels. </remarks>
+    public abstract Sprite? Icon { get; internal set; }
 
     /// <summary>
     ///     Initializes the achievement. Called by <see cref="AchievementRegistry.AddAchievement"/>.
