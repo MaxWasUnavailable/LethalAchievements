@@ -20,6 +20,7 @@ public static class AchievementManager
     ///     Registers an achievement with the achievement manager.
     /// </summary>
     /// <param name="achievement"> The <see cref="IAchievement" /> to register. </param>
+    /// <remarks> Actual registration is done after all plugins are loaded. </remarks>
     public static void RegisterAchievement(IAchievement achievement)
     {
         LethalAchievements.Logger?.LogDebug(
