@@ -1,8 +1,10 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using HarmonyLib;
 using LethalAchievements.Enums;
 using LethalAchievements.Features;
+using LethalAchievements.UI;
 using LethalModDataLib.Events;
 
 namespace LethalAchievements;
@@ -39,7 +41,12 @@ public class LethalAchievements : BaseUnityPlugin
             "Enable achievement sound effect when an achievement is completed.");
         AchievementPopupStyle = Config.Bind("General", "AchievementPopupStyle",
             Enums.AchievementPopupStyle.GlobalNotification, "The style of the achievement popup.");
-
+        
+        // Load UI and patch to main screen
+        AchievementAssets.Load();
+        new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
+        
+        
         // Hook into post game init event
         MiscEvents.PostInitializeGameEvent += OnGameLoaded;
 
