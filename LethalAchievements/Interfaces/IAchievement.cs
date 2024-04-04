@@ -22,6 +22,26 @@ public interface IAchievement
     public abstract string? DisplayText { get; internal set; }
     
     /// <summary>
+    ///     The description of the achievement. Used instead of the DisplayText for the achievement menu (if not null).
+    /// </summary>
+    public abstract string? Description { get; internal set; }
+    
+    /// <summary>
+    ///     The progress text of the achievement. Can be null if the achievement is not progress-based.
+    /// </summary>
+    public abstract string? ProgressText { get; internal set; }
+    
+    /// <summary>
+    ///     The target progress of the achievement. Can be null if the achievement is not progress-based.
+    /// </summary>
+    public abstract float? ProgressTarget { get; internal set; }
+
+    /// <summary>
+    ///     Progress of the achievement. Can be null if the achievement is not progress-based.
+    /// </summary>
+    public abstract float? GetProgress();
+    
+    /// <summary>
     ///     Whether the achievement is achieved.
     /// </summary>
     public abstract bool IsAchieved { get; internal set; }

@@ -56,8 +56,9 @@ public class LethalAchievements : BaseUnityPlugin
 
     private static void OnGameLoaded()
     {
+        ArePluginsLoaded = true;
+        
         // Initialize achievements system
         AchievementManager.Initialize();
-        ArePluginsLoaded = true;
     }
 }
