@@ -60,14 +60,21 @@ public class AchievementRegistry
     {
         var achievementsByPlugins = new Dictionary<BepInEx.PluginInfo, List<IAchievement>>();
         
+        // TODO: remove excessive debug logging
+        LethalAchievements.Logger?.LogDebug("Getting achievements by plugins...");
+        LethalAchievements.Logger?.LogDebug("Achievements count: " + Achievements.Count);
+        
         foreach (var achievement in Achievements.Values)
         {
+            LethalAchievements.Logger?.LogDebug($"Achievement: {achievement.Name}");
             var pluginInfo = achievement.GetPluginInfo();
             if (!achievementsByPlugins.ContainsKey(pluginInfo))
                 achievementsByPlugins.Add(pluginInfo, []);
             
             achievementsByPlugins[pluginInfo].Add(achievement);
         }
+        
+        LethalAchievements.Logger?.LogDebug("Achievements by plugins count: " + achievementsByPlugins.Count);
 
         return achievementsByPlugins;
     }
