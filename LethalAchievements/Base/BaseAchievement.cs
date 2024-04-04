@@ -19,6 +19,12 @@ public abstract class BaseAchievement : IAchievement
     public abstract string? DisplayText { get; set; }
 
     /// <inheritdoc />
+    public abstract string? Description { get; set; }
+
+    /// <inheritdoc />
+    public abstract string? ProgressText { get; set; }
+
+    /// <inheritdoc />
     public abstract Sprite? Icon { get; set; }
 
     /// <inheritdoc />
@@ -38,6 +44,13 @@ public abstract class BaseAchievement : IAchievement
     // IsAchieved should be false by default
     /// <inheritdoc />
     public bool IsAchieved { get; set; } = false;
+    
+    // GetProgress should return null by default to prevent errors with achievements that are not progress-based
+    /// <inheritdoc />
+    public virtual float? GetProgress()
+    {
+        return null;
+    }
 
     /// <inheritdoc />
     public virtual event Action? AchievedEvent;
