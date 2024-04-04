@@ -30,6 +30,11 @@ public interface IAchievement
     ///     The progress text of the achievement. Can be null if the achievement is not progress-based.
     /// </summary>
     public abstract string? ProgressText { get; internal set; }
+    
+    /// <summary>
+    ///     The target progress of the achievement. Can be null if the achievement is not progress-based.
+    /// </summary>
+    public abstract float? ProgressTarget { get; internal set; }
 
     /// <summary>
     ///     Progress of the achievement. Can be null if the achievement is not progress-based.
