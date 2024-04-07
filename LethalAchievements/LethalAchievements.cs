@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using LethalAchievements.Config;
 using LethalAchievements.Enums;
 using LethalAchievements.Features;
 using LethalModDataLib.Events;
@@ -50,6 +51,15 @@ public class LethalAchievements : BaseUnityPlugin
     private static void OnGameLoaded()
     {
         ArePluginsLoaded = true;
+        
+        // Load config achievements
+        foreach (var achievement in ConfigLoader.LoadAchievements(Paths.PluginPath))
+        {
+            if (achievement == null) continue;
+            
+            Logger!.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
+            AchievementManager.RegisterAchievement(achievement);
+        }
         
         // Initialize achievements system
         AchievementManager.Initialize();
