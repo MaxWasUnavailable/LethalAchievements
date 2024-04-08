@@ -1,7 +1,7 @@
 ﻿namespace LethalAchievements.Config.Conditions;
 
 /// <summary>
-///     An achievement condition that always returns false.
+///     Always fails.
 /// </summary>
 public class NeverCondition : ICondition
 {
