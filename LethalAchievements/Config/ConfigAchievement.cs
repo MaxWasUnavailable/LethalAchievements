@@ -24,7 +24,9 @@ public class ConfigAchievement : BaseAchievement
 
     /// <inheritdoc />
     public override Sprite? Icon { get; set; }
-    
+
+    public object Namespace { get; }
+
     /// <summary>
     ///    Logs to the console every time the achievement would be achieved (even if it's already achieved).
     ///    Make sure to enable the debug log level in the BepInEx config.
@@ -39,8 +41,9 @@ public class ConfigAchievement : BaseAchievement
     /// <summary>
     ///     Creates a new achievement with the given name and criteria.
     /// </summary>
-    public ConfigAchievement(string name, params Criterion[] criteria)
+    public ConfigAchievement(string @namespace, string name, params Criterion[] criteria)
     {
+        Namespace = @namespace;
         Name = name;
         _criteria = criteria;
         _completedCriteria = new bool[criteria.Length];

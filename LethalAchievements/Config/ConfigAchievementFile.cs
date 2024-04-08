@@ -8,8 +8,7 @@ namespace LethalAchievements.Config;
 
 internal class ConfigAchievementFile
 {
-    [JsonRequired]
-    public string Name;
+    public string? Name;
     
     [JsonRequired]
     public string DisplayText;
@@ -28,7 +27,14 @@ internal class ConfigAchievementFile
     
     public ConfigAchievement ToAchievement(string filePath)
     {
-        return new ConfigAchievement(Name, Criteria) {
+        // PluginName
+        // -> Achievements
+        // -> -> Achievement1.json
+        var pluginDir = Path.GetDirectoryName(Path.GetDirectoryName(filePath))!;
+        var pluginName = Path.GetFileName(pluginDir);
+        var name = Name ?? Path.GetFileNameWithoutExtension(filePath);
+        
+        return new ConfigAchievement(pluginName, name, Criteria) {
             DisplayText = DisplayText,
             Description = Description,
             Icon = LoadIcon(filePath),
