@@ -1,26 +1,30 @@
 ﻿using System;
-using GameNetcodeStuff;
-using LethalAchievements.Config.Events;
+using LethalAchievements.Events;
 
 namespace LethalAchievements.Config.Triggers;
 
 /// <summary>
 ///     An achievement trigger which is triggered every frame.
 /// </summary>
-public class Update : ITrigger
+public class UpdateTrigger : ITrigger
 {
     /// <inheritdoc />
-    public event Action? OnTriggered;
+    public event Action<Context>? OnTriggered;
 
     /// <inheritdoc />
     public void Initialize()
     {
-        LifetimeEvents.OnUpdate += OnTriggered;
+        LifetimeEvents.OnUpdate += OnUpdate;
     }
 
     /// <inheritdoc />
     public void Uninitialize()
     {
-        LifetimeEvents.OnUpdate -= OnTriggered;
+        LifetimeEvents.OnUpdate -= OnUpdate;
+    }
+
+    private void OnUpdate()
+    {
+        OnTriggered?.Invoke(Context.Default());
     }
 }

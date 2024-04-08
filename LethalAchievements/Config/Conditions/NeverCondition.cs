@@ -3,10 +3,10 @@
 /// <summary>
 ///     An achievement condition that always returns false.
 /// </summary>
-public class Never : ICondition
+public class NeverCondition : ICondition
 {
     /// <inheritdoc />
-    public bool Evaluate()
+    public bool Evaluate(in Context context)
     {
         return false;
     }

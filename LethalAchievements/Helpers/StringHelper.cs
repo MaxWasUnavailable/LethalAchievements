@@ -1,20 +1,11 @@
-﻿namespace LethalAchievements.Helpers;
+﻿using System.Linq;
 
-/// <summary>
-///    Helper class for string-related features.
-/// </summary>
-public static class StringHelper
+namespace LethalAchievements.Helpers;
+
+internal static class StringHelper
 {
-    /// <summary>
-    ///     Converts a string from PascalCase to camelCase.
-    /// </summary>
-    public static string ToCamelCase(string input)
+    public static string PascalToSnakeCase(string snakeCase)
     {
-        if (string.IsNullOrEmpty(input))
-        {
-            return input;
-        }
-
-        return char.ToLower(input[0]) + input.Substring(1);
+        return string.Concat(snakeCase.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x : x.ToString())).ToLower();
     }
 }

@@ -1,56 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using LethalAchievements.Helpers;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using UnityEngine;
 
 namespace LethalAchievements.Config;
 
 public static class Json
 {
-    private static readonly JsonSerializerSettings _settings = new() {
+    internal static readonly JsonSerializerSettings Settings = new() {
         ContractResolver = new DefaultContractResolver {
-            NamingStrategy = new CamelCaseNamingStrategy()
-        },
-        Converters = {
-            new TaggedInterfaceConverter<ITrigger>(),
-            new TaggedInterfaceConverter<ICondition>()
+            NamingStrategy = new SnakeCaseNamingStrategy()
         }
     };
 
     /// <summary>
     ///     Deserializes a JSON string into an object of type <typeparamref name="T"/>.
+    ///     This is just a wrapper around <see cref="JsonConvert.DeserializeObject{T}(string, JsonSerializerSettings)"/>
+    ///     with specific settings.
     /// </summary>
-    public static T? Deserialize<T>(string json) => JsonConvert.DeserializeObject<T>(json, _settings);
-}
-
-internal class TaggedInterfaceConverter<T> : JsonConverter where T : class
-{
-    public override bool CanConvert(Type objectType)
+    public static T? Deserialize<T>(string json) => JsonConvert.DeserializeObject<T>(json, Settings);
+    
+    internal static Dictionary<string, Type> CreateTypeDict<T>()
     {
-        return typeof(T).IsAssignableFrom(objectType);
-    }
-
-    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-    {
-        Debug.LogWarning("Reading JSON");
+        var baseType = typeof(T);
+        var baseTypeName = baseType.Name;
+        if (baseType.IsInterface)
+        {
+            baseTypeName = baseTypeName.Substring(1); // remove starting "I"
+        }
         
-        var jsonObject = JObject.Load(reader);
-        var typeName = jsonObject.GetValue("type")?.Value<string>();
-        if (typeName == null)
-            throw new JsonSerializationException("Type property not found.");
+        return AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes())
+            .Where(type => typeof(T).IsAssignableFrom(type) && !type.IsAbstract)
+            .ToDictionary(GetTypeName, type => type);
 
-        var type = Assembly.GetExecutingAssembly().GetTypes().FirstOrDefault(t => t.Name == typeName);
-        if (type == null || !typeof(T).IsAssignableFrom(type))
-            throw new JsonSerializationException($"Type '{typeName}' not found or does not implement {typeof(T).Name}.");
-
-        return jsonObject.ToObject(type, serializer);
-    }
-
-    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-    {
-        throw new InvalidOperationException("This converter is only intended for deserialization.");
+        string GetTypeName(Type type)
+        {
+            var name = type.Name.Replace(baseTypeName, "");
+            name = StringHelper.PascalToSnakeCase(name);
+            return name;
+        }
     }
 }

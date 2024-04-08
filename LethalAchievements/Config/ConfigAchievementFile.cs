@@ -6,10 +6,7 @@ using UnityEngine;
 
 namespace LethalAchievements.Config;
 
-/// <summary>
-///     The actual data class being deserialized from .json files.
-/// </summary>
-public class ConfigAchievementFile
+internal class ConfigAchievementFile
 {
     [JsonRequired]
     public string Name;
@@ -19,43 +16,35 @@ public class ConfigAchievementFile
     
     public string? Description;
 
-    public bool Global = true;
+    public bool Global = false;
 
     [JsonProperty("icon")]
-    public string? IconPath;
-    
-    [JsonProperty("conditions")]
-    public ICondition[]? GlobalConditions;
+    public string? RelativeIconPath;
 
     [JsonRequired]
     public Criterion[] Criteria;
     
-    /// <summary>
-    ///      Converts this file to a <see cref="ConfigAchievement"/>.
-    /// </summary>
-    /// <param name="filePath"> The path to the .json file where this data was deserialized from. </param>
+    public bool Debug = false;
+    
     public ConfigAchievement ToAchievement(string filePath)
     {
-        LethalAchievements.Logger!.LogDebug($"Criteria: {string.Join(", ", Criteria.Select(c => c.ToString()))}");
-        
-        return new ConfigAchievement {
-            Name = Name,
+        return new ConfigAchievement(Name, Criteria) {
             DisplayText = DisplayText,
             Description = Description,
             Icon = LoadIcon(filePath),
             SaveLocation = Global ? SaveLocation.GeneralSave : SaveLocation.CurrentSave,
-            Criteria = Criteria
+            Debug = Debug
         };
     }
 
     private Sprite? LoadIcon(string filePath)
     {
-        if (IconPath == null)
+        if (RelativeIconPath == null)
         {
             return null;
         }
         
-        var path = Path.Combine(Path.GetDirectoryName(filePath)!, IconPath);
+        var path = Path.Combine(Path.GetDirectoryName(filePath)!, RelativeIconPath);
         if (!File.Exists(path))
         {
             throw new FileNotFoundException($"Icon file not found at {path}");

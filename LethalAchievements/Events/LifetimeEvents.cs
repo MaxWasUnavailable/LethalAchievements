@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace LethalAchievements.Config.Events;
+namespace LethalAchievements.Events;
 
 /// <summary>
 ///     Provides callbacks for lifetime events.

@@ -10,11 +10,10 @@ public interface ITrigger
 {
     /// <summary>
     ///    Alert the owner <see cref="ConfigAchievement"/> that this trigger has been triggered.
-    ///    The achievement will check <see cref="ConfigAchievement.GlobalConditions"/> and
-    ///    any specific conditions for this trigger. If all conditions are met,
+    ///    The achievement will check the conditions for this trigger, and if all conditions are met,
     ///    the achievement is completed 🥳.
     /// </summary>
-    event Action OnTriggered;
+    event Action<Context> OnTriggered;
     
     /// <summary>
     ///    Initializes the trigger, called automatically by the owner Achievement.

@@ -2,5 +2,5 @@
 
 public interface ICondition
 {
-    bool Evaluate();
+    bool Evaluate(in Context context);
 }

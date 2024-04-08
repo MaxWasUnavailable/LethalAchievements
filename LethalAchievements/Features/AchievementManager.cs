@@ -14,7 +14,7 @@ namespace LethalAchievements.Features;
 public static class AchievementManager
 {
     internal static AchievementRegistry AchievementRegistry { get; } = new();
-    private static List<IAchievement> AchievementsToAdd { get; } = [];
+    private static List<IAchievement> AchievementsToAdd { get; } = new();
 
     /// <summary>
     ///     Registers an achievement with the achievement manager.
