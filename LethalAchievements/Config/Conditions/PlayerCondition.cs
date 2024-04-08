@@ -1,5 +1,5 @@
 ﻿using BepInEx.Logging;
-using static LethalAchievements.Config.Condition;
+using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Conditions;
 

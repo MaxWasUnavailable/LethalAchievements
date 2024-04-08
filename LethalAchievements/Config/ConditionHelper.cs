@@ -2,7 +2,7 @@
 
 namespace LethalAchievements.Config;
 
-internal static class Condition
+internal static class ConditionHelper
 {
     internal static bool Matches(bool? predicate, bool value)
     {
