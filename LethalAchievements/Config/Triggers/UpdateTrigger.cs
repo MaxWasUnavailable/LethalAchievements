@@ -9,6 +9,10 @@ namespace LethalAchievements.Config.Triggers;
 /// </summary>
 public class UpdateTrigger : ITrigger
 {
+    /// <summary>
+    ///     The interval at which the trigger is triggered, defaults to 1 (every frame).
+    ///     Values lower than 1 are clamped to 1.
+    /// </summary>
     [JsonProperty("every")]
     public int Interval = 1;
     

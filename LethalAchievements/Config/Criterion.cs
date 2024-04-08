@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LethalAchievements.Helpers;
+using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -55,15 +55,6 @@ public class Criterion
 
     private class Converter : JsonConverter<Criterion>
     {
-        private static readonly Dictionary<string, Type> _triggerTypes;
-        private static readonly Dictionary<string, Type> _conditionTypes;
-        
-        static Converter()
-        {
-            _triggerTypes = Json.CreateTypeDict<ITrigger>();
-            _conditionTypes = Json.CreateTypeDict<ICondition>();
-        }
-        
         public override bool CanWrite => false;
         
         public override Criterion ReadJson(JsonReader reader, Type objectType, Criterion? existingValue, bool hasExistingValue, JsonSerializer serializer)
@@ -78,16 +69,11 @@ public class Criterion
 
         private static ITrigger ReadTrigger(JObject obj, JsonSerializer serializer)
         {
-            var triggerName = obj["trigger"]?.Value<string>();
-            if (triggerName is null)
-                throw new JsonException("Criterion must have a trigger");
+            var trigger = InternalTagHelper.ReadJson<ITrigger>("trigger", obj, serializer);
+            if (trigger == null)
+                throw new JsonException("Condition is missing required property 'trigger'");
             
-            if (!_triggerTypes.TryGetValue(triggerName, out var triggerType))
-                throw new JsonException($"Unknown trigger type: '{triggerName}'");
-            
-            obj.Remove("trigger");
-
-            return (ITrigger) obj.ToObject(triggerType, serializer)!;
+            return trigger;
         }
 
         private static ICondition[]? ReadConditions(JObject obj, JsonSerializer serializer)
@@ -111,7 +97,7 @@ public class Criterion
         private static ICondition ReadCondition(JProperty property, JsonSerializer serializer)
         {
             var conditionName = property.Name;
-            if (!_conditionTypes.TryGetValue(conditionName, out var conditionType))
+            if (!InternalTagHelper.TryGetType<ICondition>(conditionName, out var conditionType))
                 throw new JsonException($"Unknown condition type: '{conditionName}'");
 
             return (ICondition) property.Value.ToObject(conditionType, serializer)!;
