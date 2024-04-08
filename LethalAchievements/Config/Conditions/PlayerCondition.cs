@@ -122,26 +122,26 @@ public class PlayerCondition : ICondition
         }
 
         return All(
-            Matches(InFacility, player.isInsideFactory),
-            Matches(BleedingHeavily, player.bleedingHeavily),
-            Matches(Exhausted, player.isExhausted),
-            Matches(Jumping, player.isJumping),
-            Matches(Sprinting, player.isSprinting),
-            Matches(Sidling, player.isSidling),
-            Matches(Underwater, player.isUnderwater),
-            Matches(Walking, player.isWalking),
-            Matches(ClimbingLadder, player.isClimbingLadder),
-            Matches(FreeCamera, player.isFreeCamera),
-            Matches(HoldingInteract, player.isHoldingInteract),
-            Matches(HoldingObject, player.isHoldingObject),
-            Matches(OnShip, player.isInElevator),
-            Matches(Alone, player.isPlayerAlone),
-            Matches(Dead, player.isPlayerDead),
-            Matches(TypingChat, player.isTypingChat),
-            Matches(FallingFromJump, player.isFallingFromJump),
-            Matches(FallingNoJump, player.isFallingNoJump),
-            Matches(Grounded, player.isGroundedOnServer),
-            Matches(Host, player.IsHost)
+            Matches(player.isInsideFactory, InFacility),
+            Matches(player.bleedingHeavily, BleedingHeavily),
+            Matches(player.isExhausted, Exhausted),
+            Matches(player.isJumping, Jumping),
+            Matches(player.isSprinting, Sprinting),
+            Matches(player.isSidling, Sidling),
+            Matches(player.isUnderwater, Underwater),
+            Matches(player.isWalking, Walking),
+            Matches(player.isClimbingLadder, ClimbingLadder),
+            Matches(player.isFreeCamera, FreeCamera),
+            Matches(player.isHoldingInteract, HoldingInteract),
+            Matches(player.isHoldingObject, HoldingObject),
+            Matches(player.isInElevator, OnShip),
+            Matches(player.isPlayerAlone, Alone),
+            Matches(player.isPlayerDead, Dead),
+            Matches(player.isTypingChat, TypingChat),
+            Matches(player.isFallingFromJump, FallingFromJump),
+            Matches(player.isFallingNoJump, FallingNoJump),
+            Matches(player.isGroundedOnServer, Grounded),
+            Matches(player.IsHost, Host)
         );
     }
 }

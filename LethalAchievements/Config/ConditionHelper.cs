@@ -1,15 +1,24 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using LethalAchievements.Config.Serialization;
 
 namespace LethalAchievements.Config;
 
 internal static class ConditionHelper
 {
-    internal static bool Matches(bool? predicate, bool value)
+    internal static bool Matches(bool value, bool? predicate)
     {
-        if (predicate is null)
-            return true;
-        
-        return predicate.Value == value;
+        return predicate is null || predicate.Value == value;
+    }
+
+    internal static bool Matches<T>(T value, Range<T>? range) where T : struct, IComparable<T>
+    {
+        return range is null || range.Contains(value);
+    }
+    
+    internal static bool Contains<T>(T value, T[]? values)
+    {
+        return values is null || values.Contains(value);
     }
     
     internal static bool All(params bool[] values)
