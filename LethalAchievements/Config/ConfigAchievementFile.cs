@@ -39,14 +39,14 @@ internal class ConfigAchievementFile
 
     private Sprite? LoadIcon(string filePath)
     {
-        if (RelativeIconPath == null)
-        {
-            return null;
-        }
+        var relativePath = RelativeIconPath ?? Path.GetFileNameWithoutExtension(filePath) + ".png";
         
-        var path = Path.Combine(Path.GetDirectoryName(filePath)!, RelativeIconPath);
+        var path = Path.Combine(Path.GetDirectoryName(filePath)!, relativePath);
         if (!File.Exists(path))
         {
+            if (RelativeIconPath == null)
+                return null; // handle gracefully if user didn't specify an icon explicitly
+            
             throw new FileNotFoundException($"Icon file not found at {path}");
         }
         
