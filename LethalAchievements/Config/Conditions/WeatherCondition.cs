@@ -12,7 +12,7 @@ public class WeatherCondition : ICondition
     /// <summary>
     ///     The weather types to check for.
     /// </summary>
-    [JsonConverter(typeof(OneOrMultipleConverter<string>))]
+    [JsonConverter(typeof(OneOrMultipleConverter<LevelWeatherType>))]
     public LevelWeatherType[]? Type;
 
     /// <inheritdoc />

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Logging;
 using LethalAchievements.Base;
-using LethalModDataLib.Attributes;
 using UnityEngine;
 
 namespace LethalAchievements.Config;
@@ -35,7 +33,7 @@ public class ConfigAchievement : BaseAchievement
     /// </summary>
     public bool Debug = false;
     
-    private readonly bool[] _completedCriteria;
+    private readonly int[] _criteriaCompletedCount;
     private readonly Criterion[] _criteria;
 
     /// <summary>
@@ -46,7 +44,7 @@ public class ConfigAchievement : BaseAchievement
         Namespace = @namespace;
         Name = name;
         _criteria = criteria;
-        _completedCriteria = new bool[criteria.Length];
+        _criteriaCompletedCount = new int[criteria.Length];
     }
 
     /// <inheritdoc />
@@ -74,7 +72,7 @@ public class ConfigAchievement : BaseAchievement
     private void OnCriterionTriggered(Criterion criterion, Context context)
     {
         var index = Array.IndexOf(_criteria, criterion);
-        if (_completedCriteria[index] && !Debug) return;
+        if (_criteriaCompletedCount[index] >= criterion.RequiredCount && !Debug) return;
 
         context.Achievement = this;
         if (!criterion.Conditions?.All(condition => condition.Evaluate(in context)) ?? false) return;
@@ -84,12 +82,13 @@ public class ConfigAchievement : BaseAchievement
             Log($"Criterion with trigger {criterion.Trigger.GetType().Name} completed", LogLevel.Debug);
         }
         
-        _completedCriteria[index] = true;
+        _criteriaCompletedCount[index]++;
+        
+        var isCompleted = _criteriaCompletedCount
+            .Select((count, i) => count >= _criteria[i].RequiredCount)
+            .All(completed => completed);
 
-        if (_completedCriteria.All(completed => completed))
-        {
-            Complete();
-        }
+        if (isCompleted) Complete();
     }
 
     internal void Log(object message, LogLevel level)

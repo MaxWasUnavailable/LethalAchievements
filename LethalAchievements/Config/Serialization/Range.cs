@@ -4,11 +4,31 @@ using Newtonsoft.Json.Linq;
 
 namespace LethalAchievements.Config.Serialization;
 
+/// <summary>
+///     An exclusive range of values. Can be open-ended.
+///     The JSON representation can either be an object with 'min' and/or 'max' properties, or a single value.
+/// </summary>
 public abstract class Range<T> where T : struct, IComparable<T>
 {
+    /// <summary>
+    ///     The exclusive minimum value, or null if open-ended.
+    /// </summary>
     public T? Min { get; }
+    
+    /// <summary>
+    ///     The exclusive maximum value, or null if open-ended.
+    /// </summary>
     public T? Max { get; }
     
+    /// <summary>
+    ///     Creates a new range.
+    /// </summary>
+    /// <param name="min">The exclusive minimum value, or null if open-ended.</param>
+    /// <param name="max">The exclusive maximum value, or null if open-ended.</param>
+    /// <exception cref="ArgumentException">
+    ///     Both <paramref name="min"/> and <paramref name="max"/> are null,
+    ///     or <paramref name="min"/> is greater than <paramref name="max"/>.
+    /// </exception>
     public Range(T? min, T? max)
     {
         var minIsNull = min is null;
@@ -24,12 +44,18 @@ public abstract class Range<T> where T : struct, IComparable<T>
         Max = max;
     }
 
+    /// <summary>
+    ///     Creates a new range with a single value.
+    /// </summary>
     public Range(T value)
     {
         Min = value;
         Max = value;
     }
     
+    /// <summary>
+    ///     Checks if the range contains the specified value, exclusive.
+    /// </summary>
     public bool Contains(T value)
     {
         if (Min is not null && value.CompareTo(Min.Value) < 0)
@@ -40,7 +66,8 @@ public abstract class Range<T> where T : struct, IComparable<T>
 
         return true;
     }
-    
+
+    /// <inheritdoc />
     protected abstract class Converter<TRange> : JsonConverter<TRange> where TRange : Range<T>
     {
         protected abstract T FromToken(JToken token);
@@ -71,10 +98,14 @@ public abstract class Range<T> where T : struct, IComparable<T>
     }
 }
 
+/// <inheritdoc />
 [JsonConverter(typeof(Converter))]
 public class IntRange : Range<int>
 {
+    /// <inheritdoc />
     public IntRange(int? min, int? max) : base(min, max) { }
+    
+    /// <inheritdoc />
     public IntRange(int value) : base(value) { }
     
     private class Converter : Converter<IntRange>
@@ -84,10 +115,14 @@ public class IntRange : Range<int>
     }
 }
 
+/// <inheritdoc />
 [JsonConverter(typeof(Converter))]
 public class FloatRange : Range<float>
 {
+    /// <inheritdoc />
     public FloatRange(float? min, float? max) : base(min, max) { }
+    
+    /// <inheritdoc />
     public FloatRange(float value) : base(value) { }
     
     private class Converter : Converter<FloatRange>

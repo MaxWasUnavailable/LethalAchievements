@@ -46,6 +46,8 @@ public class LethalAchievements : BaseUnityPlugin
         // Hook into post game init event
         MiscEvents.PostInitializeGameEvent += OnGameLoaded;
         
+        // Run patches
+        // should maybe find some more maintainable way to do this
         var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
         harmony.PatchAll(typeof(PlayerEvents.Patches));
         EnemyDamageSource.Patch(harmony);

@@ -5,7 +5,7 @@ using LethalAchievements.Events;
 namespace LethalAchievements.Config.Triggers;
 
 /// <summary>
-///     Triggered when a player jumps.
+///     Triggered when the local player jumps.
 /// </summary>
 public class JumpTrigger : ITrigger {
     /// <inheritdoc />

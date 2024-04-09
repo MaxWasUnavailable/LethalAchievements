@@ -17,12 +17,23 @@ public struct Context
     ///     The player being checked.
     /// </summary>
     public PlayerControllerB? Player;
+    
+    /// <summary>
+    ///     The enemy being checked.
+    /// </summary>
+    public EnemyAI? Enemy;
  
     /// <summary>
     ///     Creates a context with default values.
     ///     <list type="bullet">
     ///         <item>
+    ///             <description><see cref="Achievement"/> is set to null.</description>
+    ///         </item>
+    ///         <item>
     ///             <description><see cref="Player"/> is set to the local player.</description>
+    ///         </item>
+    ///          <item>
+    ///             <description><see cref="Enemy"/> is set to null.</description>
     ///         </item>
     ///     </list>
     /// </summary>

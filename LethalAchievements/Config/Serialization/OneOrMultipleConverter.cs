@@ -3,6 +3,11 @@ using Newtonsoft.Json;
 
 namespace LethalAchievements.Config.Serialization;
 
+/// <summary>
+///     Converts either a JSON array or a single value into a C# array.
+///     Use this on fields and properties of type <typeparamref name="T"/>[].
+/// </summary>
+/// <typeparam name="T">The element type of the array.</typeparam>
 public class OneOrMultipleConverter<T> : JsonConverter<T[]> 
 {
     /// <inheritdoc />

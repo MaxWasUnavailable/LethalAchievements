@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GameNetcodeStuff;
 using LethalAchievements.Config.Predicates;
 using LethalAchievements.Config.Serialization;
@@ -9,24 +9,24 @@ using static LethalAchievements.Config.ConditionHelper;
 namespace LethalAchievements.Config.Triggers;
 
 /// <summary>
-///     Triggers when the local player dies.
+///     Triggers when the local player takes damage.
+///     This is not triggered by insta-death effects, such as Sandworms or falling into a pit.
 /// </summary>
-public class DieTrigger : ITrigger
+public class TakeDamageTrigger : ITrigger
 {
     /// <summary>
-    ///     Checks the velocity of the player's body.
-    ///     Causes that delete the player body (such as Sandworms) will result in a velocity of 0.
+    ///     Checks the amount of damage taken. Max player health is 100.
     /// </summary>
-    public FloatRange? Velocity;
+    public IntRange? Amount;
     
     /// <summary>
-    ///     Checks the cause of death. If you specify multiple causes, any of them can match.
+    ///     Checks the cause of the damage. If you specify multiple causes, any of them can match.
     /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter<CauseOfDeath>))]
     public CauseOfDeath[]? Cause;
 
     /// <summary>
-    ///     Checks the enemy that killed the player.
+    ///     Checks the enemy that caused the damage.
     ///     If this is specified, the cause of the damage must be an enemy (and match this predicate).
     /// </summary>
     public EnemyPredicate? Enemy;
@@ -37,20 +37,20 @@ public class DieTrigger : ITrigger
     /// <inheritdoc />
     public void Initialize()
     {
-        PlayerEvents.OnDied += OnDied;
+        PlayerEvents.OnDamaged += OnDied;
     }
 
     /// <inheritdoc />
     public void Uninitialize()
     {
-        PlayerEvents.OnDied -= OnDied;
+        PlayerEvents.OnDamaged -= OnDied;
     }
 
-    private void OnDied(PlayerControllerB player, in PlayerDiedContext context)
+    private void OnDied(PlayerControllerB player, in PlayerDamagedContext context)
     {
-        if (!Matches(context.BodyVelocity.magnitude, Velocity)) return;
+        if (!Matches(context.Amount, Amount)) return;
         if (!Contains(context.CauseOfDeath, Cause)) return;
-        if (!Predicate(context.KillerEnemy, Enemy)) return;
+        if (!Predicate(context.AttackerEnemy, Enemy)) return;
         
         OnTriggered?.Invoke(Context.Default());
     }

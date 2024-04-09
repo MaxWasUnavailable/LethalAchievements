@@ -12,12 +12,14 @@ public class Criterion
 {
     public ITrigger Trigger { get; }
     public ICondition[]? Conditions { get; }
+    public int RequiredCount { get; }
 
     private Action<Criterion, Context>? _callback;
 
-    public Criterion(ITrigger trigger, params ICondition[]? conditions)
+    public Criterion(ITrigger trigger, int requiredCount, params ICondition[]? conditions)
     {
         Trigger = trigger;
+        RequiredCount = requiredCount;
         Conditions = conditions;
     }
     
@@ -62,18 +64,10 @@ public class Criterion
             var obj = JObject.Load(reader);
             
             var conditions = ReadConditions(obj, serializer); // do this first to get rid of the "conditions" property
+            var count = ReadCount(obj);
             var trigger = ReadTrigger(obj, serializer);
             
-            return new Criterion(trigger, conditions);
-        }
-
-        private static ITrigger ReadTrigger(JObject obj, JsonSerializer serializer)
-        {
-            var trigger = InternalTagHelper.ReadJson<ITrigger>("trigger", obj, serializer);
-            if (trigger == null)
-                throw new JsonException("Condition is missing required property 'trigger'");
-            
-            return trigger;
+            return new Criterion(trigger, count, conditions);
         }
 
         private static ICondition[]? ReadConditions(JObject obj, JsonSerializer serializer)
@@ -101,6 +95,28 @@ public class Criterion
                 throw new JsonException($"Unknown condition type: '{conditionName}'");
 
             return (ICondition) property.Value.ToObject(conditionType, serializer)!;
+        }
+        
+        private static int ReadCount(JObject obj)
+        {
+            var property = obj.Property("required_count");
+            if (property is null) return 1;
+            
+            if (property.Value.Type != JTokenType.Integer)
+                throw new JsonException("Criterion 'required_count' must be an integer");
+            
+            obj.Remove("required_count");
+            
+            return property.Value.Value<int>();
+        }
+        
+        private static ITrigger ReadTrigger(JObject obj, JsonSerializer serializer)
+        {
+            var trigger = InternalTagHelper.ReadJson<ITrigger>("trigger", obj, serializer);
+            if (trigger == null)
+                throw new JsonException("Condition is missing required property 'trigger'");
+            
+            return trigger;
         }
         
         public override void WriteJson(JsonWriter writer, Criterion? value, JsonSerializer serializer)
