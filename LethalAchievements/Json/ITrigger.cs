@@ -3,13 +3,13 @@
 namespace LethalAchievements.Config;
 
 /// <summary>
-///    A trigger for <see cref="ConfigAchievement"/>. Any class implementing this interface
+///    A trigger for <see cref="JsonAchievement"/>. Any class implementing this interface
 ///    is automatically available in the JSON schema, by specific its type name.
 /// </summary>
 public interface ITrigger
 {
     /// <summary>
-    ///    Alert the owner <see cref="ConfigAchievement"/> that this trigger has been triggered.
+    ///    Alert the owner <see cref="JsonAchievement"/> that this trigger has been triggered.
     ///    The achievement will check the conditions for this trigger, and if all conditions are met,
     ///    the achievement is completed 🥳.
     /// </summary>

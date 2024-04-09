@@ -5,9 +5,17 @@ using System.Linq;
 
 namespace LethalAchievements.Config;
 
-public static class ConfigLoader
+/// <summary>
+///     Utility for loading achievements from .json files.
+/// </summary>
+public static class JsonLoader
 {
-    public static IEnumerable<ConfigAchievement?> LoadAchievements(string root)
+    /// <summary>
+    ///     Searches <paramref name="root"/> and subdirectories for directories named "Achievements",
+    ///     and loads all .json files in those directories as achievements. Does not throw when an achievement
+    ///     fails to load, but instead logs an error yields null.
+    /// </summary>
+    public static IEnumerable<JsonAchievement?> LoadAchievements(string root)
     {
         return Directory.EnumerateDirectories(root, "Achievements", SearchOption.AllDirectories)
             .SelectMany(directory => Directory.EnumerateFiles(directory, "*.json"))
@@ -15,7 +23,7 @@ public static class ConfigLoader
                 var json = File.ReadAllText(file);
                 try
                 {
-                    var configFile = Json.Deserialize<ConfigAchievementFile>(json);
+                    var configFile = Json.Deserialize<JsonAchievementFile>(json);
                     return configFile!.ToAchievement(file);
                 }
                 catch (Exception e)

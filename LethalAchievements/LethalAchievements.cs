@@ -60,8 +60,8 @@ public class LethalAchievements : BaseUnityPlugin
     {
         ArePluginsLoaded = true;
         
-        // Load config achievements
-        foreach (var achievement in ConfigLoader.LoadAchievements(Paths.PluginPath))
+        // Load json achievements
+        foreach (var achievement in JsonLoader.LoadAchievements(Paths.PluginPath))
         {
             if (achievement == null) continue;
             
