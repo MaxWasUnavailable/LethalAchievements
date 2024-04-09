@@ -8,7 +8,7 @@ namespace LethalAchievements.Events;
 /// <summary>
 ///     Provides callbacks for player events.
 /// </summary>
-public static class PlayerEvents
+internal static class PlayerEvents
 {
     /// <summary>
     ///     A method that handles player events with no additional context.
@@ -81,61 +81,5 @@ public static class PlayerEvents
             var context = new PlayerDamagedContext(damageNumber, causeOfDeath, EnemyDamageSource.CurrentEnemy);
             OnDamaged?.Invoke(__instance, context);
         }
-    }
-}
-
-/// <summary>
-///     Context for the <see cref="PlayerEvents.OnDied"/> event.
-/// </summary>
-public struct PlayerDiedContext
-{
-    /// <summary>
-    ///     The velocity applied to the player's body.
-    /// </summary>
-    public Vector3 BodyVelocity;
-
-    /// <summary>
-    ///     The cause of death.
-    /// </summary>
-    public CauseOfDeath CauseOfDeath;
-
-    /// <summary>
-    ///     The enemy that killed the player, if any.
-    /// </summary>
-    public EnemyAI? KillerEnemy;
-
-    public PlayerDiedContext(Vector3 bodyVelocity, CauseOfDeath causeOfDeath, EnemyAI? killerEnemy)
-    {
-        BodyVelocity = bodyVelocity;
-        CauseOfDeath = causeOfDeath;
-        KillerEnemy = killerEnemy;
-    }
-}
-
-/// <summary>
-///     Context for the <see cref="PlayerEvents.OnDamaged"/> event.
-/// </summary>
-public struct PlayerDamagedContext
-{
-    /// <summary>
-    ///    The amount of damage dealt to the player.
-    /// </summary>
-    public int Amount;
-
-    /// <summary>
-    ///     The cause of death if the player dies.
-    /// </summary>
-    public CauseOfDeath CauseOfDeath;
-
-    /// <summary>
-    ///    The enemy that damaged the player, if any.
-    /// </summary>
-    public EnemyAI? AttackerEnemy;
-
-    public PlayerDamagedContext(int amount, CauseOfDeath causeOfDeath, EnemyAI? attackerEnemy)
-    {
-        Amount = amount;
-        CauseOfDeath = causeOfDeath;
-        AttackerEnemy = attackerEnemy;
     }
 }

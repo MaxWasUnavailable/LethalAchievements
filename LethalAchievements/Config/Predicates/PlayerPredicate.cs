@@ -68,8 +68,9 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     
     /// <summary>
     ///     Checks if the player is holding an object.
+    ///     Equivalent to <c>HeldItemPredicate = { }</c> (or <c>"held_item": {}</c> in JSON)
     /// </summary>
-    public bool? HoldingObject;
+    public bool? HoldingItem;
     
     /// <summary>
     ///     Checks if the player is on the ship, but not in it, i.e. on the roof or the balcony.
@@ -157,7 +158,7 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
             Matches(player.isClimbingLadder, ClimbingLadder),
             Matches(player.isFreeCamera, FreeCamera),
             Matches(player.isHoldingInteract, HoldingInteract),
-            Matches(player.isHoldingObject, HoldingObject),
+            Matches(player.isHoldingObject, HoldingItem),
             Matches(player.isInElevator, OnShip),
             Matches(player.isPlayerAlone, Alone),
             Matches(player.isPlayerDead, Dead),

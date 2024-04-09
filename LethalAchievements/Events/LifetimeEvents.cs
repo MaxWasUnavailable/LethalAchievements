@@ -6,7 +6,7 @@ namespace LethalAchievements.Events;
 /// <summary>
 ///     Provides callbacks for lifetime events.
 /// </summary>
-public class LifetimeEvents : MonoBehaviour
+internal class LifetimeEvents : MonoBehaviour
 {
     /// <summary>
     ///     Called every Update.

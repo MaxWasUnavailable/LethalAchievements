@@ -9,7 +9,7 @@ namespace LethalAchievements.Events.Patches;
 /// <summary>
 ///     Utility for tracking what enemy damages/kills a player.
 /// </summary>
-public static class EnemyDamageSource
+internal static class EnemyDamageSource
 {
     /// <summary>
     ///     The last enemy which damaged a player this frame.

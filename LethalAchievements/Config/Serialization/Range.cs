@@ -5,26 +5,26 @@ using Newtonsoft.Json.Linq;
 namespace LethalAchievements.Config.Serialization;
 
 /// <summary>
-///     An exclusive range of values. Can be open-ended.
+///     An inclusive range of values. Can be open-ended.
 ///     The JSON representation can either be an object with 'min' and/or 'max' properties, or a single value.
 /// </summary>
 public abstract class Range<T> where T : struct, IComparable<T>
 {
     /// <summary>
-    ///     The exclusive minimum value, or null if open-ended.
+    ///     The inclusive minimum value, or null if open-ended.
     /// </summary>
     public T? Min { get; }
     
     /// <summary>
-    ///     The exclusive maximum value, or null if open-ended.
+    ///     The inclusive maximum value, or null if open-ended.
     /// </summary>
     public T? Max { get; }
     
     /// <summary>
     ///     Creates a new range.
     /// </summary>
-    /// <param name="min">The exclusive minimum value, or null if open-ended.</param>
-    /// <param name="max">The exclusive maximum value, or null if open-ended.</param>
+    /// <param name="min">The inclusive minimum value, or null if open-ended.</param>
+    /// <param name="max">The inclusive maximum value, or null if open-ended.</param>
     /// <exception cref="ArgumentException">
     ///     Both <paramref name="min"/> and <paramref name="max"/> are null,
     ///     or <paramref name="min"/> is greater than <paramref name="max"/>.
@@ -54,7 +54,7 @@ public abstract class Range<T> where T : struct, IComparable<T>
     }
     
     /// <summary>
-    ///     Checks if the range contains the specified value, exclusive.
+    ///     Checks if the range contains the specified value, inclusive.
     /// </summary>
     public bool Contains(T value)
     {
