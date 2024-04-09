@@ -20,7 +20,8 @@ namespace LethalAchievements.Config.Serialization;
 ///     Where the "trigger" property tells the deserializer to deserialize the object
 ///     as a <c>SellScrapTrigger</c>.
 /// </summary>
-internal static class InternalTagHelper {
+public static class InternalTagHelper
+{
     private static readonly Dictionary<Type, Dictionary<string, Type>> _typeCache = new();
 
     /// <summary>

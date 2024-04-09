@@ -3,14 +3,37 @@ using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Conditions;
 
-public class QuotaCondition : ICondition
+/// <summary>
+///     Checks various things about the current profit quota.
+/// </summary>
+public class QuotaCondition : ICondition 
 {
-    public IntRange? Current { get; }
-    public IntRange? Fulfilled { get; }
-    public IntRange? CompletedCount { get; }
-    public IntRange? DaysUntilDeadline { get; }
-    public bool? Reached { get; }
+    /// <summary>
+    ///     Checks the current quota.
+    /// </summary>
+    public IntRange? Current;
+
+    /// <summary>
+    ///     Checks the fulfillment of the current quota.
+    /// </summary>
+    public IntRange? Fulfilled;
     
+    /// <summary>
+    ///     Checks the number of quotas completed.
+    /// </summary>
+    public IntRange? CompletedCount;
+    
+    /// <summary>
+    ///     Checks the days until the deadline.
+    /// </summary>
+    public IntRange? DaysUntilDeadline;
+    
+    /// <summary>
+    ///     Checks if the current quota has been reached.
+    /// </summary>
+    public bool? Reached;
+    
+    /// <inheritdoc />
     public bool Evaluate(in Context context)
     {
         var timeOfDay = TimeOfDay.Instance;

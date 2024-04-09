@@ -24,15 +24,17 @@ namespace LethalAchievements.Config.Serialization;
 /// </summary>
 /// <typeparam name="T">The transparent type. Must have a constructor which takes only TInner as an argument.</typeparam>
 /// <typeparam name="TInner">The inner type, which is actually getting deserialized from the JSON.</typeparam>
-internal class TransparentConverter<T, TInner> : JsonConverter<T>
+public class TransparentConverter<T, TInner> : JsonConverter<T>
 {
+    /// <inheritdoc />
     public override T? ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue, JsonSerializer serializer)
     {
         var inner = serializer.Deserialize<TInner>(reader);
         var result = Activator.CreateInstance(typeof(T), inner);
         return (T?) result;
     }
-    
+
+    /// <inheritdoc />
     public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer)
     {
         throw new NotImplementedException();
