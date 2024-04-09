@@ -11,17 +11,12 @@ public struct Context
     /// <summary>
     ///    The achievement being checked.
     /// </summary>
-    public ConfigAchievement Achievement;
+    public JsonAchievement Achievement;
     
     /// <summary>
     ///     The player being checked.
     /// </summary>
     public PlayerControllerB? Player;
-    
-    /// <summary>
-    ///     The enemy being checked.
-    /// </summary>
-    public EnemyAI? Enemy;
  
     /// <summary>
     ///     Creates a context with default values.
@@ -31,9 +26,6 @@ public struct Context
     ///         </item>
     ///         <item>
     ///             <description><see cref="Player"/> is set to the local player.</description>
-    ///         </item>
-    ///          <item>
-    ///             <description><see cref="Enemy"/> is set to null.</description>
     ///         </item>
     ///     </list>
     /// </summary>
