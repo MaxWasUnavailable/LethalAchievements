@@ -8,4 +8,9 @@ internal static class StringHelper
     {
         return string.Concat(snakeCase.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x : x.ToString())).ToLower();
     }
+
+    public static string SnakeToPascalCase(string pascalCase)
+    {
+        return string.Concat(pascalCase.Split('_').Select(x => char.ToUpper(x[0]) + x.Substring(1).ToLower()));
+    }
 }

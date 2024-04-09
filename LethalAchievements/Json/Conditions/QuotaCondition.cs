@@ -27,6 +27,11 @@ public class QuotaCondition : ICondition
     ///     Checks the days until the deadline.
     /// </summary>
     public IntRange? DaysUntilDeadline;
+
+    /// <summary>
+    ///     Checks the company current buy rate, where 1 is 100%.
+    /// </summary>
+    public FloatRange? CompanyBuyingRate;
     
     /// <summary>
     ///     Checks if the current quota has been reached.
@@ -43,6 +48,7 @@ public class QuotaCondition : ICondition
             Matches(timeOfDay.quotaFulfilled, Fulfilled),
             Matches(timeOfDay.timesFulfilledQuota, CompletedCount),
             Matches(timeOfDay.daysUntilDeadline, DaysUntilDeadline),
+            Matches(StartOfRound.Instance.companyBuyingRate, CompanyBuyingRate),
             Matches(timeOfDay.reachedQuota, Reached)
         );
     }

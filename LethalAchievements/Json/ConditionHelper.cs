@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using LethalAchievements.Config.Serialization;
 
@@ -24,6 +25,14 @@ internal static class ConditionHelper
     internal static bool Predicate<T>(T? value, IPredicate<T>? predicate)
     {
         return predicate is null || value != null && predicate.Check(value);
+    }
+    
+    internal static bool Predicate<T>(IEnumerable<T?>? values, IEnumerable<IPredicate<T>>? predicates)
+    {
+        return 
+            predicates is null ||
+            values != null &&
+            predicates.All(pred => values.Any(value => value != null && pred.Check(value)));
     }
     
     internal static bool All(params bool[] values)

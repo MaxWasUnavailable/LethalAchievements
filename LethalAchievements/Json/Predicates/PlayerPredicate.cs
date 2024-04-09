@@ -131,22 +131,9 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     /// </summary>
     public bool Check(PlayerControllerB player)
     {
-        if (HeldItemPredicate is not null) {
-            var item = player.ItemSlots[player.currentItemSlot];
-            if (item == null || !HeldItemPredicate.Check(item)) {
-                return false;
-            }
-        }
-
-        if (InventoryPredicates is not null) {
-            if (!InventoryPredicates.All(pred => {
-                    return player.ItemSlots.Any(item => item != null && pred.Check(item));
-                })) {
-                return false;
-            }
-        }
-        
         return All(
+            Predicate(player.currentlyHeldObjectServer, HeldItemPredicate),
+            Predicate(player.ItemSlots, InventoryPredicates),
             Matches(player.isInsideFactory, InFacility),
             Matches(player.bleedingHeavily, BleedingHeavily),
             Matches(player.isExhausted, Exhausted),
