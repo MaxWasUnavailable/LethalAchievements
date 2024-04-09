@@ -27,7 +27,7 @@ public static class AchievementHelper
             throw new InvalidOperationException("BePinEx has not finished loading plugins yet.");
 
         var achievementNamespace = achievement switch {
-            ConfigAchievement ca => ca.Namespace,
+            JsonAchievement ca => ca.Namespace,
             _ => GetPluginGuid(achievement.GetType().Assembly)
         };
         

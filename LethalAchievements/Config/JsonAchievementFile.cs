@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace LethalAchievements.Config;
 
-internal class ConfigAchievementFile
+internal class JsonAchievementFile
 {
     public string? Name;
     
@@ -25,7 +25,7 @@ internal class ConfigAchievementFile
     
     public bool Debug = false;
     
-    public ConfigAchievement ToAchievement(string filePath)
+    public JsonAchievement ToAchievement(string filePath)
     {
         // PluginName
         // -> Achievements
@@ -34,7 +34,7 @@ internal class ConfigAchievementFile
         var pluginName = Path.GetFileName(pluginDir);
         var name = Name ?? Path.GetFileNameWithoutExtension(filePath);
         
-        return new ConfigAchievement(pluginName, name, Criteria) {
+        return new JsonAchievement(pluginName, name, Criteria) {
             DisplayText = DisplayText,
             Description = Description,
             Icon = LoadIcon(filePath),

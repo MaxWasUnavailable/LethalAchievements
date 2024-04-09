@@ -60,12 +60,12 @@ public class LethalAchievements : BaseUnityPlugin
     {
         ArePluginsLoaded = true;
         
-        // Load config achievements
-        foreach (var achievement in ConfigLoader.LoadAchievements(Paths.PluginPath))
+        // Load json achievements
+        foreach (var achievement in JsonAchievementLoader.LoadAchievements(Paths.PluginPath))
         {
             if (achievement == null) continue;
             
-            Logger!.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
+            Logger!.LogDebug($"Loaded json achievement \"{achievement.Name}\"");
             AchievementManager.RegisterAchievement(achievement);
         }
         

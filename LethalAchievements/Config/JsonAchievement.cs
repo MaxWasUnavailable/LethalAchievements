@@ -9,7 +9,7 @@ namespace LethalAchievements.Config;
 /// <summary>
 ///     An achievement loaded from a config file.
 /// </summary>
-public class ConfigAchievement : BaseAchievement
+public class JsonAchievement : BaseAchievement
 {
     /// <inheritdoc />
     public override string Name { get; set; }
@@ -39,7 +39,7 @@ public class ConfigAchievement : BaseAchievement
     /// <summary>
     ///     Creates a new achievement with the given name and criteria.
     /// </summary>
-    public ConfigAchievement(string @namespace, string name, params Criterion[] criteria)
+    public JsonAchievement(string @namespace, string name, params Criterion[] criteria)
     {
         Namespace = @namespace;
         Name = name;
