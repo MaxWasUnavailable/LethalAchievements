@@ -1,5 +1,7 @@
-﻿using BepInEx.Logging;
+﻿using System.Linq;
 using GameNetcodeStuff;
+using Newtonsoft.Json;
+using UnityEngine;
 using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Predicates;
@@ -7,7 +9,7 @@ namespace LethalAchievements.Config.Predicates;
 /// <summary>
 ///     Checks the state of a player.
 /// </summary>
-public class PlayerPredicate
+public class PlayerPredicate : IPredicate<PlayerControllerB>
 {
     /// <summary>
     ///     Checks if the player is inside the facility.
@@ -108,9 +110,41 @@ public class PlayerPredicate
     ///     Checks if the player is the host of the game.
     /// </summary>
     public bool? Host;
+
+    /// <summary>
+    ///     Checks the player's held item. If the player is not holding an item, this will automatically fail.
+    /// </summary>
+    /// <seealso cref="ItemPredicate"/>
+    [JsonProperty("held_item")]
+    public ItemPredicate? HeldItemPredicate;
+
+    /// <summary>
+    ///    Checks for items in the player's inventory. All predicates must match at least one item in the inventory.
+    /// </summary>
+    /// <seealso cref="ItemPredicate"/>
+    [JsonProperty("inventory")]
+    public ItemPredicate[]? InventoryPredicates;
     
+    /// <summary>
+    ///     Checks if the player matches all of the specified conditions.
+    /// </summary>
     public bool Check(PlayerControllerB player)
     {
+        if (HeldItemPredicate is not null) {
+            var item = player.ItemSlots[player.currentItemSlot];
+            if (item == null || !HeldItemPredicate.Check(item)) {
+                return false;
+            }
+        }
+
+        if (InventoryPredicates is not null) {
+            if (!InventoryPredicates.All(pred => {
+                    return player.ItemSlots.Any(item => item != null && pred.Check(item));
+                })) {
+                return false;
+            }
+        }
+        
         return All(
             Matches(player.isInsideFactory, InFacility),
             Matches(player.bleedingHeavily, BleedingHeavily),

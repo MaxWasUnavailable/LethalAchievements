@@ -20,6 +20,11 @@ internal static class ConditionHelper
     {
         return values is null || values.Contains(value);
     }
+
+    internal static bool Predicate<T>(T? value, IPredicate<T>? predicate)
+    {
+        return predicate is null || value != null && predicate.Check(value);
+    }
     
     internal static bool All(params bool[] values)
     {

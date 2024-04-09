@@ -94,6 +94,6 @@ public class ConfigAchievement : BaseAchievement
 
     internal void Log(object message, LogLevel level)
     {
-        LethalAchievements.Logger?.Log(level, $" [ACHIEVEMENT {Name}] {message}");
+        LethalAchievements.Logger?.Log(level, $"[ACHIEVEMENT {Namespace}.{Name}] {message}");
     }
 }

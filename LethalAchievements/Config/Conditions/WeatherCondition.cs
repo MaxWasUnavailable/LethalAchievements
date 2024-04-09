@@ -1,4 +1,6 @@
-﻿using static LethalAchievements.Config.ConditionHelper;
+﻿using LethalAchievements.Config.Serialization;
+using Newtonsoft.Json;
+using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Conditions;
 
@@ -10,11 +12,12 @@ public class WeatherCondition : ICondition
     /// <summary>
     ///     The weather types to check for.
     /// </summary>
-    public LevelWeatherType[]? Types;
+    [JsonConverter(typeof(OneOrMultipleConverter<string>))]
+    public LevelWeatherType[]? Type;
 
     /// <inheritdoc />
     public bool Evaluate(in Context context)
     {
-        return Contains(TimeOfDay.Instance.currentLevelWeather, Types);
+        return Contains(TimeOfDay.Instance.currentLevelWeather, Type);
     }
 }

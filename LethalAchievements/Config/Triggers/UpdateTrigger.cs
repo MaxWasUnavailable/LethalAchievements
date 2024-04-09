@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace LethalAchievements.Config.Triggers;
 
 /// <summary>
-///     An achievement trigger which is triggered every frame.
+///     Triggered every frame.
 /// </summary>
 public class UpdateTrigger : ITrigger
 {

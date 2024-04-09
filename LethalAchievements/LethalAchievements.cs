@@ -3,6 +3,8 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using LethalAchievements.Config;
 using LethalAchievements.Enums;
+using LethalAchievements.Events;
+using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
 using LethalModDataLib.Events;
 
@@ -43,6 +45,10 @@ public class LethalAchievements : BaseUnityPlugin
 
         // Hook into post game init event
         MiscEvents.PostInitializeGameEvent += OnGameLoaded;
+        
+        var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
+        harmony.PatchAll(typeof(PlayerEvents.Patches));
+        EnemyDamageSource.Patch(harmony);
 
         // Report plugin loaded
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
