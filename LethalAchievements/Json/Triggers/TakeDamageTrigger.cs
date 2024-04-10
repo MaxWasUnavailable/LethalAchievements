@@ -22,7 +22,7 @@ public class TakeDamageTrigger : ITrigger
     /// <summary>
     ///     Checks the cause of the damage. If you specify multiple causes, any of them can match.
     /// </summary>
-    [JsonConverter(typeof(OneOrMultipleConverter<CauseOfDeath>))]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public CauseOfDeath[]? Cause;
 
     /// <summary>

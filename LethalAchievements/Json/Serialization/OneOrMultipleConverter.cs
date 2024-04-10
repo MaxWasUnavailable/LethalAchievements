@@ -4,22 +4,32 @@ using Newtonsoft.Json;
 namespace LethalAchievements.Config.Serialization;
 
 /// <summary>
-///     Converts either a JSON array or a single value into a C# array.
-///     Use this on fields and properties of type <typeparamref name="T"/>[].
+///     Converts either a JSON array or a single value into an array.
+///     Use this on array fields and properties with the [JsonConverter] attribute.
 /// </summary>
-/// <typeparam name="T">The element type of the array.</typeparam>
-public class OneOrMultipleConverter<T> : JsonConverter<T[]> 
+public class OneOrMultipleConverter : JsonConverter
 {
     /// <inheritdoc />
-    public override T[]? ReadJson(JsonReader reader, Type objectType, T[]? existingValue, bool hasExistingValue, JsonSerializer serializer) 
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
-        return reader.TokenType == JsonToken.StartArray ? 
-            serializer.Deserialize<T[]>(reader) : 
-            new[] { serializer.Deserialize<T>(reader)! };
+        if (reader.TokenType == JsonToken.StartArray)
+            return serializer.Deserialize(reader, objectType);
+
+        // we can do new[] { ... } because we need to return an array over
+        // objectType specifically, not just object[]
+        var array = Array.CreateInstance(objectType.GetElementType()!, 1);
+        array.SetValue(serializer.Deserialize(reader, objectType.GetElementType()), 0);
+        return array;
     }
 
     /// <inheritdoc />
-    public override void WriteJson(JsonWriter writer, T[]? value, JsonSerializer serializer) 
+    public override bool CanConvert(Type objectType)
+    {
+        return objectType.IsArray;
+    }
+
+    /// <inheritdoc />
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
         throw new NotImplementedException();
     }

@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using GameNetcodeStuff;
+﻿using GameNetcodeStuff;
 using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
-using UnityEngine;
 using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Predicates;
@@ -112,14 +110,21 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     ///     Checks if the player is the host of the game.
     /// </summary>
     public bool? Host;
+    
 
     /// <summary>
-    ///     Checks the player's health (max is 100). Can be a range of values.
+    ///     Checks the player's health (max is 100).
     /// </summary>
     public IntRange? Health;
     
     /// <summary>
-    ///     Checks the carry weight of the player. Can be a range of values.
+    ///     Checks the player's insanity level.
+    ///     The instanity level increases when a player is <see cref="Alone"/>.
+    /// </summary>
+    public FloatRange? Insanity;
+    
+    /// <summary>
+    ///     Checks the carry weight of the player.
     /// </summary>
     public IntRange? Weight;
 
@@ -144,6 +149,7 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     {
         return All(
             Matches(player.health, Health),
+            Matches(player.insanityLevel, Insanity),
             Matches(ConversionHelper.ToPounds(player.carryWeight), Weight),
             Predicate(player.currentlyHeldObjectServer, HeldItemPredicate),
             Predicate(player.ItemSlots, InventoryPredicates),

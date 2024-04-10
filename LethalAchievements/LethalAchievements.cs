@@ -50,6 +50,7 @@ public class LethalAchievements : BaseUnityPlugin
         // should maybe find some more maintainable way to do this
         var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
         harmony.PatchAll(typeof(PlayerEvents.PlayerPatches));
+        harmony.PatchAll(typeof(PlayerEvents.EntranceTeleportPatches));
         harmony.PatchAll(typeof(DepositDeskEvents.Patches));
         EnemyDamageSource.Patch(harmony);
 

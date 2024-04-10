@@ -11,7 +11,7 @@ public class SellItemsTrigger : ITrigger
 {
     public IntRange? Profit;
 
-    [JsonConverter(typeof(OneOrMultipleConverter<ItemPredicate>))]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public ItemPredicate[]? Items;
     
     /// <inheritdoc />

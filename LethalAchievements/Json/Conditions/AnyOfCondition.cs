@@ -12,7 +12,7 @@ public class AnyOfCondition : ICondition
     ///     The conditions to evaluate.
     /// </summary>
     [JsonRequired]
-    [JsonConverter(typeof(InternalTagConverter<ICondition>))]
+    [JsonConverter(typeof(InternalTagConverter))]
     public ICondition[] Terms;
 
     /// <inheritdoc />

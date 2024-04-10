@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using LethalAchievements.Config.Serialization;
 using LethalModDataLib.Enums;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -21,6 +22,7 @@ internal class JsonAchievementFile
     public string? RelativeIconPath;
 
     [JsonRequired]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public Criterion[] Criteria;
     
     public bool Debug = false;

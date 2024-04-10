@@ -21,7 +21,7 @@ internal static class EnemyDamageSource
 
     private static readonly MethodInfo _enemyDamagePathMethod = AccessTools.Method(typeof(EnemyDamageSource), nameof(EnemyDamagePatch));
 
-    private static readonly (Type, string)[] _enemyDamageMethods = {
+    private static readonly (Type, string)[] _enemyDamageMethods = [
         (typeof(SandSpiderAI), nameof(SandSpiderAI.OnCollideWithPlayer)),
         (typeof(BlobAI), nameof(BlobAI.OnCollideWithPlayer)),
         (typeof(JesterAI), nameof(JesterAI.killPlayerAnimation)),
@@ -31,7 +31,7 @@ internal static class EnemyDamageSource
         (typeof(SandWormAI), nameof(SandWormAI.EatPlayer)),
         (typeof(CentipedeAI), nameof(CentipedeAI.DamagePlayerOnIntervals)),
         (typeof(FlowermanAI), nameof(FlowermanAI.killAnimation))
-    };
+    ];
 
     private static void EnemyDamagePatch(EnemyAI __instance)
     {

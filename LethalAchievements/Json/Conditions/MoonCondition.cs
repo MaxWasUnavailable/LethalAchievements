@@ -12,20 +12,22 @@ public class MoonCondition : ICondition
     /// <summary>
     ///     The moons to check for. If you specify multiple, any of them will match.
     /// </summary>
-    [JsonConverter(typeof(OneOrMultipleConverter<string>))]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public string[]? Name;
     
     /// <summary>
     ///     The weather types to check for. If you specify multiple, any of them will match.
     /// </summary>
-    [JsonConverter(typeof(OneOrMultipleConverter<LevelWeatherType>))]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public LevelWeatherType[]? Weather;
     
     /// <summary>
-    ///     The parts of the day to check for. On the company moon, this is set to None.
+    ///     The parts of the day to check for.
+    ///     This corresponds to the icons shown at the top of the HUD.
+    ///     On the company moon, this is set to None.
     ///     If you specify multiple, any of them will match.
     /// </summary>
-    [JsonConverter(typeof(OneOrMultipleConverter<DayMode>))]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public DayMode[]? DayMode;
 
     /// <inheritdoc />

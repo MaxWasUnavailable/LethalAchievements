@@ -12,15 +12,10 @@ namespace LethalAchievements.Config.Conditions;
 /// <remarks>
 ///     Which player to check is determined by the context, but it is usually the local player.
 /// </remarks>
-[JsonConverter(typeof(TransparentConverter<PlayerCondition, PlayerPredicate>))]
+[JsonConverter(typeof(TransparentConverter))]
 public class PlayerCondition : ICondition
 {
     public PlayerPredicate Predicate;
-
-    public PlayerCondition(PlayerPredicate predicate)
-    {
-        Predicate = predicate;
-    }
     
     /// <inheritdoc />
     public bool Evaluate(in Context context)

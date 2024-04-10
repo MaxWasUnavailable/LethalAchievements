@@ -21,7 +21,8 @@ internal class DepositDeskEvents
             public static void PlaceItemOnCounter_Prefix(DepositItemsDesk __instance, PlayerControllerB playerWhoTriggered)
             {
                 if (__instance.deskObjectsContainer.GetComponentsInChildren<GrabbableObject>().Length >= 12 || 
-                    __instance.inGrabbingObjectsAnimation || !(GameNetworkManager.Instance != null) || 
+                    __instance.inGrabbingObjectsAnimation || 
+                    !(GameNetworkManager.Instance != null) || 
                     !(playerWhoTriggered == GameNetworkManager.Instance.localPlayerController)
                 )
                     return;
@@ -37,7 +38,7 @@ internal class DepositDeskEvents
             public static void SellItemsClientRpc_Postfix(DepositItemsDesk __instance, int itemProfit)
             {
                 OnItemsSold?.Invoke(__instance, new ItemsSoldContext(
-                    __instance.itemsOnCounter.ToArray(),
+                    __instance.deskObjectsContainer.GetComponentsInChildren<GrabbableObject>(),
                     itemProfit
                 ));
             }

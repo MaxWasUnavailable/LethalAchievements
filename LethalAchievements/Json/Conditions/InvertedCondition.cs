@@ -12,7 +12,7 @@ public class InvertedCondition : ICondition
     ///     The condition to invert.
     /// </summary>
     [JsonRequired]
-    [JsonConverter(typeof(InternalTagConverter<ICondition>))]
+    [JsonConverter(typeof(InternalTagConverter))]
     public ICondition Term;
 
     /// <inheritdoc />

@@ -15,14 +15,14 @@ public class DieTrigger : ITrigger
 {
     /// <summary>
     ///     Checks the velocity of the player's body.
-    ///     Causes that delete the player body (such as Sandworms) will result in a velocity of 0.
+    ///     In cases where the body is deleted (for example with Sandworms), this will have a value of 0.
     /// </summary>
     public FloatRange? Velocity;
     
     /// <summary>
     ///     Checks the cause of death. If you specify multiple causes, any of them can match.
     /// </summary>
-    [JsonConverter(typeof(OneOrMultipleConverter<CauseOfDeath>))]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public CauseOfDeath[]? Cause;
 
     /// <summary>

@@ -28,7 +28,7 @@ public class ItemPredicate : IPredicate<GrabbableObject>
     /// <summary>
     ///     Checks the name of the item. If you specify multiple, any of them will match.
     /// </summary>
-    [JsonConverter(typeof(OneOrMultipleConverter<string>))]
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public string[]? Name;
 
     /// <summary>

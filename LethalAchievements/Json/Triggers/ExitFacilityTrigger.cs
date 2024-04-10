@@ -6,9 +6,9 @@ using static LethalAchievements.Config.ConditionHelper;
 namespace LethalAchievements.Config.Triggers;
 
 /// <summary>
-///     Triggered when the local player enters the facility.
+///     Triggered when the local player exits the facility.
 /// </summary>
-public class EnterFacility : ITrigger
+public class ExitFacilityTrigger : ITrigger
 {
     /// <summary>
     ///     Checks whether the player entered through a fire exit.
@@ -21,13 +21,13 @@ public class EnterFacility : ITrigger
     /// <inheritdoc />
     public void Initialize() 
     {
-        PlayerEvents.OnEnteredFacility += OnEnteredFacility;
+        PlayerEvents.OnExitedFacility += OnEnteredFacility;
     }
 
     /// <inheritdoc />
     public void Uninitialize()
     {
-        PlayerEvents.OnEnteredFacility -= OnEnteredFacility;
+        PlayerEvents.OnExitedFacility -= OnEnteredFacility;
     }
     
     void OnEnteredFacility(PlayerControllerB player, in EntranceType context)
