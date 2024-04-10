@@ -10,7 +10,12 @@ namespace LethalAchievements.Config.Predicates;
 public class EnemyPredicate : IPredicate<EnemyAI>
 {
     /// <summary>
-    ///     Checks whether the enemy spawns outside the facility.
+    ///     Checks the health of the enemy. Can be a range of values.
+    /// </summary>
+    public IntRange? Health;
+    
+    /// <summary>
+    ///     Checks whether the enemy spawns outside the facility (Forest giants, sandworms e.t.c).
     /// </summary>
     // TODO: check if masked are classified as inside or outside
     public bool? Outside;
@@ -26,6 +31,7 @@ public class EnemyPredicate : IPredicate<EnemyAI>
         var type = enemy.enemyType;
         
         return All(
+            Matches(enemy.enemyHP, Health),
             Matches(enemy.isOutside, Outside),
             Contains(type.name, Name)
         );

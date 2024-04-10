@@ -12,11 +12,12 @@ public class InvertedCondition : ICondition
     ///     The condition to invert.
     /// </summary>
     [JsonRequired]
-    public TaggedCondition Term;
+    [JsonConverter(typeof(InternalTagConverter<ICondition>))]
+    public ICondition Term;
 
     /// <inheritdoc />
     public bool Evaluate(in Context context)
     {
-        return !Term.Value.Evaluate(context);
+        return !Term.Evaluate(context);
     }
 }

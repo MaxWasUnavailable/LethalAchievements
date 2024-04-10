@@ -78,26 +78,46 @@ public static class InternalTagHelper
             return dict;
         }
         
-        var baseTypeName = baseType.Name;
-        if (baseType.IsInterface)
-        {
-            baseTypeName = baseTypeName.Substring(1); // remove leading "I"
-        }
+        var baseTypeName = GetTypeName(baseType);
         
         dict = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => typeof(TBase).IsAssignableFrom(type) && !type.IsAbstract)
-            .ToDictionary(GetTypeName, type => type);
+            .ToDictionary(type => GetTypeName(type).Replace(baseTypeName, ""), type => type);
         
         _typeCache[baseType] = dict;
         
         return dict;
+    }
 
-        string GetTypeName(Type type)
-        {
-            var name = type.Name.Replace(baseTypeName, "");
-            name = StringHelper.PascalToSnakeCase(name);
-            return name;
+    public static string GetTypeName(Type type) {
+        var name = type.Name;
+        if (type.IsInterface) {
+            name = name.Substring(1); // remove leading "I"
         }
+        
+        return StringHelper.PascalToSnakeCase(name);
+    }
+}
+
+public class InternalTagConverter<T> : JsonConverter<T> where T : class
+{
+    /// <inheritdoc />
+    public override T ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue, JsonSerializer serializer)
+    {
+        var jsonObject = JObject.Load(reader);
+        var convertedTypeName = InternalTagHelper.GetTypeName(objectType);
+        
+        var value = InternalTagHelper.ReadJson<T>(convertedTypeName, jsonObject, serializer);
+        if (value is null)
+            throw new JsonException($"{convertedTypeName} type not specified");
+            
+        return value;
+    }
+
+    /// <inheritdoc />
+    public override void WriteJson(JsonWriter writer, T? value, JsonSerializer serializer)
+    {
+        throw new NotImplementedException();
     }
 }

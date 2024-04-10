@@ -13,7 +13,7 @@ public class ItemPredicate : IPredicate<GrabbableObject>
     /// <summary>
     ///     Checks the weight of the item. Can be a range of values.
     /// </summary>
-    public FloatRange? Weight;
+    public IntRange? Weight;
 
     /// <summary>
     ///     Checks the sell value of the item. Can be a range of values.
@@ -47,7 +47,7 @@ public class ItemPredicate : IPredicate<GrabbableObject>
         var properties = item.itemProperties;
 
         return All(
-            Matches(properties.weight, Weight),
+            Matches(ConversionHelper.ToPounds(properties.weight), Weight),
             Matches(item.scrapValue, Value),
             Matches(properties.isScrap, IsScrap),
             Contains(properties.itemName, Name),

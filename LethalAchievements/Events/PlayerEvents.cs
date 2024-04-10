@@ -12,13 +12,17 @@ internal static class PlayerEvents
     
     public static event PlayerEventHandler? OnJumped;
     
+    // these two are only triggered for the local player
+    public static event PlayerEventHandler<EntranceType>? OnEnteredFacility;
+    public static event PlayerEventHandler<EntranceType>? OnExitedFacility;
+    
     public static event PlayerEventHandler<GrabbableObject>? OnPickedUpItem;
     
     public static event PlayerEventHandler<PlayerDiedContext>? OnDied;
     public static event PlayerEventHandler<PlayerDamagedContext>? OnDamaged;
 
     [HarmonyPatch(typeof(PlayerControllerB))]
-    internal static class Patches
+    internal static class PlayerPatches
     {
         [HarmonyPrefix]
         [HarmonyPatch(nameof(PlayerControllerB.PlayerJump))]
@@ -59,4 +63,28 @@ internal static class PlayerEvents
             OnPickedUpItem?.Invoke(__instance, fillSlotWithItem);
         }
     }
+
+    [HarmonyPatch(typeof(EntranceTeleport))]
+    internal static class EntranceTeleportPatches 
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(EntranceTeleport.TeleportPlayer))]
+        public static void TeleportPlayer_Postfix(EntranceTeleport __instance) 
+        {
+            var player = GameNetworkManager.Instance.localPlayerController;
+            var type = __instance.name.Contains("Fire") ? EntranceType.Fire : EntranceType.Main;
+            
+            if (__instance.isEntranceToBuilding) {
+                OnEnteredFacility?.Invoke(player, type);
+            } else {
+                OnExitedFacility?.Invoke(player, type);
+            }
+        } 
+    }
+}
+
+internal enum EntranceType
+{
+    Main,
+    Fire
 }

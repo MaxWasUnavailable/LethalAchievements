@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using LethalAchievements.Config.Serialization;
+﻿using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
 
 namespace LethalAchievements.Config.Conditions;
@@ -13,7 +12,8 @@ public class AnyOfCondition : ICondition
     ///     The conditions to evaluate.
     /// </summary>
     [JsonRequired]
-    public TaggedCondition[] Terms;
+    [JsonConverter(typeof(InternalTagConverter<ICondition>))]
+    public ICondition[] Terms;
 
     /// <inheritdoc />
     public bool Evaluate(in Context context)
@@ -21,7 +21,7 @@ public class AnyOfCondition : ICondition
         // cannot use LINQ since 'in' can't be used in lambdas
         foreach (var c in Terms)
         {
-            if (c.Value.Evaluate(in context))
+            if (c.Evaluate(in context))
                 return true;
         }
 

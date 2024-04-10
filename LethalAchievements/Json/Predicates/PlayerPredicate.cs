@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using GameNetcodeStuff;
+using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
 using UnityEngine;
 using static LethalAchievements.Config.ConditionHelper;
@@ -113,6 +114,16 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     public bool? Host;
 
     /// <summary>
+    ///     Checks the player's health (max is 100). Can be a range of values.
+    /// </summary>
+    public IntRange? Health;
+    
+    /// <summary>
+    ///     Checks the carry weight of the player. Can be a range of values.
+    /// </summary>
+    public IntRange? Weight;
+
+    /// <summary>
     ///     Checks the player's held item. If the player is not holding an item, this will automatically fail.
     /// </summary>
     /// <seealso cref="ItemPredicate"/>
@@ -132,6 +143,8 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     public bool Check(PlayerControllerB player)
     {
         return All(
+            Matches(player.health, Health),
+            Matches(ConversionHelper.ToPounds(player.carryWeight), Weight),
             Predicate(player.currentlyHeldObjectServer, HeldItemPredicate),
             Predicate(player.ItemSlots, InventoryPredicates),
             Matches(player.isInsideFactory, InFacility),

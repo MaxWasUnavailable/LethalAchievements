@@ -12,7 +12,8 @@ public class AllOfCondition : ICondition
     ///     The conditions to evaluate.
     /// </summary>
     [JsonRequired]
-    public TaggedCondition[] Terms;
+    [JsonConverter(typeof(InternalTagConverter<ICondition>))]
+    public ICondition[] Terms;
 
     /// <inheritdoc />
     public bool Evaluate(in Context context)
@@ -20,7 +21,7 @@ public class AllOfCondition : ICondition
         // cannot use LINQ since 'in' can't be used in lambdas
         foreach (var term in Terms)
         {
-            if (!term.Value.Evaluate(in context))
+            if (!term.Evaluate(in context))
                 return false;
         }
 
