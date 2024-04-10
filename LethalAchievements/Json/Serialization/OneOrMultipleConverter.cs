@@ -15,7 +15,7 @@ public class OneOrMultipleConverter : JsonConverter
         if (reader.TokenType == JsonToken.StartArray)
             return serializer.Deserialize(reader, objectType);
 
-        // we can do new[] { ... } because we need to return an array over
+        // we can't do new[] { ... } because we need to return an array over
         // objectType specifically, not just object[]
         var array = Array.CreateInstance(objectType.GetElementType()!, 1);
         array.SetValue(serializer.Deserialize(reader, objectType.GetElementType()), 0);

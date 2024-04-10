@@ -7,10 +7,19 @@ using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Triggers;
 
+/// <summary>
+///     Triggered when items are sold at the company, specifically when the popup appears.
+/// </summary>
 public class SellItemsTrigger : ITrigger
 {
+    /// <summary>
+    ///     Checks the profit that was made. This includes the current buying rate.
+    /// </summary>
     public IntRange? Profit;
 
+    /// <summary>
+    ///     Checks the items that were sold. All of the predicates must match at least one of the sold items.
+    /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter))]
     public ItemPredicate[]? Items;
     
