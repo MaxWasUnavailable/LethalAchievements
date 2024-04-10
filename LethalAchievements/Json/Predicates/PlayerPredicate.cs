@@ -111,7 +111,6 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     /// </summary>
     public bool? Host;
     
-
     /// <summary>
     ///     Checks the player's health (max is 100).
     /// </summary>
@@ -122,6 +121,13 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     ///     The instanity level increases when a player is <see cref="Alone"/>.
     /// </summary>
     public FloatRange? Insanity;
+
+    /// <summary>
+    ///     Checks the player's drunkness level (gained from taking TzP).
+    ///     At 0.15 the player's voice starts to increase in pitch.
+    ///     At 0.4 the screen starts to blur.
+    /// </summary>
+    public FloatRange? Drunkness;
     
     /// <summary>
     ///     Checks the carry weight of the player.
@@ -150,6 +156,7 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
         return All(
             Matches(player.health, Health),
             Matches(player.insanityLevel, Insanity),
+            Matches(player.drunkness, Drunkness),
             Matches(ConversionHelper.ToPounds(player.carryWeight), Weight),
             Predicate(player.currentlyHeldObjectServer, HeldItemPredicate),
             Predicate(player.ItemSlots, InventoryPredicates),
