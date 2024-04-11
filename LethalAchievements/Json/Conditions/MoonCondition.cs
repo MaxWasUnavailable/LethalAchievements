@@ -10,33 +10,39 @@ namespace LethalAchievements.Config.Conditions;
 public class MoonCondition : ICondition
 {
     /// <summary>
-    ///     The moons to check for. If you specify multiple, any of them will match.
+    ///     Checks the current moon's name.
     /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter))]
     public string[]? Name;
+
+    /// <summary>
+    ///     Checks if the lights are on inside the facility.
+    /// </summary>
+    public bool? InteriorLights;
     
     /// <summary>
-    ///     The weather types to check for. If you specify multiple, any of them will match.
+    ///     Checks the current moon's weather.
     /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter))]
     public LevelWeatherType[]? Weather;
     
     /// <summary>
-    ///     The parts of the day to check for.
+    ///     Checks for parts of the day.
     ///     This corresponds to the icons shown at the top of the HUD.
     ///     On the company moon, this is set to None.
-    ///     If you specify multiple, any of them will match.
     /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter))]
     public DayMode[]? DayMode;
 
     /// <inheritdoc />
-    public bool Evaluate(in Context context) 
-    {
+    public bool Evaluate(in Context context) {
+        var timeOfDay = TimeOfDay.Instance;
+        
         return All(
-            Contains(TimeOfDay.Instance.currentLevel.PlanetName, Name),
-            Contains(TimeOfDay.Instance.currentLevelWeather, Weather),
-            Contains(TimeOfDay.Instance.dayMode, DayMode)
+            Contains(timeOfDay.currentLevel.PlanetName, Name),
+            Matches(timeOfDay.insideLighting, InteriorLights),
+            Contains(timeOfDay.currentLevelWeather, Weather),
+            Contains(timeOfDay.dayMode, DayMode)
         );
     }
 }

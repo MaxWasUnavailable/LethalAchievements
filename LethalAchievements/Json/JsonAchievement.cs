@@ -26,7 +26,7 @@ public class JsonAchievement : BaseAchievement
     public object Namespace { get; }
 
     /// <summary>
-    ///    Logs to the console every time the achievement would be achieved (even if it's already achieved).
+    ///    Logs to the console every time the achievement would be achieved (even if it's already achieved), defaults to false.
     ///    Make sure to enable the debug log level in the BepInEx config.
     ///    <br/><br/>
     ///    Note that if the achivemenet is achieved at the start of the game, it will not initialize (might change in the future).

@@ -16,6 +16,8 @@ public class Criterion
 
     private Action<Criterion, Context>? _callback;
 
+    public Criterion(ITrigger trigger, params ICondition[]? conditions) : this(trigger, 1, conditions) { }
+    
     public Criterion(ITrigger trigger, int requiredCount, params ICondition[]? conditions)
     {
         Trigger = trigger;

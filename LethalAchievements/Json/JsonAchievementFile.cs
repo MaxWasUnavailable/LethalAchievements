@@ -9,22 +9,46 @@ namespace LethalAchievements.Config;
 
 internal class JsonAchievementFile
 {
+    /// <summary>
+    ///     The name of the achievement, optional.
+    ///     Defaults to the name of the file.
+    /// </summary>
     public string? Name;
-    
-    [JsonRequired]
-    public string DisplayText;
-    
+
+    /// <summary>
+    ///     The display text of the achievement, optional.
+    /// </summary>
+    /// <remarks> Needs to be below ~100 characters. Used for tip popup type. </remarks>
+    public string? DisplayText;
+
+    /// <summary>
+    ///     The description of the achievement, optional.
+    ///     Used instead of the DisplayText for the achievement menu (if specificed).
+    /// </summary>
     public string? Description;
 
+    /// <summary>
+    ///     Whether the achievement is global or per-save.
+    ///     Defaults to false.
+    /// </summary>
     public bool Global = false;
 
+    /// <summary>
+    ///     A path to an image file to use as the icon for the achievement, optional
+    ///     The path is relative to the directory of the achievement file.
+    ///     Defaults to a similarly named PNG file in the same directory as the achievement file.
+    /// </summary>
     [JsonProperty("icon")]
     public string? RelativeIconPath;
 
+    /// <summary>
+    ///     The criteria that need to be completed to achieve the achievement.
+    /// </summary>
     [JsonRequired]
     [JsonConverter(typeof(OneOrMultipleConverter))]
     public Criterion[] Criteria;
     
+    /// <inheritdoc cref="JsonAchievement.Debug"/>
     public bool Debug = false;
     
     public JsonAchievement ToAchievement(string filePath)

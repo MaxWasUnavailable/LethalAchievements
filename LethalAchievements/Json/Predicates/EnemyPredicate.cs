@@ -21,7 +21,7 @@ public class EnemyPredicate : IPredicate<EnemyAI>
     public bool? Outside;
     
     /// <summary>
-    ///     Checks the name of the enemy. If you specify multiple, any of them will match.
+    ///     Checks the name of the enemy.
     /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter))]
     public string[]? Name;
