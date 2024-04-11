@@ -20,6 +20,9 @@ internal static class PlayerEvents
     
     public static event PlayerEventHandler<PlayerDiedContext>? OnDied;
     public static event PlayerEventHandler<PlayerDamagedContext>? OnDamaged;
+    
+    public static event PlayerEventHandler<EnemyAI>? OnDamagedEnemy;
+    public static event PlayerEventHandler<EnemyAI>? OnKilledEnemy;
 
     [HarmonyPatch(typeof(PlayerControllerB))]
     internal static class PlayerPatches
@@ -80,6 +83,23 @@ internal static class PlayerEvents
                 OnExitedFacility?.Invoke(player, type);
             }
         } 
+    }
+
+    [HarmonyPatch(typeof(EnemyAI))]
+    internal static class EnemyAIPatches
+    {
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(EnemyAI.HitEnemy))]
+        public static void HitEnemy_Prefix(EnemyAI __instance, int force, PlayerControllerB playerWhoHit) {
+            if (__instance.isEnemyDead || playerWhoHit == null)
+                return;
+            
+            OnDamagedEnemy?.Invoke(playerWhoHit, __instance);
+            
+            if (__instance.enemyHP <= force) {
+                OnKilledEnemy?.Invoke(playerWhoHit, __instance);
+            }
+        }
     }
 }
 

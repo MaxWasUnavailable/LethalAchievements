@@ -17,8 +17,9 @@ public class OneOrMultipleConverter : JsonConverter
 
         // we can't do new[] { ... } because we need to return an array over
         // objectType specifically, not just object[]
-        var array = Array.CreateInstance(objectType.GetElementType()!, 1);
-        array.SetValue(serializer.Deserialize(reader, objectType.GetElementType()), 0);
+        var elementType = objectType.GetElementType()!;
+        var array = Array.CreateInstance(elementType, 1);
+        array.SetValue(serializer.Deserialize(reader, elementType), 0);
         return array;
     }
 
