@@ -40,7 +40,7 @@ public class SellItemsTrigger : ITrigger
 
     private void OnItemsSold(DepositItemsDesk desk, in ItemsSoldContext context)
     {
-        if (!Matches(context.Profit, Profit)) return;
+        if (!Predicate(context.Profit, Profit)) return;
         if (!Predicate(context.Items, Items)) return;
         
         OnTriggered?.Invoke(Context.Default());

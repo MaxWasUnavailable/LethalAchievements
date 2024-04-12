@@ -7,12 +7,12 @@ namespace LethalAchievements.Config;
 
 internal static class ConditionHelper
 {
-    internal static bool Matches(bool value, bool? predicate)
+    internal static bool Predicate(bool value, bool? predicate)
     {
         return predicate is null || predicate.Value == value;
     }
 
-    internal static bool Matches<T>(T value, Range<T>? range) where T : struct, IComparable<T>
+    internal static bool Predicate<T>(T value, Range<T>? range) where T : struct, IComparable<T>
     {
         return range is null || range.Contains(value);
     }

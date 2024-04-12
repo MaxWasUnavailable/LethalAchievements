@@ -33,7 +33,7 @@ public class ExitFacilityTrigger : ITrigger
     void OnEnteredFacility(PlayerControllerB player, in EntranceType context)
     {
         if (!player.IsOwner) return;
-        if (!Matches(context == EntranceType.Fire, FireExit)) return;
+        if (!Predicate(context == EntranceType.Fire, FireExit)) return;
         
         OnTriggered?.Invoke(Context.Default());
     }

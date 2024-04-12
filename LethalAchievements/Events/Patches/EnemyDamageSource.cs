@@ -12,7 +12,8 @@ namespace LethalAchievements.Events.Patches;
 internal static class EnemyDamageSource
 {
     /// <summary>
-    ///     The last enemy which damaged a player this frame.
+    ///     The last enemy which damaged a player this frame, or
+    ///     null if no enemy has damaged the player this frame.
     /// </summary>
     public static EnemyAI? CurrentEnemy => Time.frameCount > _currentEnemyHitFrame ? null : _currentEnemy;
 
@@ -39,19 +40,13 @@ internal static class EnemyDamageSource
         _currentEnemyHitFrame = Time.frameCount;
     }
 
-    private static void PatchEnemyDamageMethod(Type type, string methodName, Harmony harmony)
-    {
-        harmony.Patch(
-            AccessTools.Method(type, methodName),
-            prefix: new HarmonyMethod(_enemyDamagePathMethod)
-        );
-    }
-
     internal static void Patch(Harmony harmony)
     {
+        var prefix = new HarmonyMethod(_enemyDamagePathMethod);
+        
         foreach (var (type, methodName) in _enemyDamageMethods)
         {
-            PatchEnemyDamageMethod(type, methodName, harmony);
+            harmony.Patch(AccessTools.Method(type, methodName), prefix: prefix);
         }
     }
 }

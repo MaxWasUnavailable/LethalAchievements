@@ -1,9 +1,9 @@
-﻿using BepInEx;
+﻿using System.Reflection;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using LethalAchievements.Config;
 using LethalAchievements.Enums;
-using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
 using LethalModDataLib.Events;
@@ -49,9 +49,7 @@ public class LethalAchievements : BaseUnityPlugin
         // Run patches
         // should maybe find some more maintainable way to do this
         var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
-        harmony.PatchAll(typeof(PlayerEvents.PlayerPatches));
-        harmony.PatchAll(typeof(PlayerEvents.EntranceTeleportPatches));
-        harmony.PatchAll(typeof(DepositDeskEvents.Patches));
+        harmony.PatchAll(Assembly.GetExecutingAssembly());
         EnemyDamageSource.Patch(harmony);
 
         // Report plugin loaded

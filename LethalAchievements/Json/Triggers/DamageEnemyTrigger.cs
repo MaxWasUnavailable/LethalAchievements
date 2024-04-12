@@ -33,9 +33,7 @@ public class DamageEnemyTrigger : ITrigger
     
     private void OnDamagedEnemy(PlayerControllerB player, in EnemyAI enemy)
     {
-        if (!player.IsOwner)
-            return;
-        
+        if (!player.IsOwner) return;
         OnTriggered?.Invoke(Context.Default());
     }
 }

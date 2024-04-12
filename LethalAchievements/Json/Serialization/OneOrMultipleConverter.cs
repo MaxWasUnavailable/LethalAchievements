@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using UnityEngine;
 
 namespace LethalAchievements.Config.Serialization;
 
@@ -26,6 +27,7 @@ public class OneOrMultipleConverter : JsonConverter
     /// <inheritdoc />
     public override bool CanConvert(Type objectType)
     {
+        Debug.LogWarning("Hello!");
         return objectType.IsArray;
     }
 

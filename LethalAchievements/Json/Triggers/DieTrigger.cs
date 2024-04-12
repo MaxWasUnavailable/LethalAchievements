@@ -48,7 +48,8 @@ public class DieTrigger : ITrigger
 
     private void OnDied(PlayerControllerB player, in PlayerDiedContext context)
     {
-        if (!Matches(context.BodyVelocity.magnitude, Velocity)) return;
+        if (!player.IsOwner) return;
+        if (!Predicate(context.BodyVelocity.magnitude, Velocity)) return;
         if (!Contains(context.CauseOfDeath, Cause)) return;
         if (!Predicate(context.KillerEnemy, Enemy)) return;
         

@@ -44,12 +44,12 @@ public class QuotaCondition : ICondition
         var timeOfDay = TimeOfDay.Instance;
         
         return All(
-            Matches(timeOfDay.profitQuota, Current),
-            Matches(timeOfDay.quotaFulfilled, Fulfilled),
-            Matches(timeOfDay.timesFulfilledQuota, CompletedCount),
-            Matches(timeOfDay.daysUntilDeadline, DaysUntilDeadline),
-            Matches(StartOfRound.Instance.companyBuyingRate, CompanyBuyingRate),
-            Matches(timeOfDay.reachedQuota, Reached)
+            Predicate(timeOfDay.profitQuota, Current),
+            Predicate(timeOfDay.quotaFulfilled, Fulfilled),
+            Predicate(timeOfDay.timesFulfilledQuota, CompletedCount),
+            Predicate(timeOfDay.daysUntilDeadline, DaysUntilDeadline),
+            Predicate(StartOfRound.Instance.companyBuyingRate, CompanyBuyingRate),
+            Predicate(timeOfDay.reachedQuota, Reached)
         );
     }
 }

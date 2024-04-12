@@ -6,8 +6,14 @@ using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Triggers;
 
+/// <summary>
+///     Triggered when the local players puts an item on the deposit desk at the company moon.
+/// </summary>
 public class DepositItemTrigger : ITrigger
 {
+    /// <summary>
+    ///     Checks the item that was deposited.
+    /// </summary>
     public ItemPredicate? Item;
     
     /// <inheritdoc />

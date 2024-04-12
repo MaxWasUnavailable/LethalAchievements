@@ -130,7 +130,7 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     public FloatRange? Drunkness;
     
     /// <summary>
-    ///     Checks the carry weight of the player.
+    ///     Checks the carry weight of the player, in pounds.
     /// </summary>
     public IntRange? Weight;
 
@@ -138,15 +138,24 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     ///     Checks the player's held item. If the player is not holding an item, this will automatically fail.
     /// </summary>
     /// <seealso cref="ItemPredicate"/>
-    [JsonProperty("held_item")]
-    public ItemPredicate? HeldItemPredicate;
+    public ItemPredicate? HeldItem;
+
+    /// <summary>
+    ///     Checks the player's experience level.<br/>
+    ///     0 - Intern<br/>
+    ///     1 - Part-timer<br/>
+    ///     2 - Employee<br/>
+    ///     3 - Leader<br/>
+    ///     4 - Boss<br/>
+    ///     5 - VIP Employee
+    /// </summary>
+    public IntRange? Level;
 
     /// <summary>
     ///    Checks for items in the player's inventory. All predicates must match at least one item in the inventory.
     /// </summary>
     /// <seealso cref="ItemPredicate"/>
-    [JsonProperty("inventory")]
-    public ItemPredicate[]? InventoryPredicates;
+    public ItemPredicate[]? Inventory;
     
     /// <summary>
     ///     Checks if the player matches all of the specified conditions.
@@ -154,32 +163,33 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     public bool Check(PlayerControllerB player)
     {
         return All(
-            Matches(player.health, Health),
-            Matches(player.insanityLevel, Insanity),
-            Matches(player.drunkness, Drunkness),
-            Matches(ConversionHelper.ToPounds(player.carryWeight), Weight),
-            Predicate(player.currentlyHeldObjectServer, HeldItemPredicate),
-            Predicate(player.ItemSlots, InventoryPredicates),
-            Matches(player.isInsideFactory, InFacility),
-            Matches(player.bleedingHeavily, BleedingHeavily),
-            Matches(player.isExhausted, Exhausted),
-            Matches(player.isJumping, Jumping),
-            Matches(player.isSprinting, Sprinting),
-            Matches(player.isSidling, Sidling),
-            Matches(player.isUnderwater, Underwater),
-            Matches(player.isWalking, Walking),
-            Matches(player.isClimbingLadder, ClimbingLadder),
-            Matches(player.isFreeCamera, FreeCamera),
-            Matches(player.isHoldingInteract, HoldingInteract),
-            Matches(player.isHoldingObject, HoldingItem),
-            Matches(player.isInElevator, OnShip),
-            Matches(player.isPlayerAlone, Alone),
-            Matches(player.isPlayerDead, Dead),
-            Matches(player.isTypingChat, TypingChat),
-            Matches(player.isFallingFromJump, FallingFromJump),
-            Matches(player.isFallingNoJump, FallingNoJump),
-            Matches(player.isGroundedOnServer, Grounded),
-            Matches(player.IsHost, Host)
+            Predicate(player.health, Health),
+            Predicate(player.insanityLevel, Insanity),
+            Predicate(player.drunkness, Drunkness),
+            Predicate(ConversionHelper.ToPounds(player.carryWeight), Weight),
+            Predicate(player.currentlyHeldObjectServer, HeldItem),
+            Predicate(player.playerLevelNumber, Level),
+            Predicate(player.ItemSlots, Inventory),
+            Predicate(player.isInsideFactory, InFacility),
+            Predicate(player.bleedingHeavily, BleedingHeavily),
+            Predicate(player.isExhausted, Exhausted),
+            Predicate(player.isJumping, Jumping),
+            Predicate(player.isSprinting, Sprinting),
+            Predicate(player.isSidling, Sidling),
+            Predicate(player.isUnderwater, Underwater),
+            Predicate(player.isWalking, Walking),
+            Predicate(player.isClimbingLadder, ClimbingLadder),
+            Predicate(player.isFreeCamera, FreeCamera),
+            Predicate(player.isHoldingInteract, HoldingInteract),
+            Predicate(player.isHoldingObject, HoldingItem),
+            Predicate(player.isInElevator, OnShip),
+            Predicate(player.isPlayerAlone, Alone),
+            Predicate(player.isPlayerDead, Dead),
+            Predicate(player.isTypingChat, TypingChat),
+            Predicate(player.isFallingFromJump, FallingFromJump),
+            Predicate(player.isFallingNoJump, FallingNoJump),
+            Predicate(player.isGroundedOnServer, Grounded),
+            Predicate(player.IsHost, Host)
         );
     }
 }

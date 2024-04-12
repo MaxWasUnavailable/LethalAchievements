@@ -37,18 +37,19 @@ public class TakeDamageTrigger : ITrigger
     /// <inheritdoc />
     public void Initialize()
     {
-        PlayerEvents.OnDamaged += OnDied;
+        PlayerEvents.OnDamaged += OnDamaged;
     }
 
     /// <inheritdoc />
     public void Uninitialize()
     {
-        PlayerEvents.OnDamaged -= OnDied;
+        PlayerEvents.OnDamaged -= OnDamaged;
     }
 
-    private void OnDied(PlayerControllerB player, in PlayerDamagedContext context)
+    private void OnDamaged(PlayerControllerB player, in PlayerDamagedContext context)
     {
-        if (!Matches(context.Amount, Amount)) return;
+        if (!player.IsOwner) return;
+        if (!Predicate(context.Amount, Amount)) return;
         if (!Contains(context.CauseOfDeath, Cause)) return;
         if (!Predicate(context.AttackerEnemy, Enemy)) return;
         

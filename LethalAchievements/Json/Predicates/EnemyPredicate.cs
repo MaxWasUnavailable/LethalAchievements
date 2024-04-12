@@ -25,14 +25,31 @@ public class EnemyPredicate : IPredicate<EnemyAI>
     /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter))]
     public string[]? Name;
+
+    /// <summary>
+    ///     Checks the held item of the enemy.
+    ///     Only applicable for loot bugs and nutcrackers.
+    ///     If this is specified and the enemy is not holding an item, the predicate will fail.
+    /// </summary>
+    public ItemPredicate? HeldItem;
     
     /// <inheritdoc />
     public bool Check(EnemyAI enemy) {
         var type = enemy.enemyType;
+
+        if (HeldItem != null) {
+            var heldItem = enemy switch {
+                NutcrackerEnemyAI nutcracker => nutcracker.gun,
+                HoarderBugAI lootBug => lootBug.heldItem.itemGrabbableObject,
+                _ => null
+            };
+            
+            if (!Predicate(heldItem, HeldItem)) return false;
+        }
         
         return All(
-            Matches(enemy.enemyHP, Health),
-            Matches(enemy.isOutside, Outside),
+            Predicate(enemy.enemyHP, Health),
+            Predicate(enemy.isOutside, Outside),
             Contains(type.name, Name)
         );
     }

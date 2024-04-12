@@ -47,12 +47,12 @@ public class ItemPredicate : IPredicate<GrabbableObject>
         var properties = item.itemProperties;
 
         return All(
-            Matches(ConversionHelper.ToPounds(properties.weight), Weight),
-            Matches(item.scrapValue, Value),
-            Matches(properties.isScrap, IsScrap),
+            Predicate(ConversionHelper.ToPounds(properties.weight), Weight),
+            Predicate(item.scrapValue, Value),
+            Predicate(properties.isScrap, IsScrap),
             Contains(properties.itemName, Name),
-            Matches(properties.twoHanded, TwoHanded),
-            Matches(properties.isConductiveMetal, Conductive)
+            Predicate(properties.twoHanded, TwoHanded),
+            Predicate(properties.isConductiveMetal, Conductive)
         );
     }
 }
