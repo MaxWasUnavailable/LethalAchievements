@@ -34,22 +34,22 @@ public class EnemyPredicate : IPredicate<EnemyAI>
     public ItemPredicate? HeldItem;
     
     /// <inheritdoc />
-    public bool Check(EnemyAI enemy) {
-        var type = enemy.enemyType;
+    public bool Check(EnemyAI value) {
+        var type = value.enemyType;
 
         if (HeldItem != null) {
-            var heldItem = enemy switch {
+            var heldItem = value switch {
                 NutcrackerEnemyAI nutcracker => nutcracker.gun,
                 HoarderBugAI lootBug => lootBug.heldItem.itemGrabbableObject,
                 _ => null
             };
             
-            if (!Predicate(heldItem, HeldItem)) return false;
+            if (!Matches(heldItem, HeldItem)) return false;
         }
         
         return All(
-            Predicate(enemy.enemyHP, Health),
-            Predicate(enemy.isOutside, Outside),
+            Matches(value.enemyHP, Health),
+            Matches(value.isOutside, Outside),
             Contains(type.name, Name)
         );
     }

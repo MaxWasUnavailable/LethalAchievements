@@ -110,6 +110,11 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     ///     Checks if the player is the host of the game.
     /// </summary>
     public bool? Host;
+
+    /// <summary>
+    ///     Checks if the player is the local player.
+    /// </summary>
+    public bool? Local;
     
     /// <summary>
     ///     Checks the player's health (max is 100).
@@ -152,44 +157,45 @@ public class PlayerPredicate : IPredicate<PlayerControllerB>
     public IntRange? Level;
 
     /// <summary>
-    ///    Checks for items in the player's inventory. All predicates must match at least one item in the inventory.
+    ///    Checks for items in the player's inventory.
     /// </summary>
     /// <seealso cref="ItemPredicate"/>
+    [JsonConverter(typeof(OneOrMultipleConverter))]
     public ItemPredicate[]? Inventory;
     
     /// <summary>
     ///     Checks if the player matches all of the specified conditions.
     /// </summary>
-    public bool Check(PlayerControllerB player)
+    public bool Check(PlayerControllerB value)
     {
         return All(
-            Predicate(player.health, Health),
-            Predicate(player.insanityLevel, Insanity),
-            Predicate(player.drunkness, Drunkness),
-            Predicate(ConversionHelper.ToPounds(player.carryWeight), Weight),
-            Predicate(player.currentlyHeldObjectServer, HeldItem),
-            Predicate(player.playerLevelNumber, Level),
-            Predicate(player.ItemSlots, Inventory),
-            Predicate(player.isInsideFactory, InFacility),
-            Predicate(player.bleedingHeavily, BleedingHeavily),
-            Predicate(player.isExhausted, Exhausted),
-            Predicate(player.isJumping, Jumping),
-            Predicate(player.isSprinting, Sprinting),
-            Predicate(player.isSidling, Sidling),
-            Predicate(player.isUnderwater, Underwater),
-            Predicate(player.isWalking, Walking),
-            Predicate(player.isClimbingLadder, ClimbingLadder),
-            Predicate(player.isFreeCamera, FreeCamera),
-            Predicate(player.isHoldingInteract, HoldingInteract),
-            Predicate(player.isHoldingObject, HoldingItem),
-            Predicate(player.isInElevator, OnShip),
-            Predicate(player.isPlayerAlone, Alone),
-            Predicate(player.isPlayerDead, Dead),
-            Predicate(player.isTypingChat, TypingChat),
-            Predicate(player.isFallingFromJump, FallingFromJump),
-            Predicate(player.isFallingNoJump, FallingNoJump),
-            Predicate(player.isGroundedOnServer, Grounded),
-            Predicate(player.IsHost, Host)
+            Matches(value.health, Health),
+            Matches(value.insanityLevel, Insanity),
+            Matches(value.drunkness, Drunkness),
+            Matches(ConversionHelper.ToPounds(value.carryWeight), Weight),
+            Matches(value.currentlyHeldObjectServer, HeldItem),
+            Matches(value.ItemSlots, Inventory),
+            Matches(value.isInsideFactory, InFacility),
+            Matches(value.bleedingHeavily, BleedingHeavily),
+            Matches(value.isExhausted, Exhausted),
+            Matches(value.isJumping, Jumping),
+            Matches(value.isSprinting, Sprinting),
+            Matches(value.isSidling, Sidling),
+            Matches(value.isUnderwater, Underwater),
+            Matches(value.isWalking, Walking),
+            Matches(value.isClimbingLadder, ClimbingLadder),
+            Matches(value.isFreeCamera, FreeCamera),
+            Matches(value.isHoldingInteract, HoldingInteract),
+            Matches(value.isHoldingObject, HoldingItem),
+            Matches(value.isInElevator, OnShip),
+            Matches(value.isPlayerAlone, Alone),
+            Matches(value.isPlayerDead, Dead),
+            Matches(value.isTypingChat, TypingChat),
+            Matches(value.isFallingFromJump, FallingFromJump),
+            Matches(value.isFallingNoJump, FallingNoJump),
+            Matches(value.isGroundedOnServer, Grounded),
+            Matches(value.IsHost, Host),
+            Matches(value.IsOwner, Local)
         );
     }
 }

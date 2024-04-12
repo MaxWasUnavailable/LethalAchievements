@@ -2,6 +2,7 @@ using System;
 using GameNetcodeStuff;
 using LethalAchievements.Config.Predicates;
 using LethalAchievements.Events;
+using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Triggers;
 
@@ -54,7 +55,7 @@ public class KillEnemyTrigger : ITrigger
     private void OnKilledEnemy(PlayerControllerB player, in EnemyAI enemy)
     {
         if (!player.IsOwner) return;
-        if (!ConditionHelper.Predicate(enemy, Enemy)) return;
+        if (!Matches(enemy, Enemy)) return;
         
         OnTriggered?.Invoke(Context.Default());
     }

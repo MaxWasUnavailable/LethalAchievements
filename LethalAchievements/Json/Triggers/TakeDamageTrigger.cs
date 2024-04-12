@@ -49,9 +49,9 @@ public class TakeDamageTrigger : ITrigger
     private void OnDamaged(PlayerControllerB player, in PlayerDamagedContext context)
     {
         if (!player.IsOwner) return;
-        if (!Predicate(context.Amount, Amount)) return;
+        if (!Matches(context.Amount, Amount)) return;
         if (!Contains(context.CauseOfDeath, Cause)) return;
-        if (!Predicate(context.AttackerEnemy, Enemy)) return;
+        if (!Matches(context.AttackerEnemy, Enemy)) return;
         
         OnTriggered?.Invoke(Context.Default());
     }

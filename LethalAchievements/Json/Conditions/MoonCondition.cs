@@ -40,7 +40,7 @@ public class MoonCondition : ICondition
         
         return All(
             Contains(timeOfDay.currentLevel.PlanetName, Name),
-            Predicate(timeOfDay.insideLighting, InteriorLights),
+            Matches(timeOfDay.insideLighting, InteriorLights),
             Contains(timeOfDay.currentLevelWeather, Weather),
             Contains(timeOfDay.dayMode, DayMode)
         );

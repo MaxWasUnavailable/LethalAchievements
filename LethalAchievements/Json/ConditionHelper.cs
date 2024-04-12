@@ -18,9 +18,14 @@ internal static class ConditionHelper
         return range is null || value != null && range.Contains(value.Value);
     }
     
-    internal static bool Matches<T>(T? value, T[]? values)
+    internal static bool Contains<T>(T? value, T[]? matching)
     {
-        return values is null || value != null && values.Contains(value);
+        return matching is null || value != null && matching.Contains(value);
+    }
+    
+    internal static bool ContainsStruct<T>(T? value, T[]? matching) where T : struct
+    {
+        return matching is null || value != null && matching.Any(v => v.Equals(value));
     }
 
     internal static bool Matches<T>(T? value, IPredicate<T>? predicate)
@@ -33,11 +38,8 @@ internal static class ConditionHelper
         if (predicates is null) return true;
         if (values is null) return false;
         
-        Debug.Log($"Checking {values.Count} values against {predicates.Count} predicates.");
-
         var nonNullValues = values.Where(v => v != null).ToArray();
         
-        if (nonNullValues.Length < predicates.Count) Debug.Log("Not enough values to assign all predicates."); 
         if (nonNullValues.Length < predicates.Count) return false; // not enough values to assign all predicates
         
         // this is boils down to an assignment problem
@@ -55,7 +57,6 @@ internal static class ConditionHelper
                 matchedAny |= isMatch;
             }
             
-            if (!matchedAny) Debug.Log($"Predicate {i} didn't match any value; cannot be assigned to any value.");
             if (!matchedAny) return false; // predicate didn't match any value; cannot be assigned to any value
         }
         
@@ -68,7 +69,6 @@ internal static class ConditionHelper
         {
             if (costs[i, assignments[i]] != 0)
             {
-                Debug.Log($"Predicate {i} is assigned to a value that it doesn't match.");
                 return false;
             }
         }

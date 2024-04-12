@@ -34,7 +34,7 @@ public class DepositItemTrigger : ITrigger
     private void OnItemDeposited(DepositItemsDesk desk, in ItemDepositedContext context)
     {
         if (!context.Player.IsOwner) return;
-        if (!Predicate(context.Item, Item)) return;
+        if (!Matches(context.Item, Item)) return;
         
         OnTriggered?.Invoke(Context.Default());
     }

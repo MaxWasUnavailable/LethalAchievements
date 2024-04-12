@@ -1,6 +1,5 @@
 ﻿using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
-using UnityEngine;
 using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Config.Predicates;
@@ -42,17 +41,17 @@ public class ItemPredicate : IPredicate<GrabbableObject>
     public bool? Conductive;
 
     /// <inheritdoc />
-    public bool Check(GrabbableObject item)
+    public bool Check(GrabbableObject value)
     {
-        var properties = item.itemProperties;
+        var properties = value.itemProperties;
 
         return All(
-            Predicate(ConversionHelper.ToPounds(properties.weight), Weight),
-            Predicate(item.scrapValue, Value),
-            Predicate(properties.isScrap, IsScrap),
+            Matches(ConversionHelper.ToPounds(properties.weight), Weight),
+            Matches(value.scrapValue, Value),
+            Matches(properties.isScrap, IsScrap),
             Contains(properties.itemName, Name),
-            Predicate(properties.twoHanded, TwoHanded),
-            Predicate(properties.isConductiveMetal, Conductive)
+            Matches(properties.twoHanded, TwoHanded),
+            Matches(properties.isConductiveMetal, Conductive)
         );
     }
 }
