@@ -6,31 +6,24 @@ using UnityEngine;
 /// <summary>
 ///     An example achievement that will be achieved when the player jumps 10 times.
 /// </summary>
-public class Jump10Achievement : BaseAchievement
+public class Jump10Achievement2 : BaseAchievement
 {
     /// <summary>
     ///     The number of times the player has jumped.
     /// </summary>
     /// <remarks> This field will be saved and loaded by the ModData library. </remarks>
-    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.OnLoad, SaveLocation = SaveLocation.CurrentSave)]
+    [ModData(SaveWhen = SaveWhen.OnSave, LoadWhen = LoadWhen.OnLoad, SaveLocation = SaveLocation.GeneralSave)]
     private int JumpCount { get; set; }
     
     /// <inheritdoc />
-    public override string Name { get; set; } = "Jump for Joy";
+    public override string Name { get; set; } = "Jump for Joy2";
     
     /// <inheritdoc />
     public override string? DisplayText { get; set; } = "You've jumped 10 times!";
 
-    public override string? Description { get; set; }
-
-    public override float? GetProgress()
-    {
-        return JumpCount;
-    }
-
-    public override bool IsHidden { get; set; } = false;
-    public override string? ProgressText { get; set; } = "Jumps";
-    public override float? ProgressTarget { get; set; } = 10f;
+    public override string? Description { get; set; } = "Jumped 10 times";
+    
+    public override bool IsHidden { get; set; } = true;
 
     public override Sprite? Icon { get; set; }
 
@@ -44,7 +37,7 @@ public class Jump10Achievement : BaseAchievement
     {
     }
     
-    internal void OnPlayerJump()
+    private void OnPlayerJump()
     {
         JumpCount++;
         if (JumpCount >= 10)
