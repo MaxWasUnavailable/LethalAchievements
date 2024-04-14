@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using LethalAchievements.Features;
 using LethalAchievements.Interfaces;
 using TMPro;
@@ -13,18 +14,17 @@ internal class HUDController : MonoBehaviour
     private static Button OpenButton, ExitButton;
     private TMP_Text OpenButtonText, ExitButtonText;
     private Transform UI;
-    private static Transform? AchievementContainer;
-    private static Transform? AchievementTemplate;
+    private static Transform AchievementContainer;
+    private static Transform AchievementTemplate;
     private static Transform ModContainer;
     private static Transform ModTemplate;
+   internal static AudioSource ClickSFX;
     
-    private Color32 LethalOrange = new (255, 50, 0, 255);
     private static string ModName;
 
-    internal List<ModEntry> ModList;
+    internal static List<ModEntry> ModList = [];
     private void Awake()
     {
-        AchievementManager.RegisterAchievement(new Jump10Achievement());
         // Get all OpenButton components
         OpenButton = transform.Find("OpenButton").GetComponent<Button>();
         OpenButtonText = transform.Find("OpenButton/Text").GetComponent<TMP_Text>();
@@ -37,9 +37,12 @@ internal class HUDController : MonoBehaviour
         UI = transform.Find("UI");
         AchievementContainer = transform.Find("UI/AchievementListContainer/Scroll View/Viewport/Content");
         AchievementTemplate = AchievementContainer.Find("Achievement");
+        
         ModContainer = transform.Find("UI/ModTabContainer/Scroll View/Viewport/Content");
         ModTemplate = ModContainer.Find("Mod");
-
+        
+        ClickSFX = ModContainer.Find("ClickSFX").GetComponent<AudioSource>();
+        
         // Add method calls on button clicks
         OpenButton.onClick.AddListener(() => OpenUI());
         ExitButton.onClick.AddListener(() => CloseUI());
@@ -51,16 +54,11 @@ internal class HUDController : MonoBehaviour
         ExitButton.gameObject.SetActive(false);
         OpenButton.gameObject.SetActive(true);
         
-        
-            
         LethalAchievements.Logger?.LogInfo("UI loaded!");
     }
 
     private void OpenUI()
     {
-        // Create a tabs and list of achievements for mods
-        InitializeUI();
-        
         OpenButton.gameObject.SetActive(false);
         UI.gameObject.SetActive(true);
         ExitButton.gameObject.SetActive(true);
@@ -77,24 +75,31 @@ internal class HUDController : MonoBehaviour
         if (OpenButton.gameObject.activeSelf)
             OpenButtonText.color = OpenButton.isPointerInside
                 ? Color.black
-                : LethalOrange;
+                : new Color32(255, 126, 63, 150);
         if (ExitButton.gameObject.activeSelf)
             ExitButtonText.color = ExitButton.isPointerInside
                 ? Color.black
-                : LethalOrange;
+                : new Color32(255, 50, 0, 255);
     }
 
-    private void InitializeUI()
+    internal void InitializeUI()
     {
-        LethalAchievements.Logger?.LogInfo(AchievementManager.AchievementRegistry.GetAchievementsByPlugins().Count);
         // Logic to add mods that have achievements
-        foreach (KeyValuePair<BepInEx.PluginInfo, List<IAchievement>> mod in AchievementManager.AchievementRegistry.GetAchievementsByPlugins())
+        foreach (var mod in AchievementManager.AchievementRegistry.GetAchievementsByPlugins())
         {
+            // Get RegEx'd name to display on tab
+            var regEx = Regex.Match(mod.Key.Metadata.Name, @"^([^.]*)$|^(.*?)\.(.*)$");
+            var modName = regEx.Groups.Count < 2 ? regEx.Groups[1].Value : regEx.Groups[3].Value;
+            
             LethalAchievements.Logger?.LogInfo($"Adding {mod.Key.Metadata.Name} to the mod tab");
+            
+            // Create tab for given mod
             var modObj = Instantiate(ModTemplate, ModContainer);
             var modEntry = modObj.gameObject.AddComponent<ModEntry>();
-            modEntry.Init(mod.Key.Metadata.Name, mod.Value, ModList, AchievementContainer);
+            modEntry.Init(modName, mod.Value, ModList, AchievementContainer);
             modObj.gameObject.SetActive(true);
+            
+            ModList.Add(modEntry);
         }
     }
 }

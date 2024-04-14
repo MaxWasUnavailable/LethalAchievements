@@ -30,7 +30,6 @@ internal static class AchievementAssets
             LethalAchievements.Logger?.LogWarning("Failed to load one or more assets from ./achievement_assets, aborting!");
             return false;
         }
-
         return true;
     }
     

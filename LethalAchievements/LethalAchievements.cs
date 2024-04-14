@@ -4,6 +4,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using LethalAchievements.Enums;
 using LethalAchievements.Features;
+using LethalAchievements.Interfaces;
 using LethalAchievements.UI;
 using LethalModDataLib.Events;
 
@@ -28,6 +29,7 @@ public class LethalAchievements : BaseUnityPlugin
     /// </summary>
     public static LethalAchievements? Instance { get; private set; }
 
+    internal static Jump10Achievement jumpAchievement;
     private void Awake()
     {
         // Set instance
@@ -42,9 +44,12 @@ public class LethalAchievements : BaseUnityPlugin
         AchievementPopupStyle = Config.Bind("General", "AchievementPopupStyle",
             Enums.AchievementPopupStyle.GlobalNotification, "The style of the achievement popup.");
         
+        jumpAchievement = new Jump10Achievement();
+        AchievementManager.RegisterAchievement(jumpAchievement);
+        AchievementManager.RegisterAchievement(new Jump10Achievement2());
         // Load UI and patch to main screen
         AchievementAssets.Load();
-        new Harmony(PluginInfo.PLUGIN_GUID).PatchAll();
+        new Harmony(PluginInfo.PLUGIN_GUID).PatchAll(typeof(QuickMenuManagerPatch));
         
         
         // Hook into post game init event
