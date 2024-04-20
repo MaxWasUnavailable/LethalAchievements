@@ -1,6 +1,5 @@
 ﻿using System;
 using GameNetcodeStuff;
-using LethalAchievements.Config;
 using LethalAchievements.Events;
 
 namespace LethalAchievements.Json.Triggers;

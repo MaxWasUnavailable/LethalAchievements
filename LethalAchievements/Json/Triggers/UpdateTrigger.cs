@@ -1,5 +1,4 @@
 ﻿using System;
-using LethalAchievements.Config;
 using LethalAchievements.Events;
 using Newtonsoft.Json;
 

@@ -1,5 +1,4 @@
 ﻿using BepInEx.Logging;
-using LethalAchievements.Config;
 using LethalAchievements.Json.Predicates;
 using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Bootstrap;
-using LethalAchievements.Config;
 using LethalAchievements.Interfaces;
+using LethalAchievements.Json;
 using LethalModDataLib.Features;
 
 namespace LethalAchievements.Helpers;

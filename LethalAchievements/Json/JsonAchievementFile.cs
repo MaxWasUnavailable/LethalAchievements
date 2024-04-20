@@ -1,10 +1,9 @@
 ﻿using System.IO;
-using System.Linq;
 using LethalModDataLib.Enums;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace LethalAchievements.Config;
+namespace LethalAchievements.Json;
 
 internal class JsonAchievementFile
 {

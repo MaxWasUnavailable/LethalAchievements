@@ -1,8 +1,7 @@
 ﻿using System.Linq;
 using GameNetcodeStuff;
-using LethalAchievements.Config;
 using Newtonsoft.Json;
-using static LethalAchievements.Config.ConditionHelper;
+using static LethalAchievements.Json.ConditionHelper;
 
 namespace LethalAchievements.Json.Predicates;
 

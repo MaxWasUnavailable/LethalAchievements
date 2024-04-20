@@ -2,11 +2,11 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
-using LethalAchievements.Config;
 using LethalAchievements.Enums;
 using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
+using LethalAchievements.Json;
 using LethalAchievements.Patches;
 using LethalAchievements.UI;
 using LethalModDataLib.Events;

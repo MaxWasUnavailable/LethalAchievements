@@ -1,5 +1,4 @@
-﻿using LethalAchievements.Config;
-using LethalAchievements.Json.Serialization;
+﻿using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace LethalAchievements.Json.Conditions;
