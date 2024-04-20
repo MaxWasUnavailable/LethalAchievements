@@ -28,9 +28,7 @@ internal class AchievementEntry : MonoBehaviour
             var descriptionText = string.Concat("> ", achievement.Description ?? achievement.DisplayText);
             _description.text = descriptionText.Truncate(170);
             if (_description.text.Length != descriptionText.Length)
-            {
                 _description.text = string.Concat(_description.text, "...");
-            }
         }
         else
         {
@@ -43,6 +41,7 @@ internal class AchievementEntry : MonoBehaviour
         _progress = transform.Find("ProgressionObject/Progress").GetComponent<TMP_Text>();
         _target = transform.Find("ProgressionObject/Target").GetComponent<TMP_Text>();
         _progressBar = transform.Find("ProgressBar");
+
         transform.Find("IconContainer/Global").gameObject.SetActive(isGlobal);
 
         SetProgressDisplay(achievement);
@@ -72,21 +71,22 @@ internal class AchievementEntry : MonoBehaviour
     {
         if (UpdateProgress(achievement))
         {
-            _goal.text = achievement.ProgressText.Truncate(60);
-            _target.text = achievement.ProgressTarget.ToString().Truncate(5);
+            _goal!.text = achievement.ProgressText!.Truncate(60);
+            _target!.text = achievement.ProgressTarget.ToString().Truncate(5);
         }
         else
         {
             LethalAchievements.Logger?.LogDebug(
                 $"{achievement.Name} is not progress-based, excluding progression section.");
 
-            _goal.gameObject.SetActive(false);
-            _progress.gameObject.SetActive(false);
-            _target.gameObject.SetActive(false);
+            _goal!.gameObject.SetActive(false);
+            _progress!.gameObject.SetActive(false);
+            _target!.gameObject.SetActive(false);
 
             transform.Find("GoalDivide").gameObject.SetActive(false);
             transform.Find("ProgressionObject/Divide").gameObject.SetActive(false);
-            _progressBar.localScale = achievement.IsAchieved ? new Vector3(1, 1, 1) : new Vector3(0, 1, 1);
+
+            _progressBar!.localScale = achievement.IsAchieved ? new Vector3(1, 1, 1) : new Vector3(0, 1, 1);
         }
     }
 
@@ -95,11 +95,11 @@ internal class AchievementEntry : MonoBehaviour
         if (!achievement.GetProgress().HasValue || !achievement.ProgressTarget.HasValue) return false;
 
         LethalAchievements.Logger?.LogDebug($"{achievement.Name} is progress-based, including progression section.");
-        _progress.text = achievement.GetProgress().ToString().Truncate(5);
+        _progress!.text = achievement.GetProgress().ToString().Truncate(5);
 
         // Logic to set length of progress bar
         var barLength = Mathf.Clamp(achievement.GetProgress()!.Value / achievement.ProgressTarget.Value, 0f, 1f);
-        _progressBar.localScale = new Vector3(barLength, 1f, 1f);
+        _progressBar!.localScale = new Vector3(barLength, 1f, 1f);
         return true;
     }
 }
