@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -77,17 +78,20 @@ public class LethalAchievements : BaseUnityPlugin
         AchievementManager.Initialize();
 
         if (AchievementAssets.Load())
-        {
-            // Initialize UI assets
-            Instantiate(AchievementAssets.UIAssets)?.AddComponent<HUDController>();
+            try
+            {
+                // Initialize UI assets
+                Instantiate(AchievementAssets.UIAssets)?.AddComponent<HUDController>();
 
-            // Create mod tabs and a list of achievements for each
-            HUDController.InitializeUI();
-        }
+                // Create mod tabs and a list of achievements for each
+                HUDController.InitializeUI();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"Error initializing UI: {e.Message}");
+            }
         else
-        {
             Logger.LogError("Failed to load UI assets! UI will not work! Are you missing the achievement_assets file?");
-        }
     }
 
     private void PatchAll()
