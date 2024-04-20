@@ -14,7 +14,7 @@
         <Version>1.0.0</Version>
         <Authors>MaxWasUnavailable</Authors>
         <PackageTags>lethal;company;bepinex</PackageTags>
-        
+
         <!-- Package Information -->
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
@@ -49,7 +49,7 @@
         <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/"/>
         <None Include="$(ProjectDir)../CHANGELOG.md" Pack="true" PackagePath="/"/>
     </ItemGroup>
-    
+
     <!-- BepInEx Package References -->
     <ItemGroup>
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
@@ -64,10 +64,10 @@
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
         <PackageReference Include="MaxWasUnavailable.LethalModDataLib" Version="1.*" Private="false"/>
     </ItemGroup>
-    
+
     <!-- CLI Package Reference for Game Libs -->
     <ItemGroup Condition="$(CI) == 'true'">
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*" Publicize="true" PrivateAssets="all" Private="false"/>
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="50.*" Publicize="true" PrivateAssets="all" Private="false"/>
     </ItemGroup>
 
     <!-- IDE Assemblies - Easier to Find Source Code -->
