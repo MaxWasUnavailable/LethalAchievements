@@ -69,7 +69,7 @@ public class AchievementRegistry
             LethalAchievements.Logger?.LogDebug($"Achievement: {achievement.Name}");
             var pluginInfo = achievement.GetPluginInfo();
             if (!achievementsByPlugins.ContainsKey(pluginInfo))
-                achievementsByPlugins.Add(pluginInfo, []);
+                achievementsByPlugins.Add(pluginInfo, new List<IAchievement>());
             
             achievementsByPlugins[pluginInfo].Add(achievement);
         }

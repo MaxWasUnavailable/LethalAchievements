@@ -1,11 +1,11 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
-using HarmonyLib;
+using LethalAchievements.Config;
 using LethalAchievements.Enums;
+using LethalAchievements.Events;
+using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
-using LethalAchievements.Interfaces;
-using LethalAchievements.UI;
 using LethalModDataLib.Events;
 
 namespace LethalAchievements;
@@ -29,7 +29,6 @@ public class LethalAchievements : BaseUnityPlugin
     /// </summary>
     public static LethalAchievements? Instance { get; private set; }
 
-    internal static Jump10Achievement jumpAchievement;
     private void Awake()
     {
         // Set instance
@@ -43,17 +42,15 @@ public class LethalAchievements : BaseUnityPlugin
             "Enable achievement sound effect when an achievement is completed.");
         AchievementPopupStyle = Config.Bind("General", "AchievementPopupStyle",
             Enums.AchievementPopupStyle.GlobalNotification, "The style of the achievement popup.");
-        
-        jumpAchievement = new Jump10Achievement();
-        AchievementManager.RegisterAchievement(jumpAchievement);
-        AchievementManager.RegisterAchievement(new Jump10Achievement2());
-        // Load UI and patch to main screen
-        AchievementAssets.Load();
-        new Harmony(PluginInfo.PLUGIN_GUID).PatchAll(typeof(QuickMenuManagerPatch));
-        
-        
+
         // Hook into post game init event
         MiscEvents.PostInitializeGameEvent += OnGameLoaded;
+        
+        // Run patches
+        // should maybe find some more maintainable way to do this
+        var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
+        harmony.PatchAll(typeof(PlayerEvents.Patches));
+        EnemyDamageSource.Patch(harmony);
 
         // Report plugin loaded
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -62,6 +59,15 @@ public class LethalAchievements : BaseUnityPlugin
     private static void OnGameLoaded()
     {
         ArePluginsLoaded = true;
+        
+        // Load json achievements
+        foreach (var achievement in JsonLoader.LoadAchievements(Paths.PluginPath))
+        {
+            if (achievement == null) continue;
+            
+            Logger!.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
+            AchievementManager.RegisterAchievement(achievement);
+        }
         
         // Initialize achievements system
         AchievementManager.Initialize();
