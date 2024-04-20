@@ -3,10 +3,12 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using LethalAchievements.Enums;
+using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
 using LethalAchievements.Json;
 using LethalAchievements.UI;
+using LethalAchievements.UI.Patches;
 using LethalModDataLib.Events;
 
 namespace LethalAchievements;
@@ -101,7 +103,8 @@ public class LethalAchievements : BaseUnityPlugin
         Harmony ??= new Harmony(PluginInfo.PLUGIN_GUID);
 
         EnemyDamageSource.Patch(Harmony);
-        Harmony.PatchAll();
+        Harmony.PatchAll(typeof(PlayerEvents.Patches));
+        Harmony.PatchAll(typeof(QuickMenuManagerPatch));
 
         _isPatched = true;
 
