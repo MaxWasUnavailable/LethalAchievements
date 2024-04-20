@@ -1,7 +1,7 @@
 ﻿using BepInEx.Logging;
 using LethalAchievements.Config;
-using LethalAchievements.Config.Serialization;
 using LethalAchievements.Json.Predicates;
+using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace LethalAchievements.Json.Conditions;

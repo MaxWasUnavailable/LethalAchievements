@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using LethalAchievements.Config.Serialization;
+using LethalAchievements.Json.Serialization;
 
 namespace LethalAchievements.Config;
 

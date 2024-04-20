@@ -1,5 +1,5 @@
 ﻿using LethalAchievements.Config;
-using LethalAchievements.Config.Serialization;
+using LethalAchievements.Json.Serialization;
 using static LethalAchievements.Config.ConditionHelper;
 
 namespace LethalAchievements.Json.Conditions;

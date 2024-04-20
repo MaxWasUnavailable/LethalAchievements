@@ -5,7 +5,7 @@ using LethalAchievements.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace LethalAchievements.Config.Serialization;
+namespace LethalAchievements.Json.Serialization;
 
 /// <summary>
 ///     Provides helper methods for reading internally tagged JSON objects.
@@ -22,7 +22,7 @@ namespace LethalAchievements.Config.Serialization;
 /// </summary>
 public static class InternalTagHelper
 {
-    private static readonly Dictionary<Type, Dictionary<string, Type>> _typeCache = new();
+    private static readonly Dictionary<Type, Dictionary<string, Type>> TypeCache = new();
 
     /// <summary>
     ///     Reads an internally tagged JSON object.
@@ -37,23 +37,24 @@ public static class InternalTagHelper
     /// <exception cref="JsonException">
     ///     The type specified in the JSON object could not be found.
     /// </exception>
-    public static TBase? ReadJson<TBase>(string tagPropertyName, JObject jsonObject, JsonSerializer serializer) where TBase : class
+    public static TBase? ReadJson<TBase>(string tagPropertyName, JObject jsonObject, JsonSerializer serializer)
+        where TBase : class
     {
         var triggerName = jsonObject[tagPropertyName]?.Value<string>();
         if (triggerName is null)
             return null;
-            
+
         if (!TryGetType<TBase>(triggerName, out var triggerType))
             throw new JsonException($"Unknown {tagPropertyName} type: '{triggerName}'");
-            
+
         jsonObject.Remove(tagPropertyName);
 
-        return (TBase) jsonObject.ToObject(triggerType, serializer)!;
+        return (TBase)jsonObject.ToObject(triggerType, serializer)!;
     }
-    
+
     /// <summary>
-    ///     Tries to find a type that inherits/implements <typeparamref name="TBase"/> by its snake_case name.
-    ///     See <see cref="GetTypeDict{TBase}"/> for full naming rules.
+    ///     Tries to find a type that inherits/implements <typeparamref name="TBase" /> by its snake_case name.
+    ///     See <see cref="GetTypeDict{TBase}" /> for full naming rules.
     /// </summary>
     /// <returns>
     ///     <c>true</c> if the type was found, <c>false</c> otherwise.
@@ -62,35 +63,29 @@ public static class InternalTagHelper
     {
         return GetTypeDict<TBase>().TryGetValue(snakeCaseName, out type);
     }
-    
+
     /// <summary>
-    ///     Retrieves a dictionary of types that inherit/implement <typeparamref name="TBase"/>.
+    ///     Retrieves a dictionary of types that inherit/implement <typeparamref name="TBase" />.
     ///     The keys are the snake_case names of the types, excluding the base type name.
-    ///     For example, if <typeparamref name="TBase"/> is <c>ITrigger</c>, then <c>SellScrapTrigger</c> would be
+    ///     For example, if <typeparamref name="TBase" /> is <c>ITrigger</c>, then <c>SellScrapTrigger</c> would be
     ///     stored as <c>sell_scrap</c>.
     /// </summary>
     public static IReadOnlyDictionary<string, Type> GetTypeDict<TBase>()
     {
         var baseType = typeof(TBase);
-        
-        if (_typeCache.TryGetValue(baseType, out var dict))
-        {
-            return dict;
-        }
-        
+
+        if (TypeCache.TryGetValue(baseType, out var dict)) return dict;
+
         var baseTypeName = baseType.Name;
-        if (baseType.IsInterface)
-        {
-            baseTypeName = baseTypeName.Substring(1); // remove leading "I"
-        }
-        
+        if (baseType.IsInterface) baseTypeName = baseTypeName.Substring(1); // remove leading "I"
+
         dict = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(assembly => assembly.GetTypes())
             .Where(type => typeof(TBase).IsAssignableFrom(type) && !type.IsAbstract)
             .ToDictionary(GetTypeName, type => type);
-        
-        _typeCache[baseType] = dict;
-        
+
+        TypeCache[baseType] = dict;
+
         return dict;
 
         string GetTypeName(Type type)

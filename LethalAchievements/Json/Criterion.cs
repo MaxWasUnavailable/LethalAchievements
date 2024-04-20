@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LethalAchievements.Config.Serialization;
+using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

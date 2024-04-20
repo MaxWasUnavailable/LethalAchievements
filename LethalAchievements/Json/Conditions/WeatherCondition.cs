@@ -1,5 +1,5 @@
 ﻿using LethalAchievements.Config;
-using LethalAchievements.Config.Serialization;
+using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;
 using static LethalAchievements.Config.ConditionHelper;
 
