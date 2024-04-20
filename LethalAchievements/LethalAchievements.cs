@@ -3,12 +3,10 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using HarmonyLib;
 using LethalAchievements.Enums;
-using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
 using LethalAchievements.Json;
 using LethalAchievements.UI;
-using LethalAchievements.UI.Patches;
 using LethalModDataLib.Events;
 
 namespace LethalAchievements;
@@ -20,7 +18,9 @@ namespace LethalAchievements;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class LethalAchievements : BaseUnityPlugin
 {
+    private bool _isPatched;
     internal new static ManualLogSource? Logger { get; private set; }
+    private Harmony? Harmony { get; set; }
 
     internal static bool ArePluginsLoaded { get; private set; }
 
@@ -46,16 +46,11 @@ public class LethalAchievements : BaseUnityPlugin
         AchievementPopupStyle = Config.Bind("General", "AchievementPopupStyle",
             Enums.AchievementPopupStyle.GlobalNotification, "The style of the achievement popup.");
 
-        // Hook into post game init event
+        // Patch using Harmony
+        PatchAll();
+
+        // Hook into post-game init event
         MiscEvents.PostInitializeGameEvent += OnGameLoaded;
-
-        // Run patches
-        // should maybe find some more maintainable way to do this
-        var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
-        harmony.PatchAll(typeof(PlayerEvents.Patches));
-        harmony.PatchAll(typeof(QuickMenuManagerPatch));
-
-        EnemyDamageSource.Patch(harmony);
 
         // Report plugin loaded
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -76,7 +71,7 @@ public class LethalAchievements : BaseUnityPlugin
             AchievementManager.RegisterAchievement(achievement);
         }
 
-        // Initialize achievements system
+        // Initialize the achievements system
         AchievementManager.Initialize();
 
         if (AchievementAssets.Load())
@@ -91,5 +86,25 @@ public class LethalAchievements : BaseUnityPlugin
         {
             Logger.LogError("Failed to load UI assets! UI will not work! Are you missing the achievement_assets file?");
         }
+    }
+
+    private void PatchAll()
+    {
+        if (_isPatched)
+        {
+            Logger?.LogWarning("Already patched!");
+            return;
+        }
+
+        Logger?.LogDebug("Patching...");
+
+        Harmony ??= new Harmony(PluginInfo.PLUGIN_GUID);
+
+        EnemyDamageSource.Patch(Harmony);
+        Harmony.PatchAll();
+
+        _isPatched = true;
+
+        Logger?.LogDebug("Patched!");
     }
 }
