@@ -63,6 +63,8 @@ public class LethalAchievements : BaseUnityPlugin
 
     private static void OnGameLoaded()
     {
+        Logger!.LogInfo("Game loaded, initializing achievements systems...");
+        
         ArePluginsLoaded = true;
 
         // Load json achievements
