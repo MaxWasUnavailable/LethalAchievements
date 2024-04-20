@@ -35,6 +35,8 @@ internal static class QuickMenuManagerPatch
     private static void CloseUI()
     {
         LethalAchievements.Logger?.LogDebug("Closing UI");
+        
+        HUDController.Instance?.CloseUI();
 
         HUDController.Instance!.gameObject.SetActive(false);
     }

@@ -80,7 +80,7 @@ internal class HUDController : MonoBehaviour
         _exitButton!.gameObject.SetActive(true);
     }
 
-    private void CloseUI()
+    internal void CloseUI()
     {
         _exitButton!.gameObject.SetActive(false);
         _ui!.gameObject.SetActive(false);
