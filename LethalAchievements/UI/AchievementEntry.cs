@@ -25,8 +25,12 @@ internal class AchievementEntry : MonoBehaviour
         if (!achievement.IsHidden || achievement.IsAchieved)
         {
             // If no description provided, use display text instead
-            var descriptionText = achievement.Description ?? achievement.DisplayText;
-            _description.text = string.Concat("> ", descriptionText).Truncate(170);
+            var descriptionText = string.Concat("> ", achievement.Description ?? achievement.DisplayText);
+            _description.text = descriptionText.Truncate(170);
+            if (_description.text.Length != descriptionText.Length)
+            {
+                _description.text = string.Concat(_description.text, "...");
+            }
         }
         else
         {
