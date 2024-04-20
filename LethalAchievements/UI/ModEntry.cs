@@ -11,18 +11,18 @@ namespace LethalAchievements.UI;
 
 internal class ModEntry : MonoBehaviour
 {
-    private GameObject? Divider { get; set; }
-    private TMP_Text? Name { get; set; }
-    private List<ModEntry> AllMods { get; set; } = [];
+    private List<ModEntry> _allMods = [];
+    private GameObject? _divider;
+    private bool _isExpanded;
+    private TMP_Text? _name;
     internal Dictionary<IAchievement, AchievementEntry> AchievementEntries { get; } = new();
-    private bool IsExpanded { get; set; }
 
     internal void Init(string modName, List<IAchievement> achievements, List<ModEntry> mods, Transform achievementList)
     {
         InitName(modName);
         InitDivider();
         InitModIcon(modName);
-        AllMods = mods;
+        _allMods = mods;
 
         // Add listener to button
         transform.GetComponent<Button>().onClick.AddListener(OnClick);
@@ -42,15 +42,15 @@ internal class ModEntry : MonoBehaviour
 
     private void InitName(string modName)
     {
-        Name = transform.Find("Name").GetComponent<TMP_Text>();
-        Name.text = modName.Truncate(30);
-        Name.gameObject.SetActive(false);
+        _name = transform.Find("Name").GetComponent<TMP_Text>();
+        _name.text = modName.Truncate(30);
+        _name.gameObject.SetActive(false);
     }
 
     private void InitDivider()
     {
-        Divider = transform.Find("Divide").gameObject;
-        Divider.gameObject.SetActive(false);
+        _divider = transform.Find("Divide").gameObject;
+        _divider.gameObject.SetActive(false);
     }
 
     private void InitModIcon(string modName)
@@ -94,21 +94,21 @@ internal class ModEntry : MonoBehaviour
     {
         HUDController.ClickSfx?.Play();
         // Sets any mods not clicked to not be displayed
-        if (!IsExpanded)
-            Toggle(!IsExpanded);
+        if (!_isExpanded)
+            Toggle(!_isExpanded);
     }
 
     private void Toggle(bool isActive)
     {
         if (isActive)
-            foreach (var mod in AllMods.Where(mod => mod != this))
+            foreach (var mod in _allMods.Where(mod => mod != this))
                 mod.Toggle(false);
 
         foreach (var achievement in AchievementEntries)
             achievement.Value.gameObject.SetActive(isActive);
 
-        IsExpanded = isActive;
-        Name?.gameObject.SetActive(isActive);
-        Divider?.gameObject.SetActive(isActive);
+        _isExpanded = isActive;
+        _name?.gameObject.SetActive(isActive);
+        _divider?.gameObject.SetActive(isActive);
     }
 }
