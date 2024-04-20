@@ -15,7 +15,7 @@ internal static class PlayerEvents
     /// </summary>
     /// <param name="player">The player that triggered the event.</param>
     public delegate void PlayerEventHandler(PlayerControllerB player);
-    
+
     /// <summary>
     ///     A method that handles player events with additional context.
     /// </summary>
@@ -28,7 +28,7 @@ internal static class PlayerEvents
     /// </summary>
     /// <remarks>
     ///     Note that this is invoked for <b>every player, not just the local one!</b>
-    ///     If you want to only listen for the local player, you can check <see cref="PlayerControllerB.IsOwner"/>.
+    ///     If you want to only listen for the local player, you can check <see cref="PlayerControllerB.IsOwner" />.
     /// </remarks>
     public static event PlayerEventHandler? OnJumped;
 
@@ -37,7 +37,7 @@ internal static class PlayerEvents
     /// </summary>
     /// <remarks>
     ///     Note that this is invoked for <b>every player, not just the local one!</b>
-    ///     If you want to only listen for the local player, you can check <see cref="PlayerControllerB.IsOwner"/>.
+    ///     If you want to only listen for the local player, you can check <see cref="PlayerControllerB.IsOwner" />.
     /// </remarks>
     public static event PlayerEventHandler<PlayerDiedContext>? OnDied;
 
@@ -46,7 +46,7 @@ internal static class PlayerEvents
     /// </summary>
     /// <remarks>
     ///     Note that this is invoked for <b>every player, not just the local one!</b>
-    ///     If you want to only listen for the local player, you can check <see cref="PlayerControllerB.IsOwner"/>.
+    ///     If you want to only listen for the local player, you can check <see cref="PlayerControllerB.IsOwner" />.
     /// </remarks>
     public static event PlayerEventHandler<PlayerDamagedContext>? OnDamaged;
 
@@ -62,7 +62,8 @@ internal static class PlayerEvents
 
         [HarmonyPrefix]
         [HarmonyPatch(nameof(PlayerControllerB.KillPlayer))]
-        public static void KillPlayer_Prefix(PlayerControllerB __instance, Vector3 bodyVelocity, CauseOfDeath causeOfDeath)
+        public static void KillPlayer_Prefix(PlayerControllerB __instance, Vector3 bodyVelocity,
+            CauseOfDeath causeOfDeath)
         {
             if (!__instance.IsOwner || __instance.isPlayerDead || !__instance.AllowPlayerDeath())
                 return;
@@ -73,7 +74,8 @@ internal static class PlayerEvents
 
         [HarmonyPrefix]
         [HarmonyPatch(nameof(PlayerControllerB.DamagePlayer))]
-        public static void DamagePlayer_Prefix(PlayerControllerB __instance, int damageNumber, CauseOfDeath causeOfDeath)
+        public static void DamagePlayer_Prefix(PlayerControllerB __instance, int damageNumber,
+            CauseOfDeath causeOfDeath)
         {
             if (!__instance.IsOwner || __instance.isPlayerDead || !__instance.AllowPlayerDeath())
                 return;
