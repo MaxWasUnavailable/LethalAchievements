@@ -9,18 +9,18 @@ namespace LethalAchievements.UI;
 
 internal class HUDController : MonoBehaviour
 {
-    private static Button OpenButton, ExitButton;
-    private static Transform AchievementContainer;
-    private static Transform AchievementTemplate;
-    private static Transform ModContainer;
-    private static Transform ModTemplate;
-    internal static AudioSource ClickSFX;
+    private static Button? OpenButton { get; set; }
+    private static Button? ExitButton { get; set; }
+    private static Transform? AchievementContainer { get; set; }
+    private static Transform? AchievementTemplate { get; set; }
+    private static Transform? ModContainer { get; set; }
+    private static Transform? ModTemplate { get; set; }
+    internal static AudioSource? ClickSfx { get; private set; }
 
-    private static string ModName;
-
-    internal static List<ModEntry> ModList = [];
-    private TMP_Text OpenButtonText, ExitButtonText;
-    private Transform UI;
+    internal static List<ModEntry> ModList { get; } = [];
+    private TMP_Text? OpenButtonText { get; set; }
+    private TMP_Text? ExitButtonText { get; set; }
+    private Transform? UI { get; set; }
 
     internal static HUDController? Instance { get; private set; }
 
@@ -46,7 +46,7 @@ internal class HUDController : MonoBehaviour
         ModContainer = transform.Find("UI/ModTabContainer/Scroll View/Viewport/Content");
         ModTemplate = ModContainer.Find("Mod");
 
-        ClickSFX = ModContainer.Find("ClickSFX").GetComponent<AudioSource>();
+        ClickSfx = ModContainer.Find("ClickSFX").GetComponent<AudioSource>();
 
         // Add method calls on button clicks
         OpenButton.onClick.AddListener(() => OpenUI());

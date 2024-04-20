@@ -92,7 +92,7 @@ internal class ModEntry : MonoBehaviour
 
     private void OnClick()
     {
-        HUDController.ClickSFX.Play();
+        HUDController.ClickSfx?.Play();
         // Sets any mods not clicked to not be displayed
         if (!IsExpanded)
             Toggle(!IsExpanded);
