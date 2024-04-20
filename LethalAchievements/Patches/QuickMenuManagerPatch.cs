@@ -1,8 +1,7 @@
 ﻿using HarmonyLib;
-using UnityEngine;
-using UnityEngine.UI;
+using LethalAchievements.UI;
 
-namespace LethalAchievements.UI;
+namespace LethalAchievements.Patches;
 
 internal class QuickMenuManagerPatch
 {
@@ -12,26 +11,22 @@ internal class QuickMenuManagerPatch
     private static void OpenUI()
     {
         LethalAchievements.Logger?.LogInfo("Updating UI");
-        
-        
+
+
         foreach (var mod in HUDController.ModList)
-        {
-            foreach (var achievement in mod.AchievementEntries)
-            {
-                achievement.Value.UpdateProgress(achievement.Key);
-            }
-        }
+        foreach (var achievement in mod.AchievementEntries)
+            achievement.Value.UpdateProgress(achievement.Key);
         HUDController.Instance!.gameObject.SetActive(true);
     }
+
     [HarmonyPostfix]
     [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.EnableUIPanel))]
     [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.CloseQuickMenu))]
     [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.LeaveGame))]
-    
     private static void CloseUI()
     {
         LethalAchievements.Logger?.LogInfo("Closing UI");
-        
+
         HUDController.Instance!.gameObject.SetActive(false);
     }
 }

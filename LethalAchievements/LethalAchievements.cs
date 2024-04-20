@@ -7,6 +7,7 @@ using LethalAchievements.Enums;
 using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
+using LethalAchievements.Patches;
 using LethalAchievements.UI;
 using LethalModDataLib.Events;
 
