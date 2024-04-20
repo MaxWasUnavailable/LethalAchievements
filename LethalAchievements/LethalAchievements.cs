@@ -85,10 +85,7 @@ public class LethalAchievements : BaseUnityPlugin
             Instantiate(AchievementAssets.UIAssets)?.AddComponent<HUDController>();
 
             // Create mod tabs and a list of achievements for each
-            HUDController.Instance!.InitializeUI();
-
-            // Hide UI on start
-            HUDController.Instance.gameObject.SetActive(false);
+            HUDController.InitializeUI();
         }
         else
         {
