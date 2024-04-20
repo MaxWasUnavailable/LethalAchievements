@@ -1,17 +1,16 @@
 ﻿using System.Linq;
 using HarmonyLib;
-using LethalAchievements.UI;
 
-namespace LethalAchievements.Patches;
+namespace LethalAchievements.UI.Patches;
 
 /// <summary>
-///     Patches the QuickMenuManager to enable opening & closing the UI
+///     Patches the QuickMenuManager to enable opening and closing the UI
 /// </summary>
 [HarmonyPatch(typeof(QuickMenuManager))]
 internal static class QuickMenuManagerPatch
 {
     /// <summary>
-    ///     Updates & enables the UI when the QuickMenu is opened
+    ///     Updates and enables the UI when the QuickMenu is opened
     /// </summary>
     [HarmonyPostfix]
     [HarmonyPatch(nameof(QuickMenuManager.OpenQuickMenu))]

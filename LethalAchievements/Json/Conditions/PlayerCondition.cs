@@ -14,6 +14,9 @@ namespace LethalAchievements.Json.Conditions;
 [JsonConverter(typeof(TransparentConverter<PlayerCondition, PlayerPredicate>))]
 public class PlayerCondition : ICondition
 {
+    /// <summary>
+    ///     The predicate to check.
+    /// </summary>
     public PlayerPredicate Predicate;
 
     /// <summary>

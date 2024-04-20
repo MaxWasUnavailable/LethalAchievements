@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace LethalAchievements.Json;
 
+#pragma warning disable 0649
+
 internal class JsonAchievementFile
 {
     public string? Name;

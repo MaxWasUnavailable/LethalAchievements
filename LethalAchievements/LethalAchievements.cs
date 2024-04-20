@@ -7,8 +7,8 @@ using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
 using LethalAchievements.Json;
-using LethalAchievements.Patches;
 using LethalAchievements.UI;
+using LethalAchievements.UI.Patches;
 using LethalModDataLib.Events;
 
 namespace LethalAchievements;

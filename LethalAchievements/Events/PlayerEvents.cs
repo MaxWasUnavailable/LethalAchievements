@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace LethalAchievements.Events;
 
+#pragma warning disable 1574
+
 /// <summary>
 ///     Provides callbacks for player events.
 /// </summary>
@@ -20,6 +22,7 @@ internal static class PlayerEvents
     ///     A method that handles player events with additional context.
     /// </summary>
     /// <param name="player">The player that triggered the event.</param>
+    /// <param name="context">The context of the event.</param>
     /// <typeparam name="T">The type of the context.</typeparam>
     public delegate void PlayerEventHandler<T>(PlayerControllerB player, in T context);
 
