@@ -2,7 +2,10 @@
 
 namespace LethalAchievements.Helpers;
 
-internal static class StringHelper
+/// <summary>
+///     Helper class for string operations.
+/// </summary>
+public static class StringHelper
 {
     public static string PascalToSnakeCase(string snakeCase)
     {
