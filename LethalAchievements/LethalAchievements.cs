@@ -6,7 +6,9 @@ using LethalAchievements.Enums;
 using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
+using LethalAchievements.UI;
 using LethalModDataLib.Events;
+using UnityEngine;
 
 namespace LethalAchievements;
 
@@ -20,6 +22,8 @@ public class LethalAchievements : BaseUnityPlugin
     internal new static ManualLogSource? Logger { get; private set; }
     
     internal static bool ArePluginsLoaded { get; private set; }
+
+    internal static HUDController UI { get; private set; }
     
     internal static ConfigEntry<bool>? AchievementSoundEnabled { get; private set; }
     internal static ConfigEntry<AchievementPopupStyle>? AchievementPopupStyle { get; private set; }
@@ -50,6 +54,8 @@ public class LethalAchievements : BaseUnityPlugin
         // should maybe find some more maintainable way to do this
         var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
         harmony.PatchAll(typeof(PlayerEvents.Patches));
+        harmony.PatchAll(typeof(QuickMenuManagerPatch));
+        
         EnemyDamageSource.Patch(harmony);
 
         // Report plugin loaded
@@ -71,5 +77,20 @@ public class LethalAchievements : BaseUnityPlugin
         
         // Initialize achievements system
         AchievementManager.Initialize();
+        
+        // Initialize UI assets
+        AchievementAssets.Load();
+        
+        UI = Instantiate(AchievementAssets.UIAssets).AddComponent<HUDController>();
+        UI.hideFlags = HideFlags.HideAndDontSave;
+        DontDestroyOnLoad(UI.gameObject);
+        
+        // Create mod tabs and a list of achievements for each
+        UI.InitializeUI();
+        
+        // Hide UI on start
+        UI.gameObject.SetActive(false);
+        
+        
     }
 }
