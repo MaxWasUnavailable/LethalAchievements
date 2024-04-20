@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
+using HarmonyLib;
 using LethalAchievements.Config;
 using LethalAchievements.Enums;
 using LethalAchievements.Events;
@@ -8,7 +9,6 @@ using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
 using LethalAchievements.UI;
 using LethalModDataLib.Events;
-using UnityEngine;
 
 namespace LethalAchievements;
 
@@ -20,11 +20,9 @@ namespace LethalAchievements;
 public class LethalAchievements : BaseUnityPlugin
 {
     internal new static ManualLogSource? Logger { get; private set; }
-    
+
     internal static bool ArePluginsLoaded { get; private set; }
 
-    internal static HUDController UI { get; private set; }
-    
     internal static ConfigEntry<bool>? AchievementSoundEnabled { get; private set; }
     internal static ConfigEntry<AchievementPopupStyle>? AchievementPopupStyle { get; private set; }
 
@@ -49,13 +47,13 @@ public class LethalAchievements : BaseUnityPlugin
 
         // Hook into post game init event
         MiscEvents.PostInitializeGameEvent += OnGameLoaded;
-        
+
         // Run patches
         // should maybe find some more maintainable way to do this
-        var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
+        var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
         harmony.PatchAll(typeof(PlayerEvents.Patches));
         harmony.PatchAll(typeof(QuickMenuManagerPatch));
-        
+
         EnemyDamageSource.Patch(harmony);
 
         // Report plugin loaded
@@ -65,32 +63,28 @@ public class LethalAchievements : BaseUnityPlugin
     private static void OnGameLoaded()
     {
         ArePluginsLoaded = true;
-        
+
         // Load json achievements
         foreach (var achievement in JsonLoader.LoadAchievements(Paths.PluginPath))
         {
             if (achievement == null) continue;
-            
+
             Logger!.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
             AchievementManager.RegisterAchievement(achievement);
         }
-        
+
         // Initialize achievements system
         AchievementManager.Initialize();
-        
+
         // Initialize UI assets
         AchievementAssets.Load();
-        
-        UI = Instantiate(AchievementAssets.UIAssets).AddComponent<HUDController>();
-        UI.hideFlags = HideFlags.HideAndDontSave;
-        DontDestroyOnLoad(UI.gameObject);
-        
+
+        Instantiate(AchievementAssets.UIAssets).AddComponent<HUDController>();
+
         // Create mod tabs and a list of achievements for each
-        UI.InitializeUI();
-        
+        HUDController.Instance!.InitializeUI();
+
         // Hide UI on start
-        UI.gameObject.SetActive(false);
-        
-        
+        HUDController.Instance.gameObject.SetActive(false);
     }
 }

@@ -21,7 +21,7 @@ internal class QuickMenuManagerPatch
                 achievement.Value.UpdateProgress(achievement.Key);
             }
         }
-        LethalAchievements.UI.gameObject.SetActive(true);
+        HUDController.Instance!.gameObject.SetActive(true);
     }
     [HarmonyPostfix]
     [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.EnableUIPanel))]
@@ -32,6 +32,6 @@ internal class QuickMenuManagerPatch
     {
         LethalAchievements.Logger?.LogInfo("Closing UI");
         
-        LethalAchievements.UI.gameObject.SetActive(false);
+        HUDController.Instance!.gameObject.SetActive(false);
     }
 }
