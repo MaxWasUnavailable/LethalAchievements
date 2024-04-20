@@ -1,12 +1,13 @@
 using System;
 using GameNetcodeStuff;
+using LethalAchievements.Config;
 using LethalAchievements.Events;
 using LethalAchievements.Json.Predicates;
 using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;
 using static LethalAchievements.Config.ConditionHelper;
 
-namespace LethalAchievements.Config.Triggers;
+namespace LethalAchievements.Json.Triggers;
 
 /// <summary>
 ///     Triggers when the local player takes damage.
@@ -18,7 +19,7 @@ public class TakeDamageTrigger : ITrigger
     ///     Checks the amount of damage taken. Max player health is 100.
     /// </summary>
     public IntRange? Amount;
-    
+
     /// <summary>
     ///     Checks the cause of the damage. If you specify multiple causes, any of them can match.
     /// </summary>
@@ -51,7 +52,7 @@ public class TakeDamageTrigger : ITrigger
         if (!Matches(context.Amount, Amount)) return;
         if (!Contains(context.CauseOfDeath, Cause)) return;
         if (!Predicate(context.AttackerEnemy, Enemy)) return;
-        
+
         OnTriggered?.Invoke(Context.Default());
     }
 }
