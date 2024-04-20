@@ -62,18 +62,19 @@
     <!-- Extra Package References -->
     <ItemGroup>
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
-        <PackageReference Include="MaxWasUnavailable.LethalModDataLib" Version="1.2.0" Private="false"/>
+        <PackageReference Include="MaxWasUnavailable.LethalModDataLib" Version="1.*" Private="false"/>
     </ItemGroup>
     
     <!-- CLI Package Reference for Game Libs -->
     <ItemGroup Condition="$(CI) == 'true'">
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="49.0.0-*" Publicize="true" PrivateAssets="all" Private="false"/>
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*" Publicize="true" PrivateAssets="all" Private="false"/>
     </ItemGroup>
-    
+
     <!-- IDE Assemblies - Easier to Find Source Code -->
     <ItemGroup Condition="$(CI) != 'true'">
         <Reference Include="Assembly-CSharp" HintPath="$(LC_REFERENCES)\Assembly-CSharp.dll" Private="False" Publicize="true"/>
         <Reference Include="Assembly-CSharp-firstpass" HintPath="$(LC_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="False" Publicize="true"/>
+        <Reference Include="Newtonsoft.Json" HintPath="$(LC_REFERENCES)\Newtonsoft.Json.dll" Private="False" Publicize="true"/>
         <Reference Include="Unity.Netcode.Runtime" HintPath="$(LC_REFERENCES)\Unity.Netcode.Runtime.dll" Private="False" Publicize="true"/>
         <Reference Include="Unity.InputSystem" HintPath="$(LC_REFERENCES)\Unity.InputSystem.dll" Private="False" Publicize="true"/>
         <Reference Include="Unity.TextMeshPro" HintPath="$(LC_REFERENCES)\Unity.TextMeshPro.dll" Private="False" Publicize="true"/>
