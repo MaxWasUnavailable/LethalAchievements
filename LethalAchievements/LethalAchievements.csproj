@@ -2,11 +2,7 @@
 
     <PropertyGroup>
         <!-- General Project Information -->
-        <!-- 
-            Target both netstandard2.1 and net472 to achieve the widest possible support for mods.
-            We can't target netstandard2.0 due to the game assemblies targeting netstandard2.1.
-        -->
-        <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>MaxWasUnavailable.LethalAchievements</AssemblyName>
         <PackageId>MaxWasUnavailable.LethalAchievements</PackageId>
         <Title>LethalAchievements</Title>
