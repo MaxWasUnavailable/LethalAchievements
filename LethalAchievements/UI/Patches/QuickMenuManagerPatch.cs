@@ -17,8 +17,6 @@ internal static class QuickMenuManagerPatch
     [HarmonyPatch(nameof(QuickMenuManager.CloseQuickMenuPanels))]
     private static void OpenUI()
     {
-        LethalAchievements.Logger?.LogDebug("Updating UI");
-
         foreach (var achievement in HUDController.ModList.SelectMany(mod => mod.AchievementEntries))
             achievement.Value.UpdateProgress(achievement.Key);
 
@@ -34,8 +32,6 @@ internal static class QuickMenuManagerPatch
     [HarmonyPatch(nameof(QuickMenuManager.LeaveGame))]
     private static void CloseUI()
     {
-        LethalAchievements.Logger?.LogDebug("Closing UI");
-        
         HUDController.Instance?.CloseUI();
 
         HUDController.Instance!.gameObject.SetActive(false);
