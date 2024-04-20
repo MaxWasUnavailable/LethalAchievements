@@ -96,8 +96,7 @@ public static class InternalTagHelper
         string GetTypeName(Type type)
         {
             var name = type.Name.Replace(baseTypeName, "");
-            name = StringHelper.PascalToSnakeCase(name);
-            return name;
+            return name.PascalToSnakeCase();
         }
     }
 }
