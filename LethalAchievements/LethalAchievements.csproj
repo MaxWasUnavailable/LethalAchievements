@@ -63,7 +63,7 @@
 
     <!-- CLI Package Reference for Game Libs -->
     <ItemGroup Condition="$(CI) == 'true'">
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="50.*" Publicize="true" PrivateAssets="all" Private="false"/>
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="50.0.1-ngd.0" Publicize="true" PrivateAssets="all" Private="false"/>
     </ItemGroup>
 
     <!-- IDE Assemblies - Easier to Find Source Code -->
