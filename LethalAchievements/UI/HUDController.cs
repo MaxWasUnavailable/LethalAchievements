@@ -48,8 +48,8 @@ internal class HUDController : MonoBehaviour
         ClickSfx = _modContainer.Find("ClickSFX").GetComponent<AudioSource>();
 
         // Add method calls on button clicks
-        _openButton.onClick.AddListener(() => OpenUI());
-        _exitButton.onClick.AddListener(() => CloseUI());
+        _openButton.onClick.AddListener(OpenUI);
+        _exitButton.onClick.AddListener(CloseUI);
 
         // Set initial pane to only display the achievements button
         _ui.gameObject.SetActive(false);
