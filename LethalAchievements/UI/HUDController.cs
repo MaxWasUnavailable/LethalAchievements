@@ -58,7 +58,7 @@ internal class HUDController : MonoBehaviour
         _exitButton.gameObject.SetActive(false);
         _openButton.gameObject.SetActive(true);
 
-        LethalAchievements.Logger?.LogInfo("UI loaded!");
+        LethalAchievements.Logger?.LogDebug("UI loaded!");
     }
 
     private void Update()
@@ -109,5 +109,7 @@ internal class HUDController : MonoBehaviour
 
         // Disable game object
         Instance!.gameObject.SetActive(false);
+
+        LethalAchievements.Logger?.LogInfo("UI initialised!");
     }
 }
