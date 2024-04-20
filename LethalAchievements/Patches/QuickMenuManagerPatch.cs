@@ -1,31 +1,41 @@
-﻿using HarmonyLib;
+﻿using System.Linq;
+using HarmonyLib;
 using LethalAchievements.UI;
 
 namespace LethalAchievements.Patches;
 
-internal class QuickMenuManagerPatch
+/// <summary>
+///     Patches the QuickMenuManager to enable opening & closing the UI
+/// </summary>
+[HarmonyPatch(typeof(QuickMenuManager))]
+internal static class QuickMenuManagerPatch
 {
+    /// <summary>
+    ///     Updates & enables the UI when the QuickMenu is opened
+    /// </summary>
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.OpenQuickMenu))]
-    [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.CloseQuickMenuPanels))]
+    [HarmonyPatch(nameof(QuickMenuManager.OpenQuickMenu))]
+    [HarmonyPatch(nameof(QuickMenuManager.CloseQuickMenuPanels))]
     private static void OpenUI()
     {
-        LethalAchievements.Logger?.LogInfo("Updating UI");
+        LethalAchievements.Logger?.LogDebug("Updating UI");
 
-
-        foreach (var mod in HUDController.ModList)
-        foreach (var achievement in mod.AchievementEntries)
+        foreach (var achievement in HUDController.ModList.SelectMany(mod => mod.AchievementEntries))
             achievement.Value.UpdateProgress(achievement.Key);
+
         HUDController.Instance!.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    ///     Closes the UI when the QuickMenu is closed
+    /// </summary>
     [HarmonyPostfix]
-    [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.EnableUIPanel))]
-    [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.CloseQuickMenu))]
-    [HarmonyPatch(typeof(QuickMenuManager), nameof(QuickMenuManager.LeaveGame))]
+    [HarmonyPatch(nameof(QuickMenuManager.EnableUIPanel))]
+    [HarmonyPatch(nameof(QuickMenuManager.CloseQuickMenu))]
+    [HarmonyPatch(nameof(QuickMenuManager.LeaveGame))]
     private static void CloseUI()
     {
-        LethalAchievements.Logger?.LogInfo("Closing UI");
+        LethalAchievements.Logger?.LogDebug("Closing UI");
 
         HUDController.Instance!.gameObject.SetActive(false);
     }
