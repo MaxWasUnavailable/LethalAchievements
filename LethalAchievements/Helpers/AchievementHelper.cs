@@ -15,7 +15,7 @@ namespace LethalAchievements.Helpers;
 public static class AchievementHelper
 {
     private static Dictionary<IAchievement, BepInEx.PluginInfo> AchievementsPluginCache { get; } = new();
-    
+
     /// <summary>
     ///     Gets the GUID of the specified <see cref="IAchievement" />.
     /// </summary>
@@ -24,13 +24,14 @@ public static class AchievementHelper
     public static string GetAchievementGuid(this IAchievement achievement)
     {
         if (!LethalAchievements.ArePluginsLoaded)
-            throw new InvalidOperationException("BePinEx has not finished loading plugins yet.");
+            throw new InvalidOperationException("BepInEx has not finished loading plugins yet.");
 
-        var achievementNamespace = achievement switch {
+        var achievementNamespace = achievement switch
+        {
             JsonAchievement ca => ca.Namespace,
             _ => GetPluginGuid(achievement.GetType().Assembly)
         };
-        
+
         return $"{achievementNamespace}.{achievement.Name}";
     }
 
@@ -44,7 +45,7 @@ public static class AchievementHelper
         return Chainloader.PluginInfos
             .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == pluginAssembly).Value.Metadata.GUID;
     }
-    
+
     /// <summary>
     ///     Gets the <see cref="PluginInfo" /> of the specified <see cref="IAchievement" />.
     /// </summary>
@@ -54,13 +55,13 @@ public static class AchievementHelper
     {
         if (!LethalAchievements.ArePluginsLoaded)
             throw new InvalidOperationException("BePinEx has not finished loading plugins yet.");
-        
+
         if (AchievementsPluginCache.TryGetValue(achievement, out var info))
             return info;
 
         AchievementsPluginCache.Add(achievement, Chainloader.PluginInfos
             .First(pluginInfo => pluginInfo.Value.Instance.GetType().Assembly == achievement.GetType().Assembly).Value);
-        
+
         return AchievementsPluginCache[achievement];
     }
 
