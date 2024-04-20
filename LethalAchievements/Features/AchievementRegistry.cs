@@ -69,8 +69,6 @@ public class AchievementRegistry
             
             achievementsByPlugins[pluginInfo].Add(achievement);
         }
-        
-        LethalAchievements.Logger?.LogDebug("Achievements by plugins count: " + achievementsByPlugins.Count);
 
         return achievementsByPlugins;
     }
