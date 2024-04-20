@@ -64,7 +64,7 @@ public class LethalAchievements : BaseUnityPlugin
     private static void OnGameLoaded()
     {
         Logger!.LogInfo("Game loaded, initializing achievements systems...");
-        
+
         ArePluginsLoaded = true;
 
         // Load json achievements
@@ -72,22 +72,27 @@ public class LethalAchievements : BaseUnityPlugin
         {
             if (achievement == null) continue;
 
-            Logger!.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
+            Logger.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
             AchievementManager.RegisterAchievement(achievement);
         }
 
         // Initialize achievements system
         AchievementManager.Initialize();
 
-        // Initialize UI assets
-        AchievementAssets.Load();
+        if (AchievementAssets.Load())
+        {
+            // Initialize UI assets
+            Instantiate(AchievementAssets.UIAssets)?.AddComponent<HUDController>();
 
-        Instantiate(AchievementAssets.UIAssets).AddComponent<HUDController>();
+            // Create mod tabs and a list of achievements for each
+            HUDController.Instance!.InitializeUI();
 
-        // Create mod tabs and a list of achievements for each
-        HUDController.Instance!.InitializeUI();
-
-        // Hide UI on start
-        HUDController.Instance.gameObject.SetActive(false);
+            // Hide UI on start
+            HUDController.Instance.gameObject.SetActive(false);
+        }
+        else
+        {
+            Logger.LogError("Failed to load UI assets! UI will not work! Are you missing the achievement_assets file?");
+        }
     }
 }
