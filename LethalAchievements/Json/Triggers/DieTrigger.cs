@@ -1,8 +1,8 @@
 ﻿using System;
 using GameNetcodeStuff;
-using LethalAchievements.Config.Predicates;
 using LethalAchievements.Config.Serialization;
 using LethalAchievements.Events;
+using LethalAchievements.Json.Predicates;
 using Newtonsoft.Json;
 using static LethalAchievements.Config.ConditionHelper;
 

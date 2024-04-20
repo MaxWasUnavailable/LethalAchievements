@@ -1,9 +1,9 @@
-﻿using LethalAchievements.Config.Serialization;
+﻿using LethalAchievements.Config;
+using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
-using UnityEngine;
 using static LethalAchievements.Config.ConditionHelper;
 
-namespace LethalAchievements.Config.Predicates;
+namespace LethalAchievements.Json.Predicates;
 
 /// <summary>
 ///     Checks properties of an item.
@@ -11,14 +11,9 @@ namespace LethalAchievements.Config.Predicates;
 public class ItemPredicate : IPredicate<GrabbableObject>
 {
     /// <summary>
-    ///     Checks the weight of the item. Can be a range of values.
+    ///     Checks if the item can be struck by lightning.
     /// </summary>
-    public FloatRange? Weight;
-
-    /// <summary>
-    ///     Checks the sell value of the item. Can be a range of values.
-    /// </summary>
-    public IntRange? Value;
+    public bool? Conductive;
 
     /// <summary>
     ///     Checks whether the items spawns in the facility, or is a store-bought one.
@@ -37,9 +32,14 @@ public class ItemPredicate : IPredicate<GrabbableObject>
     public bool? TwoHanded;
 
     /// <summary>
-    ///     Checks if the item can be struck by lightning.
+    ///     Checks the sell value of the item. Can be a range of values.
     /// </summary>
-    public bool? Conductive;
+    public IntRange? Value;
+
+    /// <summary>
+    ///     Checks the weight of the item. Can be a range of values.
+    /// </summary>
+    public FloatRange? Weight;
 
     /// <inheritdoc />
     public bool Check(GrabbableObject item)

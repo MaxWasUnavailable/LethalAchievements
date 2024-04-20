@@ -1,8 +1,9 @@
-﻿using LethalAchievements.Config.Serialization;
+﻿using LethalAchievements.Config;
+using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
 using static LethalAchievements.Config.ConditionHelper;
 
-namespace LethalAchievements.Config.Predicates;
+namespace LethalAchievements.Json.Predicates;
 
 /// <summary>
 ///     Checks properties of an enemy.
@@ -10,21 +11,22 @@ namespace LethalAchievements.Config.Predicates;
 public class EnemyPredicate : IPredicate<EnemyAI>
 {
     /// <summary>
-    ///     Checks whether the enemy spawns outside the facility.
-    /// </summary>
-    // TODO: check if masked are classified as inside or outside
-    public bool? Outside;
-    
-    /// <summary>
     ///     Checks the name of the enemy. If you specify multiple, any of them will match.
     /// </summary>
     [JsonConverter(typeof(OneOrMultipleConverter<string>))]
     public string[]? Name;
-    
+
+    /// <summary>
+    ///     Checks whether the enemy spawns outside the facility.
+    /// </summary>
+    // TODO: check if masked are classified as inside or outside
+    public bool? Outside;
+
     /// <inheritdoc />
-    public bool Check(EnemyAI enemy) {
+    public bool Check(EnemyAI enemy)
+    {
         var type = enemy.enemyType;
-        
+
         return All(
             Matches(enemy.isOutside, Outside),
             Contains(type.name, Name)
