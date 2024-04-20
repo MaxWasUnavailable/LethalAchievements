@@ -1,10 +1,10 @@
 ﻿using BepInEx.Logging;
+using LethalAchievements.Config;
 using LethalAchievements.Config.Predicates;
 using LethalAchievements.Config.Serialization;
 using Newtonsoft.Json;
-using static LethalAchievements.Config.ConditionHelper;
 
-namespace LethalAchievements.Config.Conditions;
+namespace LethalAchievements.Json.Conditions;
 
 /// <summary>
 ///     Checks the state of a player.
@@ -17,11 +17,15 @@ public class PlayerCondition : ICondition
 {
     public PlayerPredicate Predicate;
 
+    /// <summary>
+    ///     Creates a new player condition.
+    /// </summary>
+    /// <param name="predicate"> The predicate to check. </param>
     public PlayerCondition(PlayerPredicate predicate)
     {
         Predicate = predicate;
     }
-    
+
     /// <inheritdoc />
     public bool Evaluate(in Context context)
     {
