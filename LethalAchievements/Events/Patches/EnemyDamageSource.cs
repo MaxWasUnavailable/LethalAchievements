@@ -13,7 +13,7 @@ internal static class EnemyDamageSource
     private static EnemyAI? _currentEnemy;
     private static int _currentEnemyHitFrame = int.MinValue;
 
-    private static readonly MethodInfo EnemyDamagePathMethod =
+    private static readonly MethodInfo EnemyDamagePatchMethod =
         AccessTools.Method(typeof(EnemyDamageSource), nameof(EnemyDamagePatch));
 
     private static readonly (Type, string)[] EnemyDamageMethods =
@@ -44,7 +44,7 @@ internal static class EnemyDamageSource
     {
         harmony.Patch(
             AccessTools.Method(type, methodName),
-            new HarmonyMethod(EnemyDamagePathMethod)
+            new HarmonyMethod(EnemyDamagePatchMethod)
         );
     }
 
