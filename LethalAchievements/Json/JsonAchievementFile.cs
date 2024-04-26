@@ -1,10 +1,11 @@
 ﻿using System.IO;
-using System.Linq;
 using LethalModDataLib.Enums;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace LethalAchievements.Config;
+namespace LethalAchievements.Json;
+
+#pragma warning disable 0649
 
 internal class JsonAchievementFile
 {

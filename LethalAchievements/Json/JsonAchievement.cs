@@ -4,37 +4,25 @@ using BepInEx.Logging;
 using LethalAchievements.Base;
 using UnityEngine;
 
-namespace LethalAchievements.Config;
+namespace LethalAchievements.Json;
 
 /// <summary>
 ///     An achievement loaded from a .json file.
 /// </summary>
 public class JsonAchievement : BaseAchievement
 {
-    /// <inheritdoc />
-    public override string Name { get; set; }
+    private readonly Criterion[] _criteria;
 
-    /// <inheritdoc />
-    public override string? DisplayText { get; set; }
-
-    /// <inheritdoc />
-    public override string? Description { get; set; }
-
-    /// <inheritdoc />
-    public override Sprite? Icon { get; set; }
-
-    public object Namespace { get; }
+    private readonly int[] _criteriaCompletedCount;
 
     /// <summary>
-    ///    Logs to the console every time the achievement would be achieved (even if it's already achieved).
-    ///    Make sure to enable the debug log level in the BepInEx config.
-    ///    <br/><br/>
-    ///    Note that if the achivemenet is achieved at the start of the game, it will not initialize (might change in the future).
+    ///     Logs to the console every time the achievement would be achieved (even if it's already achieved).
+    ///     Make sure to enable the debug log level in the BepInEx config.
+    ///     <br /><br />
+    ///     Note that if the achivemenet is achieved at the start of the game, it will not initialize (might change in the
+    ///     future).
     /// </summary>
     public bool Debug = false;
-    
-    private readonly int[] _criteriaCompletedCount;
-    private readonly Criterion[] _criteria;
 
     /// <summary>
     ///     Creates a new achievement with the given name and criteria.
@@ -48,10 +36,27 @@ public class JsonAchievement : BaseAchievement
     }
 
     /// <inheritdoc />
+    public override string Name { get; set; }
+
+    /// <inheritdoc />
+    public override string? DisplayText { get; set; }
+
+    /// <inheritdoc />
+    public override string? Description { get; set; }
+
+    /// <inheritdoc />
+    public override Sprite? Icon { get; set; }
+
+    /// <summary>
+    ///     The namespace of the JSON achievement.
+    /// </summary>
+    public object Namespace { get; }
+
+    /// <inheritdoc />
     public override void Initialize()
     {
         if (Debug) Log("Initialized in debug mode", LogLevel.Debug);
-        
+
         foreach (var criterion in _criteria)
         {
             criterion.Trigger.Initialize();
@@ -68,7 +73,7 @@ public class JsonAchievement : BaseAchievement
             criterion.Unsubscribe(OnCriterionTriggered);
         }
     }
-    
+
     private void OnCriterionTriggered(Criterion criterion, Context context)
     {
         var index = Array.IndexOf(_criteria, criterion);
@@ -77,13 +82,10 @@ public class JsonAchievement : BaseAchievement
         context.Achievement = this;
         if (!criterion.Conditions?.All(condition => condition.Evaluate(in context)) ?? false) return;
 
-        if (Debug)
-        {
-            Log($"Criterion with trigger {criterion.Trigger.GetType().Name} completed", LogLevel.Debug);
-        }
-        
+        if (Debug) Log($"Criterion with trigger {criterion.Trigger.GetType().Name} completed", LogLevel.Debug);
+
         _criteriaCompletedCount[index]++;
-        
+
         var isCompleted = _criteriaCompletedCount
             .Select((count, i) => count >= _criteria[i].RequiredCount)
             .All(completed => completed);

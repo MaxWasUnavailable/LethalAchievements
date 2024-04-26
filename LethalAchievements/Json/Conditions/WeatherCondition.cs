@@ -1,8 +1,8 @@
-﻿using LethalAchievements.Config.Serialization;
+﻿using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;
-using static LethalAchievements.Config.ConditionHelper;
+using static LethalAchievements.Json.ConditionHelper;
 
-namespace LethalAchievements.Config.Conditions;
+namespace LethalAchievements.Json.Conditions;
 
 /// <summary>
 ///     Checks if the current weather matches any of the specified weather types.

@@ -1,14 +1,16 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Logging;
-using LethalAchievements.Config;
+using HarmonyLib;
 using LethalAchievements.Enums;
 using LethalAchievements.Events;
 using LethalAchievements.Events.Patches;
 using LethalAchievements.Features;
+using LethalAchievements.Json;
 using LethalAchievements.UI;
+using LethalAchievements.UI.Patches;
 using LethalModDataLib.Events;
-using UnityEngine;
 
 namespace LethalAchievements;
 
@@ -19,12 +21,12 @@ namespace LethalAchievements;
 [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
 public class LethalAchievements : BaseUnityPlugin
 {
+    private bool _isPatched;
     internal new static ManualLogSource? Logger { get; private set; }
-    
+    private Harmony? Harmony { get; set; }
+
     internal static bool ArePluginsLoaded { get; private set; }
 
-    internal static HUDController UI { get; private set; }
-    
     internal static ConfigEntry<bool>? AchievementSoundEnabled { get; private set; }
     internal static ConfigEntry<AchievementPopupStyle>? AchievementPopupStyle { get; private set; }
 
@@ -47,16 +49,11 @@ public class LethalAchievements : BaseUnityPlugin
         AchievementPopupStyle = Config.Bind("General", "AchievementPopupStyle",
             Enums.AchievementPopupStyle.GlobalNotification, "The style of the achievement popup.");
 
-        // Hook into post game init event
+        // Patch using Harmony
+        PatchAll();
+
+        // Hook into post-game init event
         MiscEvents.PostInitializeGameEvent += OnGameLoaded;
-        
-        // Run patches
-        // should maybe find some more maintainable way to do this
-        var harmony = new HarmonyLib.Harmony(PluginInfo.PLUGIN_GUID);
-        harmony.PatchAll(typeof(PlayerEvents.Patches));
-        harmony.PatchAll(typeof(QuickMenuManagerPatch));
-        
-        EnemyDamageSource.Patch(harmony);
 
         // Report plugin loaded
         Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
@@ -64,33 +61,57 @@ public class LethalAchievements : BaseUnityPlugin
 
     private static void OnGameLoaded()
     {
+        Logger!.LogInfo("Game loaded, initializing achievements systems...");
+
         ArePluginsLoaded = true;
-        
+
         // Load json achievements
         foreach (var achievement in JsonLoader.LoadAchievements(Paths.PluginPath))
         {
             if (achievement == null) continue;
-            
-            Logger!.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
+
+            Logger.LogDebug($"Loaded config achievement \"{achievement.Name}\"");
             AchievementManager.RegisterAchievement(achievement);
         }
-        
-        // Initialize achievements system
+
+        // Initialize the achievements system
         AchievementManager.Initialize();
-        
-        // Initialize UI assets
-        AchievementAssets.Load();
-        
-        UI = Instantiate(AchievementAssets.UIAssets).AddComponent<HUDController>();
-        UI.hideFlags = HideFlags.HideAndDontSave;
-        DontDestroyOnLoad(UI.gameObject);
-        
-        // Create mod tabs and a list of achievements for each
-        UI.InitializeUI();
-        
-        // Hide UI on start
-        UI.gameObject.SetActive(false);
-        
-        
+
+        if (AchievementAssets.Load())
+            try
+            {
+                // Initialize UI assets
+                Instantiate(AchievementAssets.UIAssets)?.AddComponent<HUDController>();
+
+                // Create mod tabs and a list of achievements for each
+                HUDController.InitializeUI();
+            }
+            catch (Exception e)
+            {
+                Logger.LogError($"Error initializing UI: {e.Message}");
+            }
+        else
+            Logger.LogError("Failed to load UI assets! UI will not work! Are you missing the achievement_assets file?");
+    }
+
+    private void PatchAll()
+    {
+        if (_isPatched)
+        {
+            Logger?.LogWarning("Already patched!");
+            return;
+        }
+
+        Logger?.LogDebug("Patching...");
+
+        Harmony ??= new Harmony(PluginInfo.PLUGIN_GUID);
+
+        EnemyDamageSource.Patch(Harmony);
+        Harmony.PatchAll(typeof(PlayerEvents.Patches));
+        Harmony.PatchAll(typeof(QuickMenuManagerPatch));
+
+        _isPatched = true;
+
+        Logger?.LogDebug("Patched!");
     }
 }

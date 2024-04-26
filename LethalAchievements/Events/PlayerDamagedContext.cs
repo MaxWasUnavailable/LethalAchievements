@@ -1,29 +1,22 @@
 namespace LethalAchievements.Events;
 
 /// <summary>
-///     Context for the <see cref="PlayerEvents.OnDamaged"/> event.
+///     Context for the <see cref="PlayerEvents.OnDamaged" /> event.
 /// </summary>
-internal struct PlayerDamagedContext
+internal struct PlayerDamagedContext(int amount, CauseOfDeath causeOfDeath, EnemyAI? attackerEnemy)
 {
     /// <summary>
-    ///    The amount of damage dealt to the player.
+    ///     The amount of damage dealt to the player.
     /// </summary>
-    public int Amount;
+    public int Amount = amount;
 
     /// <summary>
     ///     The cause of death if the player dies.
     /// </summary>
-    public CauseOfDeath CauseOfDeath;
+    public CauseOfDeath CauseOfDeath = causeOfDeath;
 
     /// <summary>
-    ///    The enemy that damaged the player, if any.
+    ///     The enemy that damaged the player, if any.
     /// </summary>
-    public EnemyAI? AttackerEnemy;
-
-    public PlayerDamagedContext(int amount, CauseOfDeath causeOfDeath, EnemyAI? attackerEnemy)
-    {
-        Amount = amount;
-        CauseOfDeath = causeOfDeath;
-        AttackerEnemy = attackerEnemy;
-    }
+    public EnemyAI? AttackerEnemy = attackerEnemy;
 }

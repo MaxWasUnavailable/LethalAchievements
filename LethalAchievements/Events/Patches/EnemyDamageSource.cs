@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using GameNetcodeStuff;
 using HarmonyLib;
 using UnityEngine;
 
@@ -11,17 +10,14 @@ namespace LethalAchievements.Events.Patches;
 /// </summary>
 internal static class EnemyDamageSource
 {
-    /// <summary>
-    ///     The last enemy which damaged a player this frame.
-    /// </summary>
-    public static EnemyAI? CurrentEnemy => Time.frameCount > _currentEnemyHitFrame ? null : _currentEnemy;
-
     private static EnemyAI? _currentEnemy;
     private static int _currentEnemyHitFrame = int.MinValue;
 
-    private static readonly MethodInfo _enemyDamagePathMethod = AccessTools.Method(typeof(EnemyDamageSource), nameof(EnemyDamagePatch));
+    private static readonly MethodInfo EnemyDamagePatchMethod =
+        AccessTools.Method(typeof(EnemyDamageSource), nameof(EnemyDamagePatch));
 
-    private static readonly (Type, string)[] _enemyDamageMethods = {
+    private static readonly (Type, string)[] EnemyDamageMethods =
+    [
         (typeof(SandSpiderAI), nameof(SandSpiderAI.OnCollideWithPlayer)),
         (typeof(BlobAI), nameof(BlobAI.OnCollideWithPlayer)),
         (typeof(JesterAI), nameof(JesterAI.killPlayerAnimation)),
@@ -31,7 +27,12 @@ internal static class EnemyDamageSource
         (typeof(SandWormAI), nameof(SandWormAI.EatPlayer)),
         (typeof(CentipedeAI), nameof(CentipedeAI.DamagePlayerOnIntervals)),
         (typeof(FlowermanAI), nameof(FlowermanAI.killAnimation))
-    };
+    ];
+
+    /// <summary>
+    ///     The last enemy which damaged a player this frame.
+    /// </summary>
+    public static EnemyAI? CurrentEnemy => Time.frameCount > _currentEnemyHitFrame ? null : _currentEnemy;
 
     private static void EnemyDamagePatch(EnemyAI __instance)
     {
@@ -43,15 +44,12 @@ internal static class EnemyDamageSource
     {
         harmony.Patch(
             AccessTools.Method(type, methodName),
-            prefix: new HarmonyMethod(_enemyDamagePathMethod)
+            new HarmonyMethod(EnemyDamagePatchMethod)
         );
     }
 
     internal static void Patch(Harmony harmony)
     {
-        foreach (var (type, methodName) in _enemyDamageMethods)
-        {
-            PatchEnemyDamageMethod(type, methodName, harmony);
-        }
+        foreach (var (type, methodName) in EnemyDamageMethods) PatchEnemyDamageMethod(type, methodName, harmony);
     }
 }

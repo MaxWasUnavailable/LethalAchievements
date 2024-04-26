@@ -1,4 +1,4 @@
-﻿namespace LethalAchievements.Config.Conditions;
+﻿namespace LethalAchievements.Json.Conditions;
 
 /// <summary>
 ///     Always succeeds.

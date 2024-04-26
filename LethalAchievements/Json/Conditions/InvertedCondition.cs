@@ -1,7 +1,7 @@
-﻿using LethalAchievements.Config.Serialization;
+﻿using LethalAchievements.Json.Serialization;
 using Newtonsoft.Json;
 
-namespace LethalAchievements.Config.Conditions;
+namespace LethalAchievements.Json.Conditions;
 
 /// <summary>
 ///     Inverts the result of another condition.
@@ -11,8 +11,7 @@ public class InvertedCondition : ICondition
     /// <summary>
     ///     The condition to invert.
     /// </summary>
-    [JsonRequired]
-    public TaggedCondition Term;
+    [JsonRequired] public TaggedCondition Term;
 
     /// <inheritdoc />
     public bool Evaluate(in Context context)

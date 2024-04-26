@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace LethalAchievements.Config.Serialization;
+namespace LethalAchievements.Json.Serialization;
 
 /// <summary>
 ///     Converts transparent types, i.e. instead of:
@@ -27,11 +27,12 @@ namespace LethalAchievements.Config.Serialization;
 public class TransparentConverter<T, TInner> : JsonConverter<T>
 {
     /// <inheritdoc />
-    public override T? ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override T? ReadJson(JsonReader reader, Type objectType, T? existingValue, bool hasExistingValue,
+        JsonSerializer serializer)
     {
         var inner = serializer.Deserialize<TInner>(reader);
         var result = Activator.CreateInstance(typeof(T), inner);
-        return (T?) result;
+        return (T?)result;
     }
 
     /// <inheritdoc />

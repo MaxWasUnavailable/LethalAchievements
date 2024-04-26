@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using LethalAchievements.Config.Serialization;
+using LethalAchievements.Json.Serialization;
 
-namespace LethalAchievements.Config;
+namespace LethalAchievements.Json;
 
 internal static class ConditionHelper
 {
@@ -15,7 +15,7 @@ internal static class ConditionHelper
     {
         return range is null || range.Contains(value);
     }
-    
+
     internal static bool Contains<T>(T value, T[]? values)
     {
         return values is null || values.Contains(value);
@@ -23,9 +23,9 @@ internal static class ConditionHelper
 
     internal static bool Predicate<T>(T? value, IPredicate<T>? predicate)
     {
-        return predicate is null || value != null && predicate.Check(value);
+        return predicate is null || (value != null && predicate.Check(value));
     }
-    
+
     internal static bool All(params bool[] values)
     {
         return values.All(x => x);
